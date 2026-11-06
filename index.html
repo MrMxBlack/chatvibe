@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatVibe Analyzer: WhatsApp and Telegram Chat Relationship Report, Green Flag Score and Chat Wrapped</title>
+<meta name="description" content="Free private WhatsApp chat analyzer. Who texts more, who replies faster, Green Flag Score, chat chemistry, top emojis, word cloud, heatmap, streaks and a story ready share card. Everything runs in your browser, nothing is uploaded.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b0714">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="canonical" href="https://mrmxblack.github.io/chatvibe/">
+<meta property="og:url" content="https://mrmxblack.github.io/chatvibe/">
+<meta property="og:image" content="https://mrmxblack.github.io/chatvibe/og-image.png">
+<meta name="twitter:image" content="https://mrmxblack.github.io/chatvibe/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ChatVibe Analyzer: WhatsApp Chat Relationship Report">
+<meta property="og:description" content="Who texts more, who replies faster, Green Flag Score, Chat Chemistry, fun awards and a story ready share card. 100 percent private, runs in your browser.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ChatVibe Analyzer: WhatsApp Chat Relationship Report">
+<meta name="twitter:description" content="Turn a WhatsApp export into a fun, private relationship report. No upload, no signup, no app install.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is a WhatsApp chat analyzer private?","acceptedAnswer":{"@type":"Answer","text":"ChatVibe reads your export file inside your own browser with JavaScript. The file is never sent to a server, there is no account, and closing the tab clears the chat from memory. You can test this by loading the page, turning on airplane mode, and then analyzing a file."}},
+{"@type":"Question","name":"How do I export a WhatsApp chat for analysis?","acceptedAnswer":{"@type":"Answer","text":"Open the chat in WhatsApp, tap the contact or group name or the three dot menu, choose More and then Export Chat, and pick Without Media. You get a .txt file on Android or a .zip on iPhone. Drop that file into ChatVibe."}},
+{"@type":"Question","name":"Can I analyze a WhatsApp group chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. ChatVibe shows up to 8 participants with per person message counts, replies, starts, emojis and fun awards. You can also tap a person to focus the whole report on them."}},
+{"@type":"Question","name":"What does a WhatsApp chat analyzer show?","acceptedAnswer":{"@type":"Answer","text":"Message counts and share per person, words per message, median reply time, who starts conversations, top emojis, most used words, activity by hour, weekday and month, longest streak, longest silence, media, link and deleted message counts, plus fun scores like the Green Flag Score and Chat Chemistry."}},
+{"@type":"Question","name":"Is ChatVibe free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every feature is free, with no signup, no premium tier and no ads inside the tool."}},
+{"@type":"Question","name":"Why does my export show zero messages?","acceptedAnswer":{"@type":"Answer","text":"Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line."}}
+]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"ChatVibe Analyzer","applicationCategory":"UtilitiesApplication","operatingSystem":"Any, in a web browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free private WhatsApp chat analyzer that runs entirely in the browser."}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{color-scheme:dark;--bg:#08060f;--surface:#14102a;--surface2:#1b1536;--line:#ffffff1f;--txt:#f7f4ff;--mut:#b3aad0;--mut2:#8f86ad;--acc:#ff5c8a;--acc2:#ffb347;--grn:#2ee6a8;--vio:#7c5cff;--shadow:0 18px 50px rgba(0,0,0,.45)}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(1100px 640px at 85% -10%,#40206e 0,transparent 60%),radial-gradient(900px 560px at -15% 15%,#641c40 0,transparent 55%),radial-gradient(700px 500px at 110% 70%,#123a5c 0,transparent 50%),var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+::selection{background:#ff5c8a66}
+.wrap{max-width:1020px;margin:0 auto;padding:18px 18px 70px}
+.topnav{position:sticky;top:10px;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(16,11,32,.78);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:18px;padding:10px 14px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:11px;font-family:Sora,Inter,sans-serif;font-weight:800;font-size:19px;letter-spacing:.01em;color:var(--txt);text-decoration:none}
+.logoMark{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--vio),var(--acc) 60%,var(--acc2));box-shadow:0 8px 22px rgba(255,92,138,.35)}
+.navlinks{display:flex;gap:4px;flex-wrap:wrap}
+.navlinks a{color:var(--mut);text-decoration:none;font-size:13.5px;font-weight:600;padding:8px 11px;border-radius:10px}
+.navlinks a:hover{color:#fff;background:#ffffff12}
+@media(max-width:640px){.navlinks{display:none}}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#2ee6a81a;border:1px solid #2ee6a84d;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:600;color:#9df3d6;margin-top:28px}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grn);box-shadow:0 0 0 4px #2ee6a82b}
+h1{font-family:Sora,Inter,sans-serif;font-size:52px;line-height:1.05;letter-spacing:-.015em;margin:18px 0 14px;font-weight:800}
+h1 .g{background:linear-gradient(92deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-family:Sora,Inter,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.sub{color:var(--mut);font-size:17.5px;line-height:1.65;max-width:720px}
+.heroChips{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
+@media(max-width:720px){.heroChips{grid-template-columns:1fr 1fr}h1{font-size:36px}}
+.chip{background:linear-gradient(180deg,#ffffff10,#ffffff06);border:1px solid var(--line);border-radius:16px;padding:13px 14px}
+.chip b{display:block;font-size:14.5px;margin-bottom:2px}
+.chip span{font-size:12.5px;color:var(--mut2)}
+.grid{display:grid;gap:16px}
+.two{grid-template-columns:1fr 1fr}
+.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:720px){.two,.three{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--surface2),var(--surface));border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 10px 34px rgba(0,0,0,.28)}
+.card h3{padding-left:12px;border-left:4px solid;border-image:linear-gradient(180deg,var(--acc),var(--acc2)) 1}
+.drop{border:2px dashed #ffffff3d;border-radius:20px;padding:36px 18px;text-align:center;background:radial-gradient(420px 180px at 50% 0%,#7c5cff26,transparent 70%),#ffffff06;cursor:pointer;transition:border-color .2s,transform .2s}
+.drop:hover{border-color:var(--acc);transform:translateY(-1px)}
+.btn{display:inline-block;border:0;cursor:pointer;background:linear-gradient(92deg,var(--acc),#ff8a5c);color:#fff;font-weight:700;font-size:15.5px;padding:13px 22px;border-radius:14px;box-shadow:0 10px 26px rgba(255,92,138,.30);transition:transform .15s,box-shadow .15s;text-decoration:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(255,92,138,.38)}
+.btn:active{transform:scale(.98)}
+.btn.alt{background:#ffffff10;color:var(--txt);border:1px solid var(--line);box-shadow:none}
+.btn.grn{background:linear-gradient(92deg,#0fbf8f,var(--grn));color:#03251b;box-shadow:0 10px 26px rgba(46,230,168,.25)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+textarea{width:100%;min-height:120px;background:#0c0919;color:var(--txt);border:1px solid var(--line);border-radius:14px;padding:13px;font-size:14.5px;font-family:inherit;line-height:1.5}
+textarea:focus{border-color:var(--acc);outline:none;box-shadow:0 0 0 3px #ff5c8a2e}
+input[type=file]{display:none}
+input[type=password]{font-family:inherit}
+.small{font-size:13.5px;color:var(--mut);line-height:1.6}
+.kpi{font-size:31px;font-weight:800;font-family:Sora,Inter,sans-serif;font-variant-numeric:tabular-nums}
+.klabel{color:var(--mut);font-size:13px;margin-top:4px;line-height:1.45}
+.bar{height:11px;background:#ffffff14;border-radius:99px;overflow:hidden;margin:9px 0 5px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--vio),var(--acc))}
+.score{font-size:64px;font-weight:800;line-height:1;font-family:Sora,Inter,sans-serif;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:7px 12px;border-radius:999px;background:#2ee6a824;color:#8ff5d2;font-size:13px;font-weight:700;margin:3px 3px 3px 0}
+.pill.pink{background:#ff5c8a24;color:#ffb3c6}
+.pill.gold{background:#ffb34724;color:#ffd9a0}
+.cloud{text-align:center;line-height:1.3;word-wrap:break-word}
+.cloud span{margin:0 6px;display:inline-block}
+.heat{display:grid;grid-template-columns:repeat(24,1fr);gap:3px}
+.heat div{aspect-ratio:1;border-radius:4px;background:#ffffff10}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:9px 6px;border-bottom:1px solid #ffffff14;text-align:left}
+.hidden{display:none}
+.center{text-align:center}
+.mt{margin-top:18px}.mb{margin-bottom:14px}
+a{color:#ffb3c6}
+details{background:#ffffff08;border:1px solid var(--line);border-radius:14px;padding:13px 15px}
+summary{cursor:pointer;font-weight:700;font-size:15px}
+.err{background:#ff3b3b20;border:1px solid #ff3b3b59;color:#ffc9c9;padding:13px;border-radius:12px;line-height:1.5}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
+input[type=date]{background:#0c0919;color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:11px;width:100%;font-size:15px;font-family:inherit}
+select{font-family:inherit}
+.personRow{cursor:pointer;border-radius:14px;padding:11px;margin:0 -11px 4px;transition:background .15s}
+.personRow:hover{background:#ffffff0d}
+.personRow.active{background:#ff5c8a1c;box-shadow:inset 0 0 0 1px #ff5c8a59}
+.wk{display:flex;gap:8px;align-items:flex-end;height:150px;margin-top:8px}
+.wk .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.wk .fill{width:100%;max-width:44px;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--acc2),var(--acc));min-height:4px}
+.wk .lab{font-size:12px;color:var(--mut);margin-top:7px}
+.wk .val{font-size:12px;font-weight:700;margin-bottom:5px;font-variant-numeric:tabular-nums}
+.mrow{display:grid;grid-template-columns:86px 1fr 52px;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+.mrow .track{height:14px;background:#ffffff12;border-radius:99px;overflow:hidden}
+.mrow .fill{height:100%;background:linear-gradient(90deg,var(--vio),var(--grn))}
+.slidebox{border-radius:22px;padding:34px 20px;text-align:center;background:radial-gradient(600px 300px at 50% 0%,#7c5cff40,transparent 70%),#ffffff08;border:1px solid #ffffff22;min-height:340px;display:flex;flex-direction:column;justify-content:center}
+.slidebig{font-size:64px;font-weight:800;line-height:1.05;margin:12px 0;font-family:Sora,Inter,sans-serif}
+.slidetitle{font-size:14px;letter-spacing:.16em;color:var(--acc2);font-weight:800;text-transform:uppercase}
+.slidesub{color:var(--mut);font-size:17px;line-height:1.55}
+.dotswrap{margin-top:12px;color:var(--mut);font-size:13px}
+.footer{margin-top:34px;border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.footer .small{max-width:520px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.btn,.drop{transition:none}}
+@media print{
+body{background:#fff;color:#111}
+.wrap{max-width:100%;padding:0}
+.topnav,.heroChips,.footer{display:none!important}
+.card{background:#fff;border:1px solid #ccc;color:#111;box-shadow:none}
+.card h3{border-left:0;padding-left:0}
+.small,.klabel,.sub{color:#444}
+.badge{color:#333;border-color:#bbb}
+.noprint,#studio,#pasteCard,.drop,button{display:none!important}
+.heat div{border:1px solid #ddd}
+h1{color:#111}h1 .g{color:#111;-webkit-text-fill-color:#111}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topnav">
+<a class="brand" href="#"><span class="logoMark">CV</span>ChatVibe</a>
+<nav class="navlinks">
+<a href="#pasteCard" data-i18n="nav_analyzer">Analyzer</a>
+<a href="#studio" data-i18n="nav_studio">Story Studio</a>
+<a href="#faqBox" data-i18n="nav_faq">FAQ</a>
+</nav>
+<select id="langSel" aria-label="Language" style="background:#17122b;color:#fff;border:1px solid #ffffff2b;border-radius:10px;padding:8px 10px;font-weight:700"><option value="en">English</option><option value="bn">বাংলা</option><option value="hi">हिन्दी</option><option value="es">Español</option><option value="pt">Português</option><option value="id">Bahasa Indonesia</option></select>
+</header>
+<span class="badge" data-i18n="badge">100 percent private. Your chat never leaves your phone.</span>
+<h1 data-i18n="hero_h1">Your chat has a <span class="g">vibe.</span><br>Let us measure it.</h1>
+<p class="sub" data-i18n="hero_sub">ChatVibe turns a WhatsApp or Telegram export into a fun relationship report: who texts more, who replies faster, who starts the chat, Green Flag Score, Chat Chemistry, top emojis, word cloud, heatmap, streaks, and a story ready share card. No signup. No upload. No app install.</p>
+<div class="heroChips">
+<div class="chip"><b data-i18n="chip1b">100 percent free</b><span data-i18n="chip1s">Every feature, no premium wall</span></div>
+<div class="chip"><b data-i18n="chip2b">Private by design</b><span data-i18n="chip2s">Runs in your browser, zero upload</span></div>
+<div class="chip"><b data-i18n="chip3b">Groups welcome</b><span data-i18n="chip3s">Up to 8 people in one report</span></div>
+<div class="chip"><b data-i18n="chip4b">Made to share</b><span data-i18n="chip4s">Story cards and a Wrapped show</span></div>
+</div>
+
+<div class="card mt">
+<div class="drop" id="drop">
+<div style="font-size:38px">💬</div>
+<p style="font-weight:800;font-size:19px;margin:8px 0 4px" data-i18n="drop_t">Drop your WhatsApp or Telegram export here</p>
+<p class="small" data-i18n="drop_s">Tap to choose a .txt or .zip export, exported Without Media.<br>WhatsApp Android and iPhone formats both work, and Telegram Desktop JSON exports work too. Group chats work too, up to 8 people.</p>
+</div>
+<input type="file" id="file" accept=".txt,.zip,.json,text/plain,application/zip,application/json">
+<div class="center mt">
+<button class="btn alt" id="demoBtn" data-i18n="demo_btn">Try the demo chat first</button>
+</div>
+<div id="err" class="err mt hidden"></div>
+<details class="mt">
+<summary data-i18n="how_sum">How to export from WhatsApp or Telegram, 20 seconds</summary>
+<p class="small" style="margin-top:8px" data-i18n="how_text">Open the chat, tap the name or the three dots, tap More or Export Chat, choose Without Media, save the file, then drop it here. On iPhone the export comes as a .zip, that works directly. For Telegram: use Telegram Desktop, open the chat menu, choose Export Chat History, and pick the JSON format, then drop the result.json file here.</p>
+</details>
+</div>
+
+<div class="card mt" id="pasteCard">
+<p style="font-weight:800;margin-bottom:8px" data-i18n="paste_t">No file handy? Paste chat text</p>
+<textarea id="paste" data-i18nph="paste_ph" placeholder="Paste a few lines from a WhatsApp export here, then tap Analyze"></textarea>
+<div class="mt"><button class="btn" id="pasteBtn" data-i18n="paste_btn">Analyze pasted chat</button></div>
+</div>
+
+<div id="results" class="hidden">
+<div class="card mt center">
+<p class="klabel" data-i18n="green_label">GREEN FLAG SCORE</p>
+<div class="score" id="greenScore">0</div>
+<p id="greenVerdict" style="font-weight:700;margin-top:6px"></p>
+<p class="small mt" data-i18n="fun_note">For fun only, based on balance, reply speed, questions, thanks, sorry and laughter in this chat. Not relationship advice.</p>
+<div class="mt">
+<span class="pill"><span data-i18n="pill_chem">Chemistry</span> <b id="chemScore"></b></span>
+<span class="pill pink"><span data-i18n="pill_bal">Balance</span> <b id="balScore"></b></span>
+<span class="pill gold"><span data-i18n="pill_streak">Longest streak</span> <b id="streakVal"></b></span>
+</div>
+<div class="mt">
+<button class="btn grn" id="cardBtn" data-i18n="card_btn">Download story share card</button>
+<button class="btn alt" id="jsonBtn" data-i18n="json_btn">Download full report</button>
+</div>
+<div class="mt">
+<button class="btn" id="wrappedBtn" data-i18n="wrapped_btn">Play Chat Wrapped</button>
+<button class="btn alt" id="copyShareBtn" data-i18n="copyshare_btn">Copy share text</button>
+<a class="btn alt btnlink" id="waShare" href="#" target="_blank" rel="noopener" style="text-decoration:none" data-i18n="washare_btn">Share on WhatsApp</a>
+<button class="btn alt" id="printBtn" data-i18n="print_btn">Print / Save PDF</button>
+</div>
+<p class="small mt" id="shareNote" data-i18n="share_note">Share text contains only scores and counts. It never contains any message from your chat.</p>
+<canvas id="shareCanvas" width="1080" height="1920" class="hidden"></canvas>
+</div>
+
+<div class="card mt" id="wrappedCard">
+<h3 class="mb" data-i18n="wrapped_h">Your Chat Wrapped</h3>
+<div class="slidebox" aria-live="polite">
+<p class="slidetitle" id="slideTitle">Slide</p>
+<div class="slidebig" id="slideBig">-</div>
+<p class="slidesub" id="slideSub"></p>
+</div>
+<div class="center mt">
+<button class="btn alt" id="slidePrev" data-i18n="slide_prev">Previous</button>
+<button class="btn" id="slidePlay" data-i18n="slide_play">Play</button>
+<button class="btn alt" id="slideNext" data-i18n="slide_next">Next</button>
+<p class="dotswrap" id="slideCount"></p>
+</div>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="focus_h">Focus this report</h3>
+<p class="small mb" data-i18n="focus_sub">Filter by date, or tap any person in the Who carries the conversation section to focus every number on them. Tap them again to clear.</p>
+<div class="grid two">
+<div><label class="small" for="dateFrom" data-i18n="from_l">From date</label><input type="date" id="dateFrom"></div>
+<div><label class="small" for="dateTo" data-i18n="to_l">To date</label><input type="date" id="dateTo"></div>
+</div>
+<div class="mt">
+<button class="btn" id="filterBtn" data-i18n="filter_btn">Apply date filter</button>
+<button class="btn alt" id="clearFilterBtn" data-i18n="clear_btn">Clear all filters</button>
+</div>
+<p class="small mt" id="filterStatus" role="status"></p>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="activity_h">Activity over time</h3>
+<p style="font-weight:700" data-i18n="by_weekday">By weekday</p>
+<div class="wk" id="weekdayChart"></div>
+<p style="font-weight:700;margin-top:18px" data-i18n="by_month">By month</p>
+<div id="monthChart" class="mt"></div>
+<p class="small mt" id="busyDayInfo"></p>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="story_h">Your chat story</h3>
+<p id="storyText" style="line-height:1.65;font-size:16px"></p>
+<div class="mt"><button class="btn alt" id="copyStoryBtn" data-i18n="copy_story">Copy this story</button></div>
+</div>
+
+<div class="grid three mt" id="kpis"></div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="mile_h">Milestones and sittings</h3>
+<div id="milestones"></div>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="people_h">Who carries the conversation</h3>
+<div id="people"></div>
+</div>
+
+<div class="card mt hidden" id="versusCard">
+<h3 class="mb" data-i18n="versus_h">Versus Battle</h3>
+<p class="small mb" data-i18n="versus_sub">Head to head over six rounds, decided by your own chat numbers.</p>
+<div id="versusBody"></div>
+<button class="btn alt mt" id="battleBtn" type="button" data-i18n="battle_btn">Download battle card</button>
+</div>
+
+<div class="card mt" id="guessCard">
+<h3 class="mb" data-i18n="guess_h">Guess Who Said It</h3>
+<p class="small mb" data-i18n="guess_sub">A quick game from your own chat. The lines appear only on your device, nothing is uploaded or shared.</p>
+<div id="guessBody"><button class="btn" id="guessStartBtn" type="button" data-i18n="g_start_plain">Start the game</button></div>
+</div>
+
+
+<div class="grid two mt">
+<div class="card">
+<h3 class="mb" data-i18n="awards_h">Fun awards</h3>
+<div id="awards"></div>
+</div>
+<div class="card">
+<h3 class="mb" data-i18n="meters_h">Love, sorry and laughter meters</h3>
+<div id="meters"></div>
+<p class="small mt" id="weRatio"></p>
+</div>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="moments_h">Funniest moments in this chat</h3>
+<p class="small mb" data-i18n="moments_sub">Picked from your own messages, on your device only: the lines with the most laughter, emojis, drama and late night energy. Each one gets a funny reaction, and you can turn it into a meme story card in one tap.</p>
+<div id="moments"></div>
+</div>
+
+<div class="grid two mt">
+<div class="card">
+<h3 class="mb" data-i18n="emojis_h">Top emojis</h3>
+<div id="emojis" style="font-size:22px;line-height:1.7"></div>
+<h3 class="mb" style="margin-top:14px" data-i18n="words_h">Words you live by</h3>
+<div class="cloud" id="cloud"></div>
+</div>
+<div class="card">
+<h3 class="mb" data-i18n="heat_h">When do you talk, hour heatmap</h3>
+<div class="heat" id="heat"></div>
+<p class="small mt" id="peakInfo"></p>
+<p class="small" id="silenceInfo"></p>
+</div>
+</div>
+</div>
+
+<div class="card mt" id="compareBox">
+<h3 class="mb" data-i18n="compare_h">Compare two chats, the rematch</h3>
+<p class="small mb" data-i18n="compare_sub">Analyze one chat above first. Then bring a second export, for example the same chat exported a month later, and see exactly what changed: messages, Green Flag Score, chemistry, reply speed and streak. Other tools charge for this. Here it is free, and both chats stay on your device.</p>
+<div class="drop" id="compareDrop">
+<p style="font-weight:800;margin:6px 0 4px" data-i18n="cmp_drop_t">Drop the second chat export here</p>
+<p class="small" data-i18n="cmp_drop_s">Tap to choose a .txt or .zip export.</p>
+</div>
+<input type="file" id="compareFile" accept=".txt,.zip,.json,text/plain,application/zip,application/json">
+<div class="center mt"><button class="btn alt" id="compareDemoBtn" data-i18n="cmp_demo_btn">Preview with a sample second chat</button></div>
+<div id="compareResult" class="mt"></div>
+</div>
+
+<div class="card mt" id="studio">
+<h3 class="mb" data-i18n="studio_h">Screenshot Story Studio</h3>
+<p class="small mb" data-i18n="studio_sub">Have a funny chat screenshot? Upload it here, see it, dress it up with a caption and a big funny emoji, and download a ready to post story. The screenshot is only opened in your browser, never uploaded anywhere.</p>
+<div class="drop" id="shotDrop">
+<div style="font-size:34px">🖼️</div>
+<p style="font-weight:800;margin:8px 0 4px" data-i18n="shot_drop_t">Drop a chat screenshot here</p>
+<p class="small" data-i18n="shot_drop_s">Tap to choose a PNG or JPG screenshot from your phone.</p>
+</div>
+<input type="file" id="shotFile" accept="image/*">
+<div id="shotControls" class="hidden">
+<p class="small mt" data-i18n="shot_prev_l">Your screenshot preview:</p>
+<img id="shotPreview" style="max-width:100%;border-radius:14px;margin-top:8px" alt="Your chat screenshot preview">
+<p style="font-weight:700;margin:14px 0 6px" data-i18n="shot_cap_l">Caption for your story</p>
+<textarea id="shotCaption" style="min-height:56px" data-i18nph="shot_cap_ph" placeholder="Example: He really said this at 2 am 💀">He really said this 💀</textarea>
+<p style="font-weight:700;margin:14px 0 6px" data-i18n="shot_emoji_l">Pick a funny reaction emoji</p>
+<div id="emojiPick"></div>
+<p style="font-weight:700;margin:14px 0 6px" data-i18n="shot_theme_l">Story theme</p>
+<select id="shotTheme" style="width:100%;padding:12px;border-radius:12px;background:#0d0919;color:#fff;border:1px solid #ffffff2b">
+<option value="violet" data-i18n="theme_violet">Violet Night</option>
+<option value="pink" data-i18n="theme_pink">Hot Pink</option>
+<option value="gold" data-i18n="theme_gold">Gold</option>
+<option value="ocean" data-i18n="theme_ocean">Ocean</option>
+</select>
+<div class="mt">
+<button class="btn grn" id="shotMake" data-i18n="shot_make">Make my story</button>
+<button class="btn alt" id="shotDl" disabled data-i18n="shot_dl">Download story PNG</button>
+</div>
+<div class="center mt"><canvas id="storyCanvas" width="1080" height="1920" style="max-width:320px;width:100%;border-radius:16px" class="hidden"></canvas></div>
+</div>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="flight_h">Prove the privacy yourself: the airplane mode test</h3>
+<p class="small" data-i18n="flight_t">Load this page once while you are online. Then turn on airplane mode on your phone and analyze a chat. Everything still works, because the reading and the maths happen inside your browser on your device. Nothing about your chat is sent anywhere, stored anywhere, or read by any AI. Refreshing the page clears it from memory. Share the numbers from your report if you like, never the private messages themselves, and only analyze chats you are part of.</p>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="calc_h">How every number is calculated</h3>
+<p class="small" data-i18n="calc_t">Messages: every export line that starts with a date, a time and a sender name counts as one message. Lines without a sender, such as group notices, do not count as messages. Words: runs of letters in the message text; media placeholder lines add no words. Reply time: when the sender changes, the gap to the previous message counts as that sender's reply, but only when the gap is under 12 hours, so an overnight restart does not destroy the picture. The report shows the median, the middle reply, which is steadier than an average. Conversation starts: the first message in the chat, and any message that arrives more than 6 hours after the one before it. Streak: the longest run of calendar days in a row that each have at least one message. Green Flag Score: a playful blend of balance between people, median reply speed, and warm signals such as questions, thanks, sorry and laughter. It is a fun summary of this export only, not a judgement of any person or relationship. Funniest Moments: messages earn points for laughter words, emojis, capital letter drama, exclamation marks, very long messages and being sent between midnight and 5 am. Large chats: there is no message cap in ChatVibe; very large exports may simply take longer on a slow phone.</p>
+</div>
+
+<div class="card mt" id="faqBox">
+<h3 class="mb" data-i18n="faq_h">Frequently asked questions</h3>
+<details><summary data-i18n="faq1q">Is a WhatsApp chat analyzer private?</summary><p class="small" style="margin-top:8px" data-i18n="faq1a">ChatVibe reads your export file inside your own browser with JavaScript. The file is never sent to a server, there is no account, and closing the tab clears the chat from memory. You can test this by loading the page, turning on airplane mode, and then analyzing a file.</p></details>
+<details class="mt"><summary data-i18n="faq2q">How do I export a WhatsApp chat for analysis?</summary><p class="small" style="margin-top:8px" data-i18n="faq2a">Open the chat in WhatsApp, tap the contact or group name or the three dot menu, choose More and then Export Chat, and pick Without Media. You get a .txt file on Android or a .zip on iPhone. Drop that file into ChatVibe.</p></details>
+<details class="mt"><summary data-i18n="faq3q">Can I analyze a WhatsApp group chat?</summary><p class="small" style="margin-top:8px" data-i18n="faq3a">Yes. ChatVibe shows up to 8 participants with per person message counts, replies, starts, emojis and fun awards. You can also tap a person to focus the whole report on them.</p></details>
+<details class="mt"><summary data-i18n="faq4q">What does a WhatsApp chat analyzer show?</summary><p class="small" style="margin-top:8px" data-i18n="faq4a">Message counts and share per person, words per message, median reply time, who starts conversations, top emojis, most used words, activity by hour, weekday and month, longest streak, longest silence, media, link and deleted message counts, plus fun scores like the Green Flag Score and Chat Chemistry.</p></details>
+<details class="mt"><summary data-i18n="faq5q">Is ChatVibe free?</summary><p class="small" style="margin-top:8px" data-i18n="faq5a">Yes. Every feature is free, with no signup, no premium tier and no ads inside the tool.</p></details>
+<details class="mt"><summary data-i18n="faq6q">Why does my export show zero messages?</summary><p class="small" style="margin-top:8px" data-i18n="faq6a">Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line.</p></details>
+</div>
+
+<div class="card mt">
+<h3 class="mb" data-i18n="why_h">Why ChatVibe beats a normal stats dashboard</h3>
+<p class="small" data-i18n="why_t">Normal analyzers stop at counts and charts. ChatVibe adds the layer people actually share: playful awards for each person, a Green Flag Score, Chat Chemistry, the longest silence and streak, deleted message count, a we versus I togetherness ratio, and a vertical story card made for WhatsApp Status and Instagram Stories. And like the best tools, everything is calculated locally in your browser, so you can even test it in airplane mode.</p>
+</div>
+<footer class="footer">
+<div>
+<a class="brand" href="#"><span class="logoMark">CV</span>ChatVibe</a>
+<p class="small" style="margin-top:10px" data-i18n="footer_t">The fun, private WhatsApp chat analyzer. Every number is calculated on your own device. Made for fun: share the numbers, never private messages.</p>
+</div>
+<nav class="navlinks">
+<a href="#pasteCard" data-i18n="nav_analyzer">Analyzer</a>
+<a href="#studio" data-i18n="nav_studio">Story Studio</a>
+<a href="#faqBox" data-i18n="nav_faq">FAQ</a>
+</nav>
+</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let LANG="en";
+let WDN=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const I18N={
+en:{wdn:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+nav_analyzer:"Analyzer",nav_studio:"Story Studio",nav_faq:"FAQ",
+badge:"100 percent private. Your chat never leaves your phone.",
+hero_h1:"Your chat has a <span class=\"g\">vibe.</span><br>Let us measure it.",
+hero_sub:"ChatVibe turns a WhatsApp or Telegram export into a fun relationship report: who texts more, who replies faster, who starts the chat, Green Flag Score, Chat Chemistry, top emojis, word cloud, heatmap, streaks, and a story ready share card. No signup. No upload. No app install.",
+chip1b:"100 percent free",chip1s:"Every feature, no premium wall",chip2b:"Private by design",chip2s:"Runs in your browser, zero upload",chip3b:"Groups welcome",chip3s:"Up to 8 people in one report",chip4b:"Made to share",chip4s:"Story cards and a Wrapped show",
+drop_t:"Drop your WhatsApp or Telegram export here",
+drop_s:"Tap to choose a .txt or .zip export, exported Without Media.<br>WhatsApp Android and iPhone formats both work, and Telegram Desktop JSON exports work too. Group chats work too, up to 8 people.",
+demo_btn:"Try the demo chat first",
+how_sum:"How to export from WhatsApp or Telegram, 20 seconds",
+how_text:"Open the chat, tap the name or the three dots, tap More or Export Chat, choose Without Media, save the file, then drop it here. On iPhone the export comes as a .zip, that works directly. For Telegram: use Telegram Desktop, open the chat menu, choose Export Chat History, and pick the JSON format, then drop the result.json file here.",
+paste_t:"No file handy? Paste chat text",paste_ph:"Paste a few lines from a WhatsApp export here, then tap Analyze",paste_btn:"Analyze pasted chat",
+green_label:"GREEN FLAG SCORE",
+fun_note:"For fun only, based on balance, reply speed, questions, thanks, sorry and laughter in this chat. Not relationship advice.",
+pill_chem:"Chemistry",pill_bal:"Balance",pill_streak:"Longest streak",
+card_btn:"Download story share card",json_btn:"Download full report",wrapped_btn:"Play Chat Wrapped",copyshare_btn:"Copy share text",washare_btn:"Share on WhatsApp",print_btn:"Print / Save PDF",
+share_note:"Share text contains only scores and counts. It never contains any message from your chat.",
+wrapped_h:"Your Chat Wrapped",slide_prev:"Previous",slide_play:"Play",slide_next:"Next",
+focus_h:"Focus this report",focus_sub:"Filter by date, or tap any person in the Who carries the conversation section to focus every number on them. Tap them again to clear.",
+from_l:"From date",to_l:"To date",filter_btn:"Apply date filter",clear_btn:"Clear all filters",
+activity_h:"Activity over time",by_weekday:"By weekday",by_month:"By month",
+story_h:"Your chat story",copy_story:"Copy this story",
+mile_h:"Milestones and sittings",people_h:"Who carries the conversation",awards_h:"Fun awards",meters_h:"Love, sorry and laughter meters",
+moments_h:"Funniest moments in this chat",moments_sub:"Picked from your own messages, on your device only: the lines with the most laughter, emojis, drama and late night energy. Each one gets a funny reaction, and you can turn it into a meme story card in one tap.",
+emojis_h:"Top emojis",words_h:"Words you live by",heat_h:"When do you talk, hour heatmap",
+versus_h:"Versus Battle",versus_sub:"Head to head over six rounds, decided by your own chat numbers.",battle_btn:"Download battle card",
+guess_h:"Guess Who Said It",guess_sub:"A quick game from your own chat. The lines appear only on your device, nothing is uploaded or shared.",
+compare_h:"Compare two chats, the rematch",compare_sub:"Analyze one chat above first. Then bring a second export, for example the same chat exported a month later, and see exactly what changed: messages, Green Flag Score, chemistry, reply speed and streak. Other tools charge for this. Here it is free, and both chats stay on your device.",
+cmp_drop_t:"Drop the second chat export here",cmp_drop_s:"Tap to choose a .txt or .zip export.",cmp_demo_btn:"Preview with a sample second chat",
+studio_h:"Screenshot Story Studio",studio_sub:"Have a funny chat screenshot? Upload it here, see it, dress it up with a caption and a big funny emoji, and download a ready to post story. The screenshot is only opened in your browser, never uploaded anywhere.",
+shot_drop_t:"Drop a chat screenshot here",shot_drop_s:"Tap to choose a PNG or JPG screenshot from your phone.",shot_prev_l:"Your screenshot preview:",shot_cap_l:"Caption for your story",shot_cap_ph:"Example: He really said this at 2 am",shot_emoji_l:"Pick a funny reaction emoji",shot_theme_l:"Story theme",theme_violet:"Violet Night",theme_pink:"Hot Pink",theme_gold:"Gold",theme_ocean:"Ocean",shot_make:"Make my story",shot_dl:"Download story PNG",
+flight_h:"Prove the privacy yourself: the airplane mode test",flight_t:"Load this page once while you are online. Then turn on airplane mode on your phone and analyze a chat. Everything still works, because the reading and the maths happen inside your browser on your device. Nothing about your chat is sent anywhere, stored anywhere, or read by any AI. Refreshing the page clears it from memory. Share the numbers from your report if you like, never the private messages themselves, and only analyze chats you are part of.",
+calc_h:"How every number is calculated",calc_t:"Messages: every export line that starts with a date, a time and a sender name counts as one message. Lines without a sender, such as group notices, do not count as messages. Words: runs of letters in the message text; media placeholder lines add no words. Reply time: when the sender changes, the gap to the previous message counts as that sender's reply, but only when the gap is under 12 hours, so an overnight restart does not destroy the picture. The report shows the median, the middle reply, which is steadier than an average. Conversation starts: the first message in the chat, and any message that arrives more than 6 hours after the one before it. Streak: the longest run of calendar days in a row that each have at least one message. Green Flag Score: a playful blend of balance between people, median reply speed, and warm signals such as questions, thanks, sorry and laughter. Funniest Moments: messages earn points for laughter words, emojis, capital letter drama, exclamation marks, very long messages and being sent between midnight and 5 am. Large chats: there is no message cap in ChatVibe; very large exports may simply take longer on a slow phone.",
+faq_h:"Frequently asked questions",
+faq1q:"Is a WhatsApp chat analyzer private?",faq1a:"ChatVibe reads your export file inside your own browser with JavaScript. The file is never sent to a server, there is no account, and closing the tab clears the chat from memory. You can test this by loading the page, turning on airplane mode, and then analyzing a file.",
+faq2q:"How do I export a WhatsApp chat for analysis?",faq2a:"Open the chat in WhatsApp, tap the contact or group name or the three dot menu, choose More and then Export Chat, and pick Without Media. You get a .txt file on Android or a .zip on iPhone. Drop that file into ChatVibe.",
+faq3q:"Can I analyze a WhatsApp group chat?",faq3a:"Yes. ChatVibe shows up to 8 participants with per person message counts, replies, starts, emojis and fun awards. You can also tap a person to focus the whole report on them.",
+faq4q:"What does a WhatsApp chat analyzer show?",faq4a:"Message counts and share per person, words per message, median reply time, who starts conversations, top emojis, most used words, activity by hour, weekday and month, longest streak, longest silence, media, link and deleted message counts, plus fun scores like the Green Flag Score and Chat Chemistry.",
+faq5q:"Is ChatVibe free?",faq5a:"Yes. Every feature is free, with no signup, no premium tier and no ads inside the tool.",
+faq6q:"Why does my export show zero messages?",faq6a:"Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line.",
+why_h:"Why ChatVibe beats a normal stats dashboard",why_t:"Normal analyzers stop at counts and charts. ChatVibe adds the layer people actually share: playful awards for each person, a Green Flag Score, Chat Chemistry, the longest silence and streak, deleted message count, a we versus I togetherness ratio, and a vertical story card made for WhatsApp Status and Instagram Stories. And like the best tools, everything is calculated locally in your browser, so you can even test it in airplane mode.",
+days_w:"days",
+gv1:"Elite green flag energy. This chat is balanced, warm and fast.",gv2:"Strong green flag chat. Warm, fairly balanced, alive.",gv3:"Mixed vibe. Real warmth is there, balance can improve.",gv4:"Chaotic chat energy. Entertaining, but bring snacks and patience.",
+ms_span:"Chat span: <b>{days} days</b>, from {from} to {to}.",
+ms_sit:"Total sittings: <b>{n}</b> separate conversations (a gap over 30 minutes starts a new sitting). Longest sitting: <b>{c} messages</b>{start}.",
+ms_start:", starting {when}",
+ms_next:"Next milestone: <b>{m} messages</b>. Only {left} to go.",
+k_total:"Total messages",k_active:"Active days, {from} to {to}",k_median:"Median reply time",k_media:"Media shared, {links} links, {deleted} deleted",
+pr_msgs:"{n} msgs, {share} percent",
+pr_line:"Avg {w} words per message. Starts chat {s} times. Typical reply {r}. Emojis {e}. Tap to focus.",
+pr_sig:"Signature words: {words}",pr_fav:"Favourite emoji: {e}",pr_none:"none yet",none_w:"none",
+aw_talk:"Most Talkative",aw_emoji:"Emoji Star",aw_start:"Chat Starter",aw_double:"Double Texter",aw_night:"Night Owl",aw_sorry:"Chief Apologizer",aw_comic:"Comedian",aw_curious:"Curious Mind",aw_dry:"Dry Texter",aw_none:"Not enough messages for awards yet.",
+m_love:"Love and affection",m_sorry:"Sorry",m_thanks:"Thanks",m_laugh:"Laughter",
+we_t:"Togetherness ratio: we words {we} versus I words {i}",we_team:". You talk like a team.",we_solo:". More solo energy than team energy in wording.",
+no_emoji:"No emojis found.",no_month:"No monthly data.",
+busy_t:"Busiest single day: {day} with {n} messages. Busiest weekday: {wd}.",
+peak_t:"Peak hour: {h}:00 with {n} messages. Busiest pattern is shown left to right, midnight to 11 pm.",
+sil_t:"The Great Silence: longest gap between messages was {g}. Deleted messages spotted: {d}.",
+meme_btn:"Make meme story card",moments_none:"No big funny moments spotted yet. Chats with laughter, emojis and late night drama score moments here.",
+story_t:"In {days} days, {names} sent {total} messages and earned a Green Flag Score of {green} with Chat Chemistry of {chem}. {topbit}Replies typically landed in {reply}, the busiest day was {bday}, and the longest sitting packed {sit} messages into one go. The top emoji was {emoji}, the longest streak ran {streak} days, and this chat is only {left} messages away from the {mile} message milestone.",
+story_top:"{name} carried the chat with {share} percent of the messages. ",
+story_bday:"{day} with {n} messages",
+and_group:"{name} and the group",
+sl1t:"Your Chat Wrapped",sl1s:"Green Flag Score out of 100. Chemistry {chem}/100, balance {bal}/100.",
+sl2t:"The Story So Far",sl2s:"messages across {days} active days, from {from} to {to}.",
+sl3t:"Top Texter",sl3s:"{n} messages, {p} percent of the whole chat.",
+sl4t:"Reply Speed",sl4s:"median reply time when the sender changes.",
+sl5t:"Signature Emoji",sl5s:"used {n} times. Your top word: {w}.",
+sl6t:"When You Talk",sl6s:"is your peak hour. Your busiest weekday is {wd}.",
+sl7t:"Streak and Silence",sl7s:"longest daily streak. The Great Silence between messages lasted {g}.",
+sl7b:"{n} days",
+sl8t:"The Warm Stuff",sl8s:"love signals, {laugh} laughter signals, {thanks} thanks and {sorry} sorrys in this view of the chat.",
+share_t:"Our ChatVibe report: Green Flag Score {green}/100, Chemistry {chem}/100, {total} messages, longest streak {streak} days. Check yours, it runs fully in your browser.",
+v_msgs:"Most messages",v_words:"Most words",v_emojis:"Most emojis",v_starts:"Most chat starts",v_fast:"Fastest replies",v_laugh:"Most laughter",
+v_takes:"{name} takes it",v_tied:"Round tied",v_champ_t:"Champion: {name} ({a} to {b} rounds)",v_dead_t:"Dead heat: {a} rounds each",v_wins:"{name} wins",v_tiedshort:"Tied",v_dead:"Dead heat",v_champ:"Champion: {name}",
+g_start:"Start the game ({n} rounds)",g_start_plain:"Start the game",g_notenough:"This chat does not have enough long messages for the game yet.",
+g_round:"Round {i} of {n} / Score {s}",g_correct:"Correct. ",g_wrong:"Not quite. ",g_was:"It was {name}. Score {s}.",g_next:"Next line",g_see:"See my score",
+g_final:"Final score: {s} out of {n}",g_v1:"You know this chat by heart.",g_v2:"Solid. You know each other well.",g_v3:"Tricky chat. Even close people surprise each other.",g_again:"Play again",
+cmp_what:"What changed",cmp_first:"First chat",cmp_second:"Second chat",cmp_change:"Change",
+cmp_note:"Median reply time: first {a}, second {b}. Read the change column like a scoreboard: up is more, not always better. Reply speed and balance tell the quality story.",
+cmp_err:"Analyze a chat above first, then bring the second one. The first report is the starting point for the rematch.",
+green_name:"Green Flag Score",bal_name:"Balance score",act_name:"Active days",streak_name:"Longest streak, days",sit_name:"Total sittings",q_name:"Questions asked",laugh_name:"Laughter moments",
+fs_focus:"Focused on {name}",fs_dates:"Dates {a} to {b}",fs_full:"Showing the full chat. ",fs_view:"This view has {n} messages.",
+err_file:"I could not find enough messages in that file. Make sure it is a WhatsApp export (Without Media, .txt or .zip) or a Telegram Desktop export in JSON form.",
+err_filter:"That filter leaves fewer than 3 messages. Widen the dates or clear the person focus.",
+copied_share:"Share text copied. It contains only scores and counts, never any message from your chat.",copy_fail:"Copy failed on this browser. The share text is: ",
+story_copied:"Story copied",story_copy_fail:"Copy failed, long press the story to copy",
+no_data:"no data"
+},
+bn:{wdn:["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"],
+nav_analyzer:"অ্যানালাইজার",nav_studio:"স্টোরি স্টুডিও",nav_faq:"জিজ্ঞাসা",
+badge:"১০০ শতাংশ প্রাইভেট। তোমার চ্যাট কখনো ফোনের বাইরে যায় না।",
+hero_h1:"তোমার চ্যাটের একটা <span class=\"g\">ভাইব</span> আছে।<br>চলো মেপে দেখি।",
+hero_sub:"ChatVibe একটা WhatsApp বা Telegram এক্সপোর্টকে মজার সম্পর্কের রিপোর্টে বদলে দেয়: কে বেশি মেসেজ করে, কে দ্রুত রিপ্লাই দেয়, কে চ্যাট শুরু করে, Green Flag Score, Chat Chemistry, সেরা emoji, word cloud, heatmap, streak আর শেয়ারের জন্য তৈরি story card। কোনো সাইনআপ নেই। কোনো আপলোড নেই। কোনো অ্যাপ ইনস্টল নেই।",
+chip1b:"১০০ শতাংশ ফ্রি",chip1s:"সব ফিচার, কোনো প্রিমিয়াম দেয়াল নেই",chip2b:"প্রাইভেট ডিজাইন",chip2s:"তোমার ব্রাউজারেই চলে, শূন্য আপলোড",chip3b:"গ্রুপ চলবে",chip3s:"এক রিপোর্টে সর্বোচ্চ ৮ জন",chip4b:"শেয়ারের জন্য তৈরি",chip4s:"Story card আর Wrapped শো",
+drop_t:"তোমার WhatsApp বা Telegram এক্সপোর্ট এখানে দাও",
+drop_s:"Without Media হিসেবে এক্সপোর্ট করা .txt বা .zip ফাইল বেছে নিতে চাপ দাও।<br>WhatsApp Android ও iPhone দুই ফরম্যাটই চলে, Telegram Desktop এর JSON এক্সপোর্টও চলে। গ্রুপ চ্যাটও চলে, সর্বোচ্চ ৮ জন।",
+demo_btn:"আগে ডেমো চ্যাটটা দেখো",
+how_sum:"WhatsApp বা Telegram থেকে এক্সপোর্ট করবে যেভাবে, ২০ সেকেন্ডে",
+how_text:"চ্যাট খোলো, নামে বা তিন ডটে চাপ দাও, More বা Export Chat বেছে নাও, Without Media বেছে নাও, ফাইল সেভ করো, তারপর এখানে দাও। iPhone এ এক্সপোর্ট .zip হয়ে আসে, সেটা সরাসরি চলে। Telegram এর জন্য: Telegram Desktop ব্যবহার করো, চ্যাট মেনু খোলো, Export Chat History বেছে নাও, JSON ফরম্যাট বেছে নাও, তারপর result.json ফাইলটা এখানে দাও।",
+paste_t:"ফাইল হাতে নেই? চ্যাটের লেখা পেস্ট করো",paste_ph:"WhatsApp এক্সপোর্ট থেকে কয়েক লাইন এখানে পেস্ট করো, তারপর Analyze চাপো",paste_btn:"পেস্ট করা চ্যাট বিশ্লেষণ করো",
+green_label:"GREEN FLAG SCORE",
+fun_note:"শুধু মজার জন্য, এই চ্যাটের ভারসাম্য, রিপ্লাইয়ের গতি, প্রশ্ন, ধন্যবাদ, দুঃখিত আর হাসির উপর ভিত্তি করে। এটা সম্পর্কের পরামর্শ নয়।",
+pill_chem:"Chemistry",pill_bal:"ভারসাম্য",pill_streak:"দীর্ঘতম streak",
+card_btn:"Story শেয়ার কার্ড ডাউনলোড করো",json_btn:"পুরো রিপোর্ট ডাউনলোড করো",wrapped_btn:"Chat Wrapped চালাও",copyshare_btn:"শেয়ার লেখা কপি করো",washare_btn:"WhatsApp এ শেয়ার করো",print_btn:"প্রিন্ট / PDF সেভ করো",
+share_note:"শেয়ার লেখায় শুধু স্কোর আর সংখ্যা থাকে। তোমার চ্যাটের কোনো মেসেজ কখনো থাকে না।",
+wrapped_h:"তোমার Chat Wrapped",slide_prev:"আগেরটা",slide_play:"চালাও",slide_next:"পরেরটা",
+focus_h:"এই রিপোর্টে ফোকাস করো",focus_sub:"তারিখ দিয়ে ফিল্টার করো, অথবা Who carries the conversation অংশে যেকোনো মানুষের উপর চাপ দিয়ে সব সংখ্যা তার উপর ফোকাস করো। আবার চাপ দিলে মুছে যাবে।",
+from_l:"শুরুর তারিখ",to_l:"শেষ তারিখ",filter_btn:"তারিখ ফিল্টার লাগাও",clear_btn:"সব ফিল্টার মুছো",
+activity_h:"সময়ের সাথে কার্যকলাপ",by_weekday:"সপ্তাহের দিন অনুযায়ী",by_month:"মাস অনুযায়ী",
+story_h:"তোমার চ্যাটের গল্প",copy_story:"এই গল্পটা কপি করো",
+mile_h:"মাইলফলক আর আড্ডা",people_h:"কথা এগিয়ে নেয় কে",awards_h:"মজার পুরস্কার",meters_h:"ভালোবাসা, দুঃখিত আর হাসির মিটার",
+moments_h:"এই চ্যাটের সবচেয়ে মজার মুহূর্ত",moments_sub:"তোমার নিজের মেসেজ থেকেই বেছে নেওয়া, শুধু তোমার ডিভাইসেই: সবচেয়ে বেশি হাসি, emoji, নাটক আর গভীর রাতের শক্তি থাকা লাইনগুলো। প্রতিটা পায় একটা মজার reaction, আর এক চাপে সেটাকে meme story card বানাতে পারো।",
+emojis_h:"সেরা emoji",words_h:"যে শব্দে তোমরা বাঁচো",heat_h:"কখন কথা হয়, ঘণ্টার heatmap",
+versus_h:"Versus লড়াই",versus_sub:"ছয় রাউন্ডের মুখোমুখি লড়াই, তোমাদের নিজের চ্যাটের সংখ্যা দিয়েই ফল।",battle_btn:"লড়াইয়ের কার্ড ডাউনলোড করো",
+guess_h:"কে বলেছিল বলো তো",guess_sub:"তোমার নিজের চ্যাট থেকেই ছোট্ট একটা খেলা। লাইনগুলো শুধু তোমার ডিভাইসেই দেখা যায়, কিছু আপলোড বা শেয়ার হয় না।",
+compare_h:"দুই চ্যাটের তুলনা, ফিরতি ম্যাচ",compare_sub:"আগে উপরে একটা চ্যাট বিশ্লেষণ করো। তারপর দ্বিতীয় এক্সপোর্ট আনো, যেমন একই চ্যাট এক মাস পরে এক্সপোর্ট করা, আর ঠিক কী বদলালো দেখো: মেসেজ, Green Flag Score, chemistry, রিপ্লাইয়ের গতি আর streak। অন্য টুল এটার জন্য টাকা নেয়। এখানে ফ্রি, আর দুটো চ্যাটই তোমার ডিভাইসে থাকে।",
+cmp_drop_t:"দ্বিতীয় চ্যাটের এক্সপোর্ট এখানে দাও",cmp_drop_s:".txt বা .zip এক্সপোর্ট বেছে নিতে চাপ দাও।",cmp_demo_btn:"নমুনা দ্বিতীয় চ্যাট দিয়ে দেখো",
+studio_h:"স্ক্রিনশট স্টোরি স্টুডিও",studio_sub:"মজার চ্যাটের স্ক্রিনশট আছে? এখানে দাও, দেখো, ক্যাপশন আর বড় মজার emoji দিয়ে সাজাও, আর পোস্টের জন্য তৈরি story ডাউনলোড করো। স্ক্রিনশট শুধু তোমার ব্রাউজারেই খোলে, কোথাও আপলোড হয় না।",
+shot_drop_t:"চ্যাটের স্ক্রিনশট এখানে দাও",shot_drop_s:"ফোন থেকে PNG বা JPG স্ক্রিনশট বেছে নিতে চাপ দাও।",shot_prev_l:"তোমার স্ক্রিনশটের প্রিভিউ:",shot_cap_l:"তোমার স্টোরির ক্যাপশন",shot_cap_ph:"উদাহরণ: সে সত্যিই রাত ২টায় এটা বলেছিল",shot_emoji_l:"একটা মজার reaction emoji বেছে নাও",shot_theme_l:"স্টোরির থিম",theme_violet:"Violet Night",theme_pink:"Hot Pink",theme_gold:"Gold",theme_ocean:"Ocean",shot_make:"আমার স্টোরি বানাও",shot_dl:"Story PNG ডাউনলোড করো",
+flight_h:"প্রাইভেসি নিজেই প্রমাণ করো: airplane mode পরীক্ষা",flight_t:"অনলাইনে থাকতে এই পেজটা একবার লোড করো। তারপর ফোনে airplane mode চালু করে একটা চ্যাট বিশ্লেষণ করো। সবকিছু তখনো কাজ করবে, কারণ পড়া আর হিসাব তোমার ডিভাইসে তোমার ব্রাউজারের ভিতরেই হয়। তোমার চ্যাট সম্পর্কে কিছুই কোথাও পাঠানো হয় না, রাখা হয় না, কোনো AI পড়ে না। পেজ রিফ্রেশ করলেই মেমরি থেকে মুছে যায়। রিপোর্টের সংখ্যাগুলো চাইলে শেয়ার করো, আসল মেসেজ কখনো নয়, আর শুধু সেই চ্যাট বিশ্লেষণ করো যেটার তুমি অংশ।",
+calc_h:"প্রতিটা সংখ্যা যেভাবে হিসাব হয়",calc_t:"মেসেজ: তারিখ, সময় আর পাঠানো মানুষের নাম দিয়ে শুরু হওয়া প্রতিটা এক্সপোর্ট লাইন একটা মেসেজ। নাম ছাড়া লাইন, যেমন গ্রুপ নোটিস, মেসেজ হিসেবে গোনা হয় না। শব্দ: মেসেজের লেখায় অক্ষরের ধারা; মিডিয়া placeholder লাইন কোনো শব্দ যোগ করে না। রিপ্লাইয়ের সময়: পাঠানো মানুষ বদলালে আগের মেসেজ থেকে ফাঁকটা তার রিপ্লাই হিসেবে গোনা হয়, তবে শুধু ফাঁক ১২ ঘণ্টার কম হলে, যাতে রাতের বিরতি ছবিটা নষ্ট না করে। রিপোর্ট median দেখায়, মাঝের রিপ্লাই, যা গড়ের চেয়ে স্থির। আড্ডার শুরু: চ্যাটের প্রথম মেসেজ, আর আগেরটার ৬ ঘণ্টার বেশি পরে আসা যেকোনো মেসেজ। Streak: পরপর ক্যালেন্ডার দিনের দীর্ঘতম ধারা যেখানে প্রতিদিন অন্তত একটা মেসেজ আছে। Green Flag Score: মানুষের মধ্যে ভারসাম্য, median রিপ্লাইয়ের গতি, আর প্রশ্ন, ধন্যবাদ, দুঃখিত ও হাসির মতো উষ্ণ সংকেতের মজার মিশ্রণ। Funniest Moments: হাসির শব্দ, emoji, বড় হাতের নাটক, আশ্চর্য চিহ্ন, খুব লম্বা মেসেজ আর রাত ১২টা থেকে ভোর ৫টার মধ্যে পাঠানোর জন্য মেসেজ পয়েন্ট পায়। বড় চ্যাট: ChatVibe এ কোনো মেসেজ সীমা নেই; খুব বড় এক্সপোর্ট ধীর ফোনে শুধু একটু বেশি সময় নিতে পারে।",
+faq_h:"সাধারণ জিজ্ঞাসা",
+faq1q:"WhatsApp chat analyzer কি প্রাইভেট?",faq1a:"ChatVibe তোমার এক্সপোর্ট ফাইল তোমার নিজের ব্রাউজারের ভিতরে JavaScript দিয়ে পড়ে। ফাইল কখনো সার্ভারে পাঠানো হয় না, কোনো অ্যাকাউন্ট নেই, আর ট্যাব বন্ধ করলেই চ্যাট মেমরি থেকে মুছে যায়। পেজ লোড করে, airplane mode চালু করে, তারপর ফাইল বিশ্লেষণ করে নিজেই পরীক্ষা করতে পারো।",
+faq2q:"বিশ্লেষণের জন্য WhatsApp চ্যাট এক্সপোর্ট করবো কীভাবে?",faq2a:"WhatsApp এ চ্যাট খোলো, কন্টাক্ট বা গ্রুপের নামে বা তিন ডট মেনুতে চাপ দাও, More তারপর Export Chat বেছে নাও, Without Media বেছে নাও। Android এ .txt ফাইল পাবে, iPhone এ .zip। সেই ফাইলটা ChatVibe এ দাও।",
+faq3q:"WhatsApp গ্রুপ চ্যাট বিশ্লেষণ করা যায়?",faq3a:"হ্যাঁ। ChatVibe সর্বোচ্চ ৮ জন অংশগ্রহণকারী দেখায়, প্রতিজনের মেসেজ সংখ্যা, রিপ্লাই, শুরু, emoji আর মজার পুরস্কার সহ। যেকোনো মানুষের উপর চাপ দিয়ে পুরো রিপোর্ট তার উপর ফোকাসও করতে পারো।",
+faq4q:"WhatsApp chat analyzer কী দেখায়?",faq4a:"প্রতিজনের মেসেজ সংখ্যা আর অংশ, মেসেজ প্রতি শব্দ, median রিপ্লাইয়ের সময়, কে আড্ডা শুরু করে, সেরা emoji, সবচেয়ে ব্যবহৃত শব্দ, ঘণ্টা, সপ্তাহের দিন আর মাস অনুযায়ী কার্যকলাপ, দীর্ঘতম streak, দীর্ঘতম নীরবতা, মিডিয়া, লিংক আর মোছা মেসেজের সংখ্যা, আর Green Flag Score ও Chat Chemistry এর মতো মজার স্কোর।",
+faq5q:"ChatVibe কি ফ্রি?",faq5a:"হ্যাঁ। প্রতিটা ফিচার ফ্রি, কোনো সাইনআপ নেই, প্রিমিয়াম ধাপ নেই, আর টুলের ভিতরে কোনো বিজ্ঞাপন নেই।",
+faq6q:"আমার এক্সপোর্টে শূন্য মেসেজ দেখায় কেন?",faq6a:"Without Media হিসেবে .txt বা .zip ফাইল এক্সপোর্ট করেছো কিনা নিশ্চিত হও, ব্যাকআপ নয়। WhatsApp ব্যাকআপ কোনো analyzer পড়তে পারে না। ফাইলটা আসল চ্যাট এক্সপোর্ট কিনা তাও দেখো, প্রতিটা মেসেজ লাইনের শুরুতে তারিখ, সময় আর নাম থাকতে হয়।",
+why_h:"সাধারণ stats dashboard এর চেয়ে ChatVibe কেন এগিয়ে",why_t:"সাধারণ analyzer সংখ্যা আর চার্টেই থামে। ChatVibe যোগ করে সেই স্তরটা যেটা মানুষ আসলে শেয়ার করে: প্রতিজনের মজার পুরস্কার, Green Flag Score, Chat Chemistry, দীর্ঘতম নীরবতা আর streak, মোছা মেসেজের সংখ্যা, we বনাম I একাত্মতা অনুপাত, আর WhatsApp Status ও Instagram Stories এর জন্য বানানো খাড়া story card। আর সেরা টুলগুলোর মতোই সব হিসাব তোমার ব্রাউজারে স্থানীয়ভাবে হয়, তাই airplane mode এও পরীক্ষা করতে পারো।",
+days_w:"দিন",
+gv1:"সেরা green flag শক্তি। এই চ্যাট ভারসাম্যপূর্ণ, উষ্ণ আর দ্রুত।",gv2:"শক্ত green flag চ্যাট। উষ্ণ, মোটামুটি ভারসাম্যপূর্ণ, জীবন্ত।",gv3:"মিশ্র ভাইব। আসল উষ্ণতা আছে, ভারসাম্য আরো ভালো হতে পারে।",gv4:"বিশৃঙ্খল চ্যাট শক্তি। মজার, তবে ধৈর্য নিয়ে এসো।",
+ms_span:"চ্যাটের ব্যাপ্তি: <b>{days} দিন</b>, {from} থেকে {to}।",
+ms_sit:"মোট আড্ডা: <b>{n}</b>টি আলাদা আড্ডা (৩০ মিনিটের বেশি ফাঁক নতুন আড্ডা শুরু করে)। দীর্ঘতম আড্ডা: <b>{c} মেসেজ</b>{start}।",
+ms_start:", শুরু {when}",
+ms_next:"পরের মাইলফলক: <b>{m} মেসেজ</b>। আর মাত্র {left} বাকি।",
+k_total:"মোট মেসেজ",k_active:"সক্রিয় দিন, {from} থেকে {to}",k_median:"Median রিপ্লাইয়ের সময়",k_media:"শেয়ার করা মিডিয়া, {links} লিংক, {deleted} মোছা",
+pr_msgs:"{n} মেসেজ, {share} শতাংশ",
+pr_line:"মেসেজ প্রতি গড়ে {w} শব্দ। চ্যাট শুরু করেছে {s} বার। সাধারণ রিপ্লাই {r}। Emoji {e}। ফোকাস করতে চাপ দাও।",
+pr_sig:"স্বাক্ষর শব্দ: {words}",pr_fav:"প্রিয় emoji: {e}",pr_none:"এখনো নেই",none_w:"নেই",
+aw_talk:"সবচেয়ে বক্তা",aw_emoji:"Emoji তারকা",aw_start:"চ্যাট শুরুকারী",aw_double:"Double Texter",aw_night:"রাত জাগা পাখি",aw_sorry:"দুঃখিত প্রধান",aw_comic:"কমেডিয়ান",aw_curious:"কৌতূহলী মন",aw_dry:"শুষ্ক Texter",aw_none:"পুরস্কারের জন্য এখনো যথেষ্ট মেসেজ হয়নি।",
+m_love:"ভালোবাসা আর স্নেহ",m_sorry:"দুঃখিত",m_thanks:"ধন্যবাদ",m_laugh:"হাসি",
+we_t:"একাত্মতা অনুপাত: we শব্দ {we} বনাম I শব্দ {i}",we_team:"। তোমরা দলের মতো কথা বলো।",we_solo:"। কথায় দলের চেয়ে একক শক্তি বেশি।",
+no_emoji:"কোনো emoji পাওয়া যায়নি।",no_month:"মাসের কোনো তথ্য নেই।",
+busy_t:"সবচেয়ে ব্যস্ত একদিন: {day}, {n} মেসেজ। সবচেয়ে ব্যস্ত সপ্তাহের দিন: {wd}।",
+peak_t:"ব্যস্ততম ঘণ্টা: {h}:00, {n} মেসেজ। ব্যস্ততার ছাঁচ বাম থেকে ডানে দেখানো, রাত ১২টা থেকে রাত ১১টা।",
+sil_t:"মহা নীরবতা: মেসেজের মধ্যে দীর্ঘতম ফাঁক ছিল {g}। মোছা মেসেজ দেখা গেছে: {d}।",
+meme_btn:"Meme story card বানাও",moments_none:"এখনো বড় মজার মুহূর্ত ধরা পড়েনি। হাসি, emoji আর গভীর রাতের নাটক থাকা চ্যাটে এখানে মুহূর্ত স্কোর হয়।",
+story_t:"{days} দিনে, {names} পাঠিয়েছে {total} মেসেজ আর পেয়েছে Green Flag Score {green}, Chat Chemistry {chem}। {topbit}রিপ্লাই সাধারণত এসেছে {reply} এর মধ্যে, সবচেয়ে ব্যস্ত দিন ছিল {bday}, আর দীর্ঘতম আড্ডায় এক ধাক্কায় {sit} মেসেজ জমেছিল। সেরা emoji ছিল {emoji}, দীর্ঘতম streak চলেছে {streak} দিন, আর এই চ্যাট {mile} মেসেজের মাইলফলক থেকে মাত্র {left} মেসেজ দূরে।",
+story_top:"{name} চ্যাট টেনেছে মোট মেসেজের {share} শতাংশ দিয়ে। ",
+story_bday:"{day}, {n} মেসেজ",
+and_group:"{name} ও গ্রুপ",
+sl1t:"তোমার Chat Wrapped",sl1s:"100 এর মধ্যে Green Flag Score। Chemistry {chem}/100, ভারসাম্য {bal}/100।",
+sl2t:"এ পর্যন্ত গল্প",sl2s:"{days} সক্রিয় দিনে মেসেজ, {from} থেকে {to}।",
+sl3t:"সেরা বক্তা",sl3s:"{n} মেসেজ, পুরো চ্যাটের {p} শতাংশ।",
+sl4t:"রিপ্লাইয়ের গতি",sl4s:"পাঠানো মানুষ বদলালে median রিপ্লাইয়ের সময়।",
+sl5t:"স্বাক্ষর Emoji",sl5s:"{n} বার ব্যবহৃত। তোমার সেরা শব্দ: {w}।",
+sl6t:"কখন কথা হয়",sl6s:"তোমার ব্যস্ততম ঘণ্টা। সবচেয়ে ব্যস্ত সপ্তাহের দিন হলো {wd}।",
+sl7t:"Streak আর নীরবতা",sl7s:"দীর্ঘতম দৈনিক streak। মেসেজের মধ্যে মহা নীরবতা ছিল {g}।",
+sl7b:"{n} দিন",
+sl8t:"উষ্ণ জিনিসপত্র",sl8s:"ভালোবাসার সংকেত, {laugh} হাসির সংকেত, {thanks} ধন্যবাদ আর {sorry} দুঃখিত, চ্যাটের এই দৃশ্যে।",
+share_t:"আমাদের ChatVibe রিপোর্ট: Green Flag Score {green}/100, Chemistry {chem}/100, {total} মেসেজ, দীর্ঘতম streak {streak} দিন। তোমারটা দেখো, পুরোটা তোমার ব্রাউজারেই চলে।",
+v_msgs:"সবচেয়ে বেশি মেসেজ",v_words:"সবচেয়ে বেশি শব্দ",v_emojis:"সবচেয়ে বেশি emoji",v_starts:"সবচেয়ে বেশি চ্যাট শুরু",v_fast:"সবচেয়ে দ্রুত রিপ্লাই",v_laugh:"সবচেয়ে বেশি হাসি",
+v_takes:"{name} জিতলো",v_tied:"রাউন্ড সমান",v_champ_t:"চ্যাম্পিয়ন: {name} ({a} বনাম {b} রাউন্ড)",v_dead_t:"পুরোপুরি সমান: দুজনেই {a} রাউন্ড",v_wins:"{name} জিতেছে",v_tiedshort:"সমান",v_dead:"পুরোপুরি সমান",v_champ:"চ্যাম্পিয়ন: {name}",
+g_start:"খেলা শুরু করো ({n} রাউন্ড)",g_start_plain:"খেলা শুরু করো",g_notenough:"এই চ্যাটে খেলার জন্য যথেষ্ট লম্বা মেসেজ এখনো নেই।",
+g_round:"রাউন্ড {i} / {n} / স্কোর {s}",g_correct:"ঠিক হয়েছে। ",g_wrong:"পুরোপুরি হলো না। ",g_was:"বলেছিল {name}। স্কোর {s}।",g_next:"পরের লাইন",g_see:"আমার স্কোর দেখাও",
+g_final:"শেষ স্কোর: {n} এর মধ্যে {s}",g_v1:"এই চ্যাট তুমি মুখস্থ জানো।",g_v2:"শক্ত। তোমরা একে অপরকে ভালোই জানো।",g_v3:"কঠিন চ্যাট। কাছের মানুষও একে অপরকে চমকে দেয়।",g_again:"আবার খেলো",
+cmp_what:"কী বদলালো",cmp_first:"প্রথম চ্যাট",cmp_second:"দ্বিতীয় চ্যাট",cmp_change:"বদল",
+cmp_note:"Median রিপ্লাইয়ের সময়: প্রথম {a}, দ্বিতীয় {b}। বদলের কলামটা স্কোরবোর্ডের মতো পড়ো: বেশি মানেই সবসময় ভালো নয়। রিপ্লাইয়ের গতি আর ভারসাম্যই মানের গল্প বলে।",
+cmp_err:"আগে উপরে একটা চ্যাট বিশ্লেষণ করো, তারপর দ্বিতীয়টা আনো। প্রথম রিপোর্টটাই ফিরতি ম্যাচের শুরু।",
+green_name:"Green Flag Score",bal_name:"ভারসাম্য স্কোর",act_name:"সক্রিয় দিন",streak_name:"দীর্ঘতম streak, দিন",sit_name:"মোট আড্ডা",q_name:"করা প্রশ্ন",laugh_name:"হাসির মুহূর্ত",
+fs_focus:"{name} এর উপর ফোকাস করা",fs_dates:"তারিখ {a} থেকে {b}",fs_full:"পুরো চ্যাট দেখানো হচ্ছে। ",fs_view:"এই দৃশ্যে {n} মেসেজ আছে।",
+err_file:"ওই ফাইলে যথেষ্ট মেসেজ খুঁজে পাইনি। নিশ্চিত হও এটা WhatsApp এক্সপোর্ট (Without Media, .txt বা .zip) অথবা Telegram Desktop এর JSON এক্সপোর্ট।",
+err_filter:"এই ফিল্টারে ৩টার কম মেসেজ থাকে। তারিখ বাড়াও অথবা মানুষের ফোকাস সরাও।",
+copied_share:"শেয়ার লেখা কপি হয়েছে। এতে শুধু স্কোর আর সংখ্যা আছে, তোমার চ্যাটের কোনো মেসেজ কখনো নয়।",copy_fail:"এই ব্রাউজারে কপি ব্যর্থ হয়েছে। শেয়ার লেখাটা হলো: ",
+story_copied:"গল্প কপি হয়েছে",story_copy_fail:"কপি হয়নি, গল্পটা লম্বা চাপ দিয়ে কপি করো",
+no_data:"তথ্য নেই"
+},
+hi:{wdn:["रविवार","सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार"],
+nav_analyzer:"Analyzer",nav_studio:"Story Studio",nav_faq:"सवाल जवाब",
+badge:"100 प्रतिशत निजी। आपकी चैट कभी आपके फोन से बाहर नहीं जाती।",
+hero_h1:"आपकी चैट की एक <span class=\"g\">वाइब</span> है।<br>आइए इसे मापते हैं।",
+hero_sub:"ChatVibe एक WhatsApp या Telegram export को मजेदार रिश्ता रिपोर्ट में बदल देता है: कौन ज्यादा मैसेज करता है, कौन तेज जवाब देता है, कौन चैट शुरू करता है, Green Flag Score, Chat Chemistry, टॉप emoji, word cloud, heatmap, streak और शेयर के लिए तैयार story card। कोई signup नहीं। कोई upload नहीं। कोई app install नहीं।",
+chip1b:"100 प्रतिशत मुफ्त",chip1s:"हर feature, कोई premium दीवार नहीं",chip2b:"डिजाइन से निजी",chip2s:"आपके browser में चलता है, zero upload",chip3b:"Group चलेगा",chip3s:"एक रिपोर्ट में 8 लोग तक",chip4b:"शेयर के लिए बना",chip4s:"Story cards और Wrapped show",
+drop_t:"अपना WhatsApp या Telegram export यहां डालें",
+drop_s:"Without Media के रूप में export की गई .txt या .zip फाइल चुनने के लिए tap करें।<br>WhatsApp Android और iPhone दोनों format चलते हैं, और Telegram Desktop JSON export भी चलता है। Group chat भी चलती है, 8 लोगों तक।",
+demo_btn:"पहले demo chat आजमाएं",
+how_sum:"WhatsApp या Telegram से export कैसे करें, 20 सेकंड में",
+how_text:"चैट खोलें, नाम या तीन dots पर tap करें, More या Export Chat चुनें, Without Media चुनें, फाइल save करें, फिर यहां डालें। iPhone पर export .zip आता है, वह सीधे चलता है। Telegram के लिए: Telegram Desktop इस्तेमाल करें, चैट menu खोलें, Export Chat History चुनें, JSON format चुनें, फिर result.json फाइल यहां डालें।",
+paste_t:"फाइल पास नहीं है? चैट text paste करें",paste_ph:"WhatsApp export की कुछ लाइनें यहां paste करें, फिर Analyze दबाएं",paste_btn:"Paste की गई चैट का विश्लेषण करें",
+green_label:"GREEN FLAG SCORE",
+fun_note:"सिर्फ मजे के लिए, इस चैट के संतुलन, जवाब की गति, सवालों, धन्यवाद, sorry और हंसी के आधार पर। यह रिश्ते की सलाह नहीं है।",
+pill_chem:"Chemistry",pill_bal:"संतुलन",pill_streak:"सबसे लंबी streak",
+card_btn:"Story share card download करें",json_btn:"पूरी रिपोर्ट download करें",wrapped_btn:"Chat Wrapped चलाएं",copyshare_btn:"Share text copy करें",washare_btn:"WhatsApp पर शेयर करें",print_btn:"Print / PDF save करें",
+share_note:"Share text में सिर्फ score और संख्याएं होती हैं। इसमें आपकी चैट का कोई मैसेज कभी नहीं होता।",
+wrapped_h:"आपका Chat Wrapped",slide_prev:"पिछला",slide_play:"चलाएं",slide_next:"अगला",
+focus_h:"इस रिपोर्ट पर focus करें",focus_sub:"तारीख से filter करें, या Who carries the conversation हिस्से में किसी भी व्यक्ति पर tap करके हर संख्या उन पर focus करें। फिर से tap करने पर हट जाएगा।",
+from_l:"शुरू की तारीख",to_l:"अंत की तारीख",filter_btn:"तारीख filter लगाएं",clear_btn:"सभी filter हटाएं",
+activity_h:"समय के साथ गतिविधि",by_weekday:"सप्ताह के दिन अनुसार",by_month:"महीने अनुसार",
+story_h:"आपकी चैट की कहानी",copy_story:"यह कहानी copy करें",
+mile_h:"Milestones और बैठकें",people_h:"बातचीत कौन आगे बढ़ाता है",awards_h:"मजेदार पुरस्कार",meters_h:"प्यार, sorry और हंसी के meter",
+moments_h:"इस चैट के सबसे मजेदार पल",moments_sub:"आपके अपने मैसेजों से चुने गए, सिर्फ आपके device पर: सबसे ज्यादा हंसी, emoji, ड्रामा और देर रात की ऊर्जा वाली लाइनें। हर एक को एक मजेदार reaction मिलता है, और आप एक tap में उसे meme story card बना सकते हैं।",
+emojis_h:"टॉप emoji",words_h:"जिन शब्दों पर आप जीते हैं",heat_h:"आप कब बात करते हैं, घंटे का heatmap",
+versus_h:"Versus मुकाबला",versus_sub:"छह round का आमना सामना, आपकी अपनी चैट की संख्याओं से तय।",battle_btn:"मुकाबले का card download करें",
+guess_h:"बताओ यह किसने कहा",guess_sub:"आपकी अपनी चैट से एक छोटा खेल। लाइनें सिर्फ आपके device पर दिखती हैं, कुछ upload या share नहीं होता।",
+compare_h:"दो चैट की तुलना, वापसी मैच",compare_sub:"पहले ऊपर एक चैट का विश्लेषण करें। फिर दूसरा export लाएं, जैसे वही चैट एक महीने बाद export की गई, और देखें ठीक क्या बदला: मैसेज, Green Flag Score, chemistry, जवाब की गति और streak। दूसरे tool इसके पैसे लेते हैं। यहां मुफ्त है, और दोनों चैट आपके device पर रहती हैं।",
+cmp_drop_t:"दूसरी चैट का export यहां डालें",cmp_drop_s:".txt या .zip export चुनने के लिए tap करें।",cmp_demo_btn:"नमूना दूसरी चैट से preview देखें",
+studio_h:"Screenshot Story Studio",studio_sub:"मजेदार चैट screenshot है? यहां डालें, देखें, caption और बड़े मजेदार emoji से सजाएं, और post के लिए तैयार story download करें। Screenshot सिर्फ आपके browser में खुलता है, कहीं upload नहीं होता।",
+shot_drop_t:"चैट screenshot यहां डालें",shot_drop_s:"अपने फोन से PNG या JPG screenshot चुनने के लिए tap करें।",shot_prev_l:"आपके screenshot का preview:",shot_cap_l:"आपकी story का caption",shot_cap_ph:"उदाहरण: उसने सच में रात 2 बजे यह कहा",shot_emoji_l:"एक मजेदार reaction emoji चुनें",shot_theme_l:"Story theme",theme_violet:"Violet Night",theme_pink:"Hot Pink",theme_gold:"Gold",theme_ocean:"Ocean",shot_make:"मेरी story बनाएं",shot_dl:"Story PNG download करें",
+flight_h:"निजता खुद साबित करें: airplane mode test",flight_t:"Online रहते हुए इस page को एक बार load करें। फिर अपने फोन पर airplane mode चालू करके एक चैट का विश्लेषण करें। सब कुछ फिर भी काम करेगा, क्योंकि पढ़ना और हिसाब आपके device पर आपके browser के अंदर होता है। आपकी चैट के बारे में कुछ भी कहीं भेजा नहीं जाता, कहीं रखा नहीं जाता, कोई AI नहीं पढ़ता। Page refresh करते ही memory साफ हो जाती है। चाहें तो रिपोर्ट की संख्याएं share करें, असली मैसेज कभी नहीं, और सिर्फ उन्हीं चैट का विश्लेषण करें जिनमें आप शामिल हैं।",
+calc_h:"हर संख्या कैसे गिनी जाती है",calc_t:"मैसेज: तारीख, समय और भेजने वाले के नाम से शुरू होने वाली हर export लाइन एक मैसेज है। बिना नाम वाली लाइनें, जैसे group notice, मैसेज नहीं गिनी जातीं। शब्द: मैसेज text में अक्षरों के क्रम; media placeholder लाइनें कोई शब्द नहीं जोड़तीं। जवाब का समय: जब भेजने वाला बदलता है, तो पिछले मैसेज से अंतर उसका जवाब गिना जाता है, लेकिन सिर्फ तब जब अंतर 12 घंटे से कम हो, ताकि रात का अंतराल तस्वीर खराब न करे। रिपोर्ट median दिखाती है, बीच वाला जवाब, जो औसत से स्थिर होता है। बातचीत की शुरुआत: चैट का पहला मैसेज, और कोई भी मैसेज जो पिछले से 6 घंटे से ज्यादा बाद आए। Streak: लगातार calendar दिनों की सबसे लंबी श्रृंखला जिनमें हर दिन कम से कम एक मैसेज हो। Green Flag Score: लोगों के बीच संतुलन, median जवाब गति, और सवाल, धन्यवाद, sorry और हंसी जैसे गर्म संकेतों का मजेदार मिश्रण। Funniest Moments: हंसी वाले शब्द, emoji, बड़े अक्षरों का ड्रामा, विस्मय चिन्ह, बहुत लंबे मैसेज और रात 12 से सुबह 5 के बीच भेजे जाने पर मैसेज अंक पाते हैं। बड़ी चैट: ChatVibe में कोई मैसेज सीमा नहीं है; बहुत बड़ा export धीमे फोन पर सिर्फ थोड़ा ज्यादा समय ले सकता है।",
+faq_h:"आम सवाल",
+faq1q:"क्या WhatsApp chat analyzer निजी होता है?",faq1a:"ChatVibe आपकी export फाइल को आपके अपने browser के अंदर JavaScript से पढ़ता है। फाइल कभी किसी server को नहीं भेजी जाती, कोई account नहीं है, और tab बंद करते ही चैट memory से साफ हो जाती है। Page load करके, airplane mode चालू करके, फिर फाइल का विश्लेषण करके आप खुद test कर सकते हैं।",
+faq2q:"विश्लेषण के लिए WhatsApp चैट export कैसे करूं?",faq2a:"WhatsApp में चैट खोलें, contact या group नाम या तीन dot menu पर tap करें, More फिर Export Chat चुनें, और Without Media चुनें। Android पर .txt फाइल मिलती है या iPhone पर .zip। वह फाइल ChatVibe में डालें।",
+faq3q:"क्या मैं WhatsApp group चैट का विश्लेषण कर सकता हूं?",faq3a:"हां। ChatVibe 8 प्रतिभागियों तक दिखाता है, हर व्यक्ति की मैसेज संख्या, जवाब, शुरुआत, emoji और मजेदार पुरस्कारों के साथ। आप किसी व्यक्ति पर tap करके पूरी रिपोर्ट उन पर focus भी कर सकते हैं।",
+faq4q:"WhatsApp chat analyzer क्या दिखाता है?",faq4a:"हर व्यक्ति की मैसेज संख्या और हिस्सा, प्रति मैसेज शब्द, median जवाब समय, कौन बातचीत शुरू करता है, टॉप emoji, सबसे ज्यादा इस्तेमाल शब्द, घंटे, सप्ताह के दिन और महीने अनुसार गतिविधि, सबसे लंबी streak, सबसे लंबी खामोशी, media, link और हटाए गए मैसेजों की संख्या, और Green Flag Score व Chat Chemistry जैसे मजेदार score।",
+faq5q:"क्या ChatVibe मुफ्त है?",faq5a:"हां। हर feature मुफ्त है, कोई signup नहीं, कोई premium स्तर नहीं और tool के अंदर कोई विज्ञापन नहीं।",
+faq6q:"मेरे export में zero मैसेज क्यों दिखते हैं?",faq6a:"पक्का करें कि आपने Without Media के रूप में .txt या .zip फाइल export की है, backup नहीं। WhatsApp backup कोई analyzer नहीं पढ़ सकता। यह भी देखें कि फाइल असली चैट export है, हर मैसेज लाइन की शुरुआत में तारीख, समय और नाम हों।",
+why_h:"ChatVibe सामान्य stats dashboard से आगे क्यों है",why_t:"सामान्य analyzer संख्याओं और charts पर रुक जाते हैं। ChatVibe वह परत जोड़ता है जो लोग सच में share करते हैं: हर व्यक्ति के मजेदार पुरस्कार, Green Flag Score, Chat Chemistry, सबसे लंबी खामोशी और streak, हटाए गए मैसेजों की संख्या, we बनाम I साथ का अनुपात, और WhatsApp Status और Instagram Stories के लिए बना खड़ा story card। और बेहतरीन tools की तरह, सब हिसाब आपके browser में स्थानीय रूप से होता है, इसलिए आप airplane mode में भी test कर सकते हैं।",
+days_w:"दिन",
+gv1:"शानदार green flag ऊर्जा। यह चैट संतुलित, गर्म और तेज है।",gv2:"मजबूत green flag चैट। गर्म, काफी संतुलित, जीवंत।",gv3:"मिली जुली वाइब। असली गर्माहट है, संतुलन और बेहतर हो सकता है।",gv4:"अराजक चैट ऊर्जा। मनोरंजक, लेकिन धैर्य लेकर आएं।",
+ms_span:"चैट का फैलाव: <b>{days} दिन</b>, {from} से {to} तक।",
+ms_sit:"कुल बैठकें: <b>{n}</b> अलग बातचीतें (30 मिनट से ज्यादा का अंतर नई बैठक शुरू करता है)। सबसे लंबी बैठक: <b>{c} मैसेज</b>{start}।",
+ms_start:", शुरुआत {when}",
+ms_next:"अगला milestone: <b>{m} मैसेज</b>। बस {left} बाकी।",
+k_total:"कुल मैसेज",k_active:"सक्रिय दिन, {from} से {to}",k_median:"Median जवाब समय",k_media:"Share किया media, {links} link, {deleted} हटाए गए",
+pr_msgs:"{n} मैसेज, {share} प्रतिशत",
+pr_line:"प्रति मैसेज औसत {w} शब्द। चैट {s} बार शुरू की। आम जवाब {r}। Emoji {e}। Focus के लिए tap करें।",
+pr_sig:"खास शब्द: {words}",pr_fav:"पसंदीदा emoji: {e}",pr_none:"अभी नहीं",none_w:"कोई नहीं",
+aw_talk:"सबसे बातूनी",aw_emoji:"Emoji Star",aw_start:"चैट शुरू करने वाला",aw_double:"Double Texter",aw_night:"रात का उल्लू",aw_sorry:"Sorry प्रमुख",aw_comic:"Comedian",aw_curious:"जिज्ञासु मन",aw_dry:"सूखा Texter",aw_none:"पुरस्कारों के लिए अभी पर्याप्त मैसेज नहीं हैं।",
+m_love:"प्यार और स्नेह",m_sorry:"Sorry",m_thanks:"धन्यवाद",m_laugh:"हंसी",
+we_t:"साथ का अनुपात: we शब्द {we} बनाम I शब्द {i}",we_team:"। आप एक team की तरह बात करते हैं।",we_solo:"। शब्दों में team से ज्यादा एकल ऊर्जा है।",
+no_emoji:"कोई emoji नहीं मिला।",no_month:"महीने का कोई data नहीं।",
+busy_t:"सबसे व्यस्त एक दिन: {day}, {n} मैसेज। सबसे व्यस्त सप्ताह दिन: {wd}।",
+peak_t:"सबसे व्यस्त घंटा: {h}:00, {n} मैसेज। व्यस्तता का पैटर्न बाएं से दाएं दिखाया गया है, रात 12 से रात 11 तक।",
+sil_t:"महा खामोशी: मैसेजों के बीच सबसे लंबा अंतर {g} था। हटाए गए मैसेज मिले: {d}।",
+meme_btn:"Meme story card बनाएं",moments_none:"अभी कोई बड़ा मजेदार पल नहीं मिला। हंसी, emoji और देर रात ड्रामा वाली चैट में यहां पल score होते हैं।",
+story_t:"{days} दिनों में, {names} ने {total} मैसेज भेजे और Green Flag Score {green} पाया, Chat Chemistry {chem} के साथ। {topbit}जवाब आम तौर पर {reply} में आया, सबसे व्यस्त दिन {bday} था, और सबसे लंबी बैठक में एक बार में {sit} मैसेज भरे। टॉप emoji {emoji} था, सबसे लंबी streak {streak} दिन चली, और यह चैट {mile} मैसेज milestone से सिर्फ {left} मैसेज दूर है।",
+story_top:"{name} ने चैट संभाली, कुल मैसेजों के {share} प्रतिशत के साथ। ",
+story_bday:"{day}, {n} मैसेज",
+and_group:"{name} और group",
+sl1t:"आपका Chat Wrapped",sl1s:"100 में Green Flag Score। Chemistry {chem}/100, संतुलन {bal}/100।",
+sl2t:"अब तक की कहानी",sl2s:"{days} सक्रिय दिनों में मैसेज, {from} से {to}।",
+sl3t:"टॉप बातूनी",sl3s:"{n} मैसेज, पूरी चैट का {p} प्रतिशत।",
+sl4t:"जवाब की गति",sl4s:"जब भेजने वाला बदलता है तो median जवाब समय।",
+sl5t:"खास Emoji",sl5s:"{n} बार इस्तेमाल। आपका टॉप शब्द: {w}।",
+sl6t:"आप कब बात करते हैं",sl6s:"आपका सबसे व्यस्त घंटा है। आपका सबसे व्यस्त सप्ताह दिन {wd} है।",
+sl7t:"Streak और खामोशी",sl7s:"सबसे लंबी दैनिक streak। मैसेजों के बीच महा खामोशी {g} रही।",
+sl7b:"{n} दिन",
+sl8t:"गर्म चीजें",sl8s:"प्यार के संकेत, {laugh} हंसी के संकेत, {thanks} धन्यवाद और {sorry} sorry, चैट के इस दृश्य में।",
+share_t:"हमारी ChatVibe रिपोर्ट: Green Flag Score {green}/100, Chemistry {chem}/100, {total} मैसेज, सबसे लंबी streak {streak} दिन। अपनी देखें, यह पूरी तरह आपके browser में चलती है।",
+v_msgs:"सबसे ज्यादा मैसेज",v_words:"सबसे ज्यादा शब्द",v_emojis:"सबसे ज्यादा emoji",v_starts:"सबसे ज्यादा चैट शुरुआत",v_fast:"सबसे तेज जवाब",v_laugh:"सबसे ज्यादा हंसी",
+v_takes:"{name} ने जीता",v_tied:"Round बराबर",v_champ_t:"Champion: {name} ({a} बनाम {b} round)",v_dead_t:"पूरी बराबरी: दोनों के {a} round",v_wins:"{name} जीता",v_tiedshort:"बराबर",v_dead:"पूरी बराबरी",v_champ:"Champion: {name}",
+g_start:"खेल शुरू करें ({n} round)",g_start_plain:"खेल शुरू करें",g_notenough:"इस चैट में खेल के लिए अभी पर्याप्त लंबे मैसेज नहीं हैं।",
+g_round:"Round {i} / {n} / Score {s}",g_correct:"सही। ",g_wrong:"पूरी तरह नहीं। ",g_was:"यह {name} ने कहा था। Score {s}।",g_next:"अगली लाइन",g_see:"मेरा score दिखाएं",
+g_final:"अंतिम score: {n} में से {s}",g_v1:"आप इस चैट को दिल से जानते हैं।",g_v2:"मजबूत। आप एक दूसरे को अच्छी तरह जानते हैं।",g_v3:"मुश्किल चैट। करीबी लोग भी एक दूसरे को चौंकाते हैं।",g_again:"फिर खेलें",
+cmp_what:"क्या बदला",cmp_first:"पहली चैट",cmp_second:"दूसरी चैट",cmp_change:"बदलाव",
+cmp_note:"Median जवाब समय: पहली {a}, दूसरी {b}। बदलाव वाले column को scoreboard की तरह पढ़ें: ऊपर का मतलब ज्यादा है, हमेशा बेहतर नहीं। जवाब की गति और संतुलन गुणवत्ता की कहानी कहते हैं।",
+cmp_err:"पहले ऊपर एक चैट का विश्लेषण करें, फिर दूसरी लाएं। पहली रिपोर्ट ही वापसी मैच की शुरुआत है।",
+green_name:"Green Flag Score",bal_name:"संतुलन score",act_name:"सक्रिय दिन",streak_name:"सबसे लंबी streak, दिन",sit_name:"कुल बैठकें",q_name:"पूछे गए सवाल",laugh_name:"हंसी के पल",
+fs_focus:"{name} पर focus किया गया",fs_dates:"तारीख {a} से {b}",fs_full:"पूरी चैट दिखाई जा रही है। ",fs_view:"इस दृश्य में {n} मैसेज हैं।",
+err_file:"उस फाइल में पर्याप्त मैसेज नहीं मिले। पक्का करें कि यह WhatsApp export है (Without Media, .txt या .zip) या Telegram Desktop का JSON export।",
+err_filter:"इस filter में 3 से कम मैसेज बचते हैं। तारीखें बढ़ाएं या व्यक्ति focus हटाएं।",
+copied_share:"Share text copy हो गया। इसमें सिर्फ score और संख्याएं हैं, आपकी चैट का कोई मैसेज कभी नहीं।",copy_fail:"इस browser पर copy fail हुआ। Share text है: ",
+story_copied:"कहानी copy हुई",story_copy_fail:"Copy नहीं हुआ, कहानी को लंबा दबाकर copy करें",
+no_data:"कोई data नहीं"
+}
+};
+I18N.es={wdn:["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],
+nav_analyzer:"Analizador",nav_studio:"Estudio de historias",nav_faq:"Preguntas",
+badge:"100 por ciento privado. Tu chat nunca sale de tu teléfono.",
+hero_h1:"Tu chat tiene una <span class=\"g\">vibra.</span><br>Vamos a medirla.",
+hero_sub:"ChatVibe convierte una exportación de WhatsApp o Telegram en un informe de relación divertido: quién escribe más, quién responde más rápido, quién empieza el chat, Green Flag Score, Chat Chemistry, emojis principales, nube de palabras, mapa de calor, rachas y una tarjeta lista para compartir. Sin registro. Sin subida. Sin instalar ninguna app.",
+chip1b:"100 por ciento gratis",chip1s:"Todas las funciones, sin muro premium",chip2b:"Privado por diseño",chip2s:"Funciona en tu navegador, subida cero",chip3b:"Grupos bienvenidos",chip3s:"Hasta 8 personas en un informe",chip4b:"Hecho para compartir",chip4s:"Tarjetas de historia y un show Wrapped",
+drop_t:"Suelta aquí tu exportación de WhatsApp o Telegram",
+drop_s:"Toca para elegir una exportación .txt o .zip, exportada Sin archivos.<br>Los formatos de WhatsApp de Android y iPhone funcionan, y también las exportaciones JSON de Telegram Desktop. Los chats de grupo también funcionan, hasta 8 personas.",
+demo_btn:"Prueba primero el chat de demo",
+how_sum:"Cómo exportar desde WhatsApp o Telegram, 20 segundos",
+how_text:"Abre el chat, toca el nombre o los tres puntos, toca Más o Exportar chat, elige Sin archivos, guarda el archivo y suéltalo aquí. En iPhone la exportación viene como .zip y funciona directamente. Para Telegram: usa Telegram Desktop, abre el menú del chat, elige Exportar historial del chat y escoge el formato JSON, luego suelta aquí el archivo result.json.",
+paste_t:"¿Sin archivo a mano? Pega el texto del chat",paste_ph:"Pega aquí algunas líneas de una exportación de WhatsApp y toca Analizar",paste_btn:"Analizar el chat pegado",
+green_label:"GREEN FLAG SCORE",
+fun_note:"Solo por diversión, según el equilibrio, la velocidad de respuesta, las preguntas, los gracias, los perdones y las risas de este chat. No es un consejo de relación.",
+pill_chem:"Química",pill_bal:"Equilibrio",pill_streak:"Racha más larga",
+card_btn:"Descargar tarjeta para compartir",json_btn:"Descargar informe completo",wrapped_btn:"Ver Chat Wrapped",copyshare_btn:"Copiar texto para compartir",washare_btn:"Compartir en WhatsApp",print_btn:"Imprimir / Guardar PDF",
+share_note:"El texto para compartir contiene solo puntajes y conteos. Nunca contiene ningún mensaje de tu chat.",
+wrapped_h:"Tu Chat Wrapped",slide_prev:"Anterior",slide_play:"Reproducir",slide_next:"Siguiente",
+focus_h:"Enfoca este informe",focus_sub:"Filtra por fecha, o toca a cualquier persona en la sección Quién lleva la conversación para enfocar cada número en ella. Tócala de nuevo para quitar el foco.",
+from_l:"Desde la fecha",to_l:"Hasta la fecha",filter_btn:"Aplicar filtro de fecha",clear_btn:"Borrar todos los filtros",
+activity_h:"Actividad en el tiempo",by_weekday:"Por día de semana",by_month:"Por mes",
+story_h:"La historia de tu chat",copy_story:"Copiar esta historia",
+mile_h:"Hitos y sesiones",people_h:"Quién lleva la conversación",awards_h:"Premios divertidos",meters_h:"Medidores de amor, perdón y risa",
+moments_h:"Los momentos más divertidos de este chat",moments_sub:"Elegidos de tus propios mensajes, solo en tu dispositivo: las líneas con más risas, emojis, drama y energía de madrugada. Cada una recibe una reacción divertida y puedes convertirla en una tarjeta meme con un toque.",
+emojis_h:"Emojis principales",words_h:"Palabras con las que viven",heat_h:"Cuándo hablan, mapa por hora",
+versus_h:"Batalla Versus",versus_sub:"Cara a cara en seis rondas, decidido por los números de tu propio chat.",battle_btn:"Descargar tarjeta de batalla",
+guess_h:"Adivina quién lo dijo",guess_sub:"Un juego rápido desde tu propio chat. Las líneas aparecen solo en tu dispositivo, nada se sube ni se comparte.",
+compare_h:"Compara dos chats, la revancha",compare_sub:"Primero analiza un chat arriba. Luego trae una segunda exportación, por ejemplo el mismo chat exportado un mes después, y mira exactamente qué cambió: mensajes, Green Flag Score, química, velocidad de respuesta y racha. Otras herramientas cobran por esto. Aquí es gratis y ambos chats se quedan en tu dispositivo.",
+cmp_drop_t:"Suelta aquí la segunda exportación",cmp_drop_s:"Toca para elegir una exportación .txt o .zip.",cmp_demo_btn:"Vista previa con un segundo chat de ejemplo",
+studio_h:"Estudio de historias con capturas",studio_sub:"¿Tienes una captura de chat divertida? Súbela aquí, mírala, vístela con un título y un emoji grande y divertido, y descarga una historia lista para publicar. La captura solo se abre en tu navegador, nunca se sube a ningún lado.",
+shot_drop_t:"Suelta aquí una captura del chat",shot_drop_s:"Toca para elegir una captura PNG o JPG de tu teléfono.",shot_prev_l:"Vista previa de tu captura:",shot_cap_l:"Título para tu historia",shot_cap_ph:"Ejemplo: De verdad dijo esto a las 2 am",shot_emoji_l:"Elige un emoji de reacción divertido",shot_theme_l:"Tema de la historia",theme_violet:"Noche Violeta",theme_pink:"Rosa Intenso",theme_gold:"Dorado",theme_ocean:"Océano",shot_make:"Crear mi historia",shot_dl:"Descargar PNG de la historia",
+flight_h:"Prueba la privacidad tú mismo: la prueba del modo avión",flight_t:"Carga esta página una vez mientras estás en línea. Luego activa el modo avión en tu teléfono y analiza un chat. Todo sigue funcionando, porque la lectura y los cálculos ocurren dentro de tu navegador en tu dispositivo. Nada de tu chat se envía a ningún lado, no se guarda en ningún lado y ninguna IA lo lee. Actualizar la página lo borra de la memoria. Comparte los números de tu informe si quieres, nunca los mensajes privados, y analiza solo chats de los que formas parte.",
+calc_h:"Cómo se calcula cada número",calc_t:"Mensajes: cada línea de la exportación que empieza con fecha, hora y nombre de remitente cuenta como un mensaje. Las líneas sin remitente, como los avisos de grupo, no cuentan. Palabras: secuencias de letras en el texto; las líneas de marcador de medios no suman palabras. Tiempo de respuesta: cuando cambia el remitente, el hueco desde el mensaje anterior cuenta como su respuesta, pero solo si el hueco es menor de 12 horas, para que una pausa nocturna no arruine el panorama. El informe muestra la mediana, la respuesta del medio, más estable que un promedio. Inicios de conversación: el primer mensaje del chat y cualquier mensaje que llegue más de 6 horas después del anterior. Racha: la serie más larga de días seguidos con al menos un mensaje. Green Flag Score: una mezcla divertida de equilibrio entre personas, velocidad mediana de respuesta y señales cálidas como preguntas, gracias, perdones y risas. Momentos más divertidos: los mensajes ganan puntos por palabras de risa, emojis, drama en mayúsculas, signos de exclamación, mensajes muy largos y enviarse entre medianoche y las 5 am. Chats grandes: ChatVibe no tiene límite de mensajes; las exportaciones muy grandes pueden tardar un poco más en un teléfono lento.",
+faq_h:"Preguntas frecuentes",
+faq1q:"¿Un analizador de chats de WhatsApp es privado?",faq1a:"ChatVibe lee tu archivo de exportación dentro de tu propio navegador con JavaScript. El archivo nunca se envía a un servidor, no hay cuenta, y cerrar la pestaña borra el chat de la memoria. Puedes probarlo cargando la página, activando el modo avión y analizando un archivo.",
+faq2q:"¿Cómo exporto un chat de WhatsApp para analizarlo?",faq2a:"Abre el chat en WhatsApp, toca el nombre del contacto o grupo o el menú de tres puntos, elige Más y luego Exportar chat, y escoge Sin archivos. Obtienes un archivo .txt en Android o un .zip en iPhone. Suelta ese archivo en ChatVibe.",
+faq3q:"¿Puedo analizar un chat de grupo de WhatsApp?",faq3a:"Sí. ChatVibe muestra hasta 8 participantes con conteos de mensajes, respuestas, inicios, emojis y premios divertidos por persona. También puedes tocar a una persona para enfocar todo el informe en ella.",
+faq4q:"¿Qué muestra un analizador de chats de WhatsApp?",faq4a:"Conteos de mensajes y participación por persona, palabras por mensaje, tiempo mediano de respuesta, quién inicia las conversaciones, emojis principales, palabras más usadas, actividad por hora, día de semana y mes, racha más larga, silencio más largo, conteos de medios, enlaces y mensajes eliminados, además de puntajes divertidos como Green Flag Score y Chat Chemistry.",
+faq5q:"¿ChatVibe es gratis?",faq5a:"Sí. Cada función es gratis, sin registro, sin nivel premium y sin anuncios dentro de la herramienta.",
+faq6q:"¿Por qué mi exportación muestra cero mensajes?",faq6a:"Asegúrate de haber exportado Sin archivos como archivo .txt o .zip, no una copia de seguridad. Ningún analizador puede leer las copias de seguridad de WhatsApp. Revisa también que el archivo sea una exportación real, con fechas, horas y nombres al inicio de cada línea de mensaje.",
+why_h:"Por qué ChatVibe supera un panel de estadísticas normal",why_t:"Los analizadores normales se detienen en conteos y gráficos. ChatVibe añade la capa que la gente realmente comparte: premios divertidos para cada persona, Green Flag Score, Chat Chemistry, el silencio y la racha más largos, conteo de mensajes eliminados, una proporción de unión nosotros contra yo, y una tarjeta vertical hecha para WhatsApp Status e Historias de Instagram. Y como las mejores herramientas, todo se calcula localmente en tu navegador, así que incluso puedes probarlo en modo avión.",
+days_w:"días",
+gv1:"Energía de green flag de élite. Este chat es equilibrado, cálido y rápido.",gv2:"Chat de green flag fuerte. Cálido, bastante equilibrado, vivo.",gv3:"Vibra mixta. Hay calidez real, el equilibrio puede mejorar.",gv4:"Energía de chat caótica. Divertido, pero trae paciencia.",
+ms_span:"Duración del chat: <b>{days} días</b>, del {from} al {to}.",
+ms_sit:"Sesiones totales: <b>{n}</b> conversaciones separadas (un hueco de más de 30 minutos inicia una nueva sesión). Sesión más larga: <b>{c} mensajes</b>{start}.",
+ms_start:", empezando el {when}",
+ms_next:"Próximo hito: <b>{m} mensajes</b>. Solo faltan {left}.",
+k_total:"Mensajes totales",k_active:"Días activos, del {from} al {to}",k_median:"Tiempo mediano de respuesta",k_media:"Medios compartidos, {links} enlaces, {deleted} eliminados",
+pr_msgs:"{n} mensajes, {share} por ciento",
+pr_line:"Promedio de {w} palabras por mensaje. Inicia el chat {s} veces. Respuesta típica {r}. Emojis {e}. Toca para enfocar.",
+pr_sig:"Palabras firma: {words}",pr_fav:"Emoji favorito: {e}",pr_none:"todavía ninguna",none_w:"ninguno",
+aw_talk:"El que más habla",aw_emoji:"Estrella de emojis",aw_start:"Iniciador del chat",aw_double:"Doble mensajero",aw_night:"Búho nocturno",aw_sorry:"Campeón del perdón",aw_comic:"Comediante",aw_curious:"Mente curiosa",aw_dry:"Mensajero seco",aw_none:"Todavía no hay mensajes suficientes para premios.",
+m_love:"Amor y cariño",m_sorry:"Perdón",m_thanks:"Gracias",m_laugh:"Risa",
+we_t:"Proporción de unión: palabras nosotros {we} contra palabras yo {i}",we_team:". Hablan como un equipo.",we_solo:". Más energía individual que de equipo en las palabras.",
+no_emoji:"No se encontraron emojis.",no_month:"Sin datos mensuales.",
+busy_t:"Día más ocupado: {day} con {n} mensajes. Día de semana más ocupado: {wd}.",
+peak_t:"Hora pico: {h}:00 con {n} mensajes. El patrón se muestra de izquierda a derecha, de medianoche a 11 pm.",
+sil_t:"El Gran Silencio: el hueco más largo entre mensajes fue {g}. Mensajes eliminados vistos: {d}.",
+meme_btn:"Crear tarjeta meme",moments_none:"Todavía no se detectan grandes momentos divertidos. Los chats con risas, emojis y drama de madrugada puntúan momentos aquí.",
+story_t:"En {days} días, {names} envió {total} mensajes y logró un Green Flag Score de {green} con una Chat Chemistry de {chem}. {topbit}Las respuestas solían llegar en {reply}, el día más ocupado fue {bday}, y la sesión más larga juntó {sit} mensajes de una vez. El emoji principal fue {emoji}, la racha más larga duró {streak} días, y este chat está a solo {left} mensajes del hito de {mile} mensajes.",
+story_top:"{name} llevó el chat con el {share} por ciento de los mensajes. ",
+story_bday:"{day} con {n} mensajes",
+and_group:"{name} y el grupo",
+sl1t:"Tu Chat Wrapped",sl1s:"Green Flag Score sobre 100. Química {chem}/100, equilibrio {bal}/100.",
+sl2t:"La historia hasta ahora",sl2s:"mensajes en {days} días activos, del {from} al {to}.",
+sl3t:"El que más escribe",sl3s:"{n} mensajes, el {p} por ciento de todo el chat.",
+sl4t:"Velocidad de respuesta",sl4s:"tiempo mediano de respuesta cuando cambia el remitente.",
+sl5t:"Emoji firma",sl5s:"usado {n} veces. Tu palabra principal: {w}.",
+sl6t:"Cuándo hablan",sl6s:"es tu hora pico. Tu día de semana más ocupado es {wd}.",
+sl7t:"Racha y silencio",sl7s:"racha diaria más larga. El Gran Silencio entre mensajes duró {g}.",
+sl7b:"{n} días",
+sl8t:"Lo cálido",sl8s:"señales de amor, {laugh} señales de risa, {thanks} gracias y {sorry} perdones en esta vista del chat.",
+share_t:"Nuestro informe ChatVibe: Green Flag Score {green}/100, Química {chem}/100, {total} mensajes, racha más larga de {streak} días. Revisa el tuyo, funciona por completo en tu navegador.",
+v_msgs:"Más mensajes",v_words:"Más palabras",v_emojis:"Más emojis",v_starts:"Más inicios de chat",v_fast:"Respuestas más rápidas",v_laugh:"Más risas",
+v_takes:"{name} se lo lleva",v_tied:"Ronda empatada",v_champ_t:"Campeón: {name} ({a} a {b} rondas)",v_dead_t:"Empate total: {a} rondas cada uno",v_wins:"{name} gana",v_tiedshort:"Empate",v_dead:"Empate total",v_champ:"Campeón: {name}",
+g_start:"Empezar el juego ({n} rondas)",g_start_plain:"Empezar el juego",g_notenough:"Este chat todavía no tiene suficientes mensajes largos para el juego.",
+g_round:"Ronda {i} de {n} / Puntos {s}",g_correct:"Correcto. ",g_wrong:"No del todo. ",g_was:"Lo dijo {name}. Puntos {s}.",g_next:"Siguiente línea",g_see:"Ver mi puntaje",
+g_final:"Puntaje final: {s} de {n}",g_v1:"Conoces este chat de memoria.",g_v2:"Sólido. Se conocen bien.",g_v3:"Chat difícil. Hasta la gente cercana se sorprende.",g_again:"Jugar otra vez",
+cmp_what:"Qué cambió",cmp_first:"Primer chat",cmp_second:"Segundo chat",cmp_change:"Cambio",
+cmp_note:"Tiempo mediano de respuesta: primero {a}, segundo {b}. Lee la columna de cambio como un marcador: arriba es más, no siempre mejor. La velocidad de respuesta y el equilibrio cuentan la historia de calidad.",
+cmp_err:"Primero analiza un chat arriba y luego trae el segundo. El primer informe es el punto de partida de la revancha.",
+green_name:"Green Flag Score",bal_name:"Puntaje de equilibrio",act_name:"Días activos",streak_name:"Racha más larga, días",sit_name:"Sesiones totales",q_name:"Preguntas hechas",laugh_name:"Momentos de risa",
+fs_focus:"Enfocado en {name}",fs_dates:"Fechas del {a} al {b}",fs_full:"Mostrando el chat completo. ",fs_view:"Esta vista tiene {n} mensajes.",
+err_file:"No pude encontrar suficientes mensajes en ese archivo. Asegúrate de que sea una exportación de WhatsApp (Sin archivos, .txt o .zip) o una exportación JSON de Telegram Desktop.",
+err_filter:"Ese filtro deja menos de 3 mensajes. Amplía las fechas o quita el foco en la persona.",
+copied_share:"Texto para compartir copiado. Contiene solo puntajes y conteos, nunca ningún mensaje de tu chat.",copy_fail:"La copia falló en este navegador. El texto para compartir es: ",
+story_copied:"Historia copiada",story_copy_fail:"La copia falló, mantén presionada la historia para copiar",
+no_data:"sin datos"
+};
+I18N.pt={wdn:["domingo","segunda-feira","terça-feira","quarta-feira","quinta-feira","sexta-feira","sábado"],
+nav_analyzer:"Analisador",nav_studio:"Estúdio de Stories",nav_faq:"Perguntas",
+badge:"100 por cento privado. Seu chat nunca sai do seu telefone.",
+hero_h1:"Seu chat tem uma <span class=\"g\">vibe.</span><br>Vamos medir.",
+hero_sub:"O ChatVibe transforma uma exportação do WhatsApp ou Telegram em um relatório de relacionamento divertido: quem manda mais mensagens, quem responde mais rápido, quem começa o chat, Green Flag Score, Chat Chemistry, emojis principais, nuvem de palavras, mapa de calor, sequências e um cartão pronto para compartilhar. Sem cadastro. Sem upload. Sem instalar app.",
+chip1b:"100 por cento grátis",chip1s:"Todos os recursos, sem muro premium",chip2b:"Privado por design",chip2s:"Roda no seu navegador, upload zero",chip3b:"Grupos bem-vindos",chip3s:"Até 8 pessoas em um relatório",chip4b:"Feito para compartilhar",chip4s:"Cartões de story e um show Wrapped",
+drop_t:"Solte aqui sua exportação do WhatsApp ou Telegram",
+drop_s:"Toque para escolher uma exportação .txt ou .zip, exportada Sem Mídia.<br>Os formatos do WhatsApp para Android e iPhone funcionam, e exportações JSON do Telegram Desktop também. Chats em grupo também funcionam, até 8 pessoas.",
+demo_btn:"Teste primeiro o chat demo",
+how_sum:"Como exportar do WhatsApp ou Telegram, 20 segundos",
+how_text:"Abra o chat, toque no nome ou nos três pontos, toque em Mais ou Exportar conversa, escolha Sem Mídia, salve o arquivo e solte aqui. No iPhone a exportação vem como .zip e funciona direto. Para o Telegram: use o Telegram Desktop, abra o menu do chat, escolha Exportar histórico do chat e escolha o formato JSON, depois solte o arquivo result.json aqui.",
+paste_t:"Sem arquivo por perto? Cole o texto do chat",paste_ph:"Cole aqui algumas linhas de uma exportação do WhatsApp e toque em Analisar",paste_btn:"Analisar o chat colado",
+green_label:"GREEN FLAG SCORE",
+fun_note:"Só por diversão, com base no equilíbrio, velocidade de resposta, perguntas, agradecimentos, desculpas e risadas deste chat. Não é conselho de relacionamento.",
+pill_chem:"Química",pill_bal:"Equilíbrio",pill_streak:"Maior sequência",
+card_btn:"Baixar cartão de story",json_btn:"Baixar relatório completo",wrapped_btn:"Ver o Chat Wrapped",copyshare_btn:"Copiar texto de compartilhamento",washare_btn:"Compartilhar no WhatsApp",print_btn:"Imprimir / Salvar PDF",
+share_note:"O texto de compartilhamento contém apenas pontuações e contagens. Nunca contém nenhuma mensagem do seu chat.",
+wrapped_h:"Seu Chat Wrapped",slide_prev:"Anterior",slide_play:"Reproduzir",slide_next:"Próximo",
+focus_h:"Foque este relatório",focus_sub:"Filtre por data, ou toque em qualquer pessoa na seção Quem carrega a conversa para focar cada número nela. Toque de novo para limpar.",
+from_l:"Data inicial",to_l:"Data final",filter_btn:"Aplicar filtro de data",clear_btn:"Limpar todos os filtros",
+activity_h:"Atividade ao longo do tempo",by_weekday:"Por dia da semana",by_month:"Por mês",
+story_h:"A história do seu chat",copy_story:"Copiar esta história",
+mile_h:"Marcos e sessões",people_h:"Quem carrega a conversa",awards_h:"Prêmios divertidos",meters_h:"Medidores de amor, desculpas e risadas",
+moments_h:"Os momentos mais engraçados deste chat",moments_sub:"Escolhidos das suas próprias mensagens, só no seu aparelho: as linhas com mais risadas, emojis, drama e energia da madrugada. Cada uma ganha uma reação divertida e você pode virar cartão meme com um toque.",
+emojis_h:"Emojis principais",words_h:"Palavras para viver",heat_h:"Quando vocês falam, mapa por hora",
+versus_h:"Batalha Versus",versus_sub:"Frente a frente em seis rodadas, decidido pelos números do seu próprio chat.",battle_btn:"Baixar cartão da batalha",
+guess_h:"Adivinhe quem disse",guess_sub:"Um joguinho rápido do seu próprio chat. As linhas aparecem só no seu aparelho, nada é enviado ou compartilhado.",
+compare_h:"Compare dois chats, a revanche",compare_sub:"Primeiro analise um chat acima. Depois traga uma segunda exportação, por exemplo o mesmo chat exportado um mês depois, e veja exatamente o que mudou: mensagens, Green Flag Score, química, velocidade de resposta e sequência. Outras ferramentas cobram por isso. Aqui é grátis e os dois chats ficam no seu aparelho.",
+cmp_drop_t:"Solte aqui a segunda exportação",cmp_drop_s:"Toque para escolher uma exportação .txt ou .zip.",cmp_demo_btn:"Pré-visualizar com um segundo chat de exemplo",
+studio_h:"Estúdio de Stories com Capturas",studio_sub:"Tem uma captura de chat engraçada? Envie aqui, veja, enfeite com uma legenda e um emoji grande e divertido, e baixe um story pronto para postar. A captura só abre no seu navegador, nunca é enviada para lugar nenhum.",
+shot_drop_t:"Solte aqui uma captura do chat",shot_drop_s:"Toque para escolher uma captura PNG ou JPG do seu telefone.",shot_prev_l:"Prévia da sua captura:",shot_cap_l:"Legenda do seu story",shot_cap_ph:"Exemplo: Ele realmente disse isso às 2 da manhã",shot_emoji_l:"Escolha um emoji de reação divertido",shot_theme_l:"Tema do story",theme_violet:"Noite Violeta",theme_pink:"Rosa Quente",theme_gold:"Dourado",theme_ocean:"Oceano",shot_make:"Criar meu story",shot_dl:"Baixar PNG do story",
+flight_h:"Prove a privacidade você mesmo: o teste do modo avião",flight_t:"Carregue esta página uma vez enquanto estiver online. Depois ligue o modo avião no telefone e analise um chat. Tudo continua funcionando, porque a leitura e as contas acontecem dentro do seu navegador, no seu aparelho. Nada do seu chat é enviado para lugar nenhum, guardado em lugar nenhum ou lido por qualquer IA. Atualizar a página limpa tudo da memória. Compartilhe os números do relatório se quiser, nunca as mensagens privadas, e analise apenas chats dos quais você participa.",
+calc_h:"Como cada número é calculado",calc_t:"Mensagens: cada linha da exportação que começa com data, hora e nome do remetente conta como uma mensagem. Linhas sem remetente, como avisos de grupo, não contam. Palavras: sequências de letras no texto; linhas de espaço reservado de mídia não somam palavras. Tempo de resposta: quando o remetente muda, o intervalo desde a mensagem anterior conta como resposta dele, mas só quando o intervalo é menor que 12 horas, para que uma pausa noturna não destrua o quadro. O relatório mostra a mediana, a resposta do meio, mais estável que uma média. Inícios de conversa: a primeira mensagem do chat e qualquer mensagem que chegue mais de 6 horas depois da anterior. Sequência: a maior série de dias seguidos com pelo menos uma mensagem. Green Flag Score: uma mistura divertida de equilíbrio entre as pessoas, velocidade mediana de resposta e sinais calorosos como perguntas, agradecimentos, desculpas e risadas. Momentos mais engraçados: mensagens ganham pontos por palavras de risada, emojis, drama em maiúsculas, pontos de exclamação, mensagens muito longas e serem enviadas entre meia-noite e 5 da manhã. Chats grandes: o ChatVibe não tem limite de mensagens; exportações muito grandes podem apenas demorar um pouco mais em um telefone lento.",
+faq_h:"Perguntas frequentes",
+faq1q:"Um analisador de chats do WhatsApp é privado?",faq1a:"O ChatVibe lê seu arquivo de exportação dentro do seu próprio navegador com JavaScript. O arquivo nunca é enviado a um servidor, não há conta, e fechar a aba limpa o chat da memória. Você pode testar carregando a página, ligando o modo avião e analisando um arquivo.",
+faq2q:"Como exporto um chat do WhatsApp para análise?",faq2a:"Abra o chat no WhatsApp, toque no nome do contato ou grupo ou no menu de três pontos, escolha Mais e depois Exportar conversa, e escolha Sem Mídia. Você recebe um arquivo .txt no Android ou um .zip no iPhone. Solte esse arquivo no ChatVibe.",
+faq3q:"Posso analisar um chat em grupo do WhatsApp?",faq3a:"Sim. O ChatVibe mostra até 8 participantes com contagens de mensagens, respostas, inícios, emojis e prêmios divertidos por pessoa. Você também pode tocar em uma pessoa para focar o relatório inteiro nela.",
+faq4q:"O que um analisador de chats do WhatsApp mostra?",faq4a:"Contagens de mensagens e participação por pessoa, palavras por mensagem, tempo mediano de resposta, quem inicia as conversas, emojis principais, palavras mais usadas, atividade por hora, dia da semana e mês, maior sequência, maior silêncio, contagens de mídia, links e mensagens apagadas, além de pontuações divertidas como Green Flag Score e Chat Chemistry.",
+faq5q:"O ChatVibe é grátis?",faq5a:"Sim. Cada recurso é grátis, sem cadastro, sem nível premium e sem anúncios dentro da ferramenta.",
+faq6q:"Por que minha exportação mostra zero mensagens?",faq6a:"Confirme que você exportou Sem Mídia como arquivo .txt ou .zip, não um backup. Nenhum analisador consegue ler backups do WhatsApp. Verifique também se o arquivo é uma exportação real, com datas, horas e nomes no início de cada linha de mensagem.",
+why_h:"Por que o ChatVibe vence um painel de estatísticas comum",why_t:"Analisadores comuns param em contagens e gráficos. O ChatVibe adiciona a camada que as pessoas realmente compartilham: prêmios divertidos para cada pessoa, Green Flag Score, Chat Chemistry, o maior silêncio e a maior sequência, contagem de mensagens apagadas, uma proporção de união nós contra eu, e um cartão vertical feito para o Status do WhatsApp e os Stories do Instagram. E como as melhores ferramentas, tudo é calculado localmente no seu navegador, então você pode testar até no modo avião.",
+days_w:"dias",
+gv1:"Energia de green flag de elite. Este chat é equilibrado, caloroso e rápido.",gv2:"Chat de green flag forte. Caloroso, bem equilibrado, vivo.",gv3:"Vibe mista. Há calor real, o equilíbrio pode melhorar.",gv4:"Energia de chat caótica. Divertido, mas traga paciência.",
+ms_span:"Duração do chat: <b>{days} dias</b>, de {from} a {to}.",
+ms_sit:"Sessões totais: <b>{n}</b> conversas separadas (um intervalo de mais de 30 minutos começa uma nova sessão). Maior sessão: <b>{c} mensagens</b>{start}.",
+ms_start:", começando em {when}",
+ms_next:"Próximo marco: <b>{m} mensagens</b>. Faltam só {left}.",
+k_total:"Mensagens totais",k_active:"Dias ativos, de {from} a {to}",k_median:"Tempo mediano de resposta",k_media:"Mídia compartilhada, {links} links, {deleted} apagadas",
+pr_msgs:"{n} mensagens, {share} por cento",
+pr_line:"Média de {w} palavras por mensagem. Começa o chat {s} vezes. Resposta típica {r}. Emojis {e}. Toque para focar.",
+pr_sig:"Palavras assinatura: {words}",pr_fav:"Emoji favorito: {e}",pr_none:"nenhuma ainda",none_w:"nenhum",
+aw_talk:"Quem mais fala",aw_emoji:"Estrela dos emojis",aw_start:"Iniciador do chat",aw_double:"Mensageiro duplo",aw_night:"Coruja da noite",aw_sorry:"Campeão das desculpas",aw_comic:"Comediante",aw_curious:"Mente curiosa",aw_dry:"Mensageiro seco",aw_none:"Ainda não há mensagens suficientes para prêmios.",
+m_love:"Amor e carinho",m_sorry:"Desculpas",m_thanks:"Agradecimentos",m_laugh:"Risadas",
+we_t:"Proporção de união: palavras nós {we} contra palavras eu {i}",we_team:". Vocês falam como um time.",we_solo:". Mais energia solo do que de time nas palavras.",
+no_emoji:"Nenhum emoji encontrado.",no_month:"Sem dados mensais.",
+busy_t:"Dia mais movimentado: {day} com {n} mensagens. Dia da semana mais movimentado: {wd}.",
+peak_t:"Hora de pico: {h}:00 com {n} mensagens. O padrão é mostrado da esquerda para a direita, da meia-noite às 23h.",
+sil_t:"O Grande Silêncio: o maior intervalo entre mensagens foi {g}. Mensagens apagadas vistas: {d}.",
+meme_btn:"Criar cartão meme",moments_none:"Nenhum grande momento engraçado detectado ainda. Chats com risadas, emojis e drama da madrugada pontuam momentos aqui.",
+story_t:"Em {days} dias, {names} enviou {total} mensagens e conquistou um Green Flag Score de {green} com Chat Chemistry de {chem}. {topbit}As respostas costumavam chegar em {reply}, o dia mais movimentado foi {bday}, e a maior sessão juntou {sit} mensagens de uma vez. O emoji principal foi {emoji}, a maior sequência durou {streak} dias, e este chat está a apenas {left} mensagens do marco de {mile} mensagens.",
+story_top:"{name} carregou o chat com {share} por cento das mensagens. ",
+story_bday:"{day} com {n} mensagens",
+and_group:"{name} e o grupo",
+sl1t:"Seu Chat Wrapped",sl1s:"Green Flag Score de 100. Química {chem}/100, equilíbrio {bal}/100.",
+sl2t:"A história até agora",sl2s:"mensagens em {days} dias ativos, de {from} a {to}.",
+sl3t:"Quem mais escreve",sl3s:"{n} mensagens, {p} por cento de todo o chat.",
+sl4t:"Velocidade de resposta",sl4s:"tempo mediano de resposta quando o remetente muda.",
+sl5t:"Emoji assinatura",sl5s:"usado {n} vezes. Sua palavra principal: {w}.",
+sl6t:"Quando vocês falam",sl6s:"é a sua hora de pico. Seu dia da semana mais movimentado é {wd}.",
+sl7t:"Sequência e silêncio",sl7s:"maior sequência diária. O Grande Silêncio entre mensagens durou {g}.",
+sl7b:"{n} dias",
+sl8t:"As coisas calorosas",sl8s:"sinais de amor, {laugh} sinais de risada, {thanks} agradecimentos e {sorry} desculpas nesta vista do chat.",
+share_t:"Nosso relatório ChatVibe: Green Flag Score {green}/100, Química {chem}/100, {total} mensagens, maior sequência de {streak} dias. Veja o seu, roda totalmente no seu navegador.",
+v_msgs:"Mais mensagens",v_words:"Mais palavras",v_emojis:"Mais emojis",v_starts:"Mais inícios de chat",v_fast:"Respostas mais rápidas",v_laugh:"Mais risadas",
+v_takes:"{name} leva essa",v_tied:"Rodada empatada",v_champ_t:"Campeão: {name} ({a} a {b} rodadas)",v_dead_t:"Empate total: {a} rodadas para cada",v_wins:"{name} vence",v_tiedshort:"Empate",v_dead:"Empate total",v_champ:"Campeão: {name}",
+g_start:"Começar o jogo ({n} rodadas)",g_start_plain:"Começar o jogo",g_notenough:"Este chat ainda não tem mensagens longas suficientes para o jogo.",
+g_round:"Rodada {i} de {n} / Pontos {s}",g_correct:"Correto. ",g_wrong:"Não exatamente. ",g_was:"Quem disse foi {name}. Pontos {s}.",g_next:"Próxima linha",g_see:"Ver minha pontuação",
+g_final:"Pontuação final: {s} de {n}",g_v1:"Você conhece este chat de cor.",g_v2:"Sólido. Vocês se conhecem bem.",g_v3:"Chat difícil. Até pessoas próximas se surpreendem.",g_again:"Jogar de novo",
+cmp_what:"O que mudou",cmp_first:"Primeiro chat",cmp_second:"Segundo chat",cmp_change:"Mudança",
+cmp_note:"Tempo mediano de resposta: primeiro {a}, segundo {b}. Leia a coluna de mudança como um placar: para cima é mais, nem sempre melhor. Velocidade de resposta e equilíbrio contam a história da qualidade.",
+cmp_err:"Primeiro analise um chat acima, depois traga o segundo. O primeiro relatório é o ponto de partida da revanche.",
+green_name:"Green Flag Score",bal_name:"Pontuação de equilíbrio",act_name:"Dias ativos",streak_name:"Maior sequência, dias",sit_name:"Sessões totais",q_name:"Perguntas feitas",laugh_name:"Momentos de risada",
+fs_focus:"Focado em {name}",fs_dates:"Datas de {a} a {b}",fs_full:"Mostrando o chat completo. ",fs_view:"Esta vista tem {n} mensagens.",
+err_file:"Não consegui encontrar mensagens suficientes nesse arquivo. Confirme que é uma exportação do WhatsApp (Sem Mídia, .txt ou .zip) ou uma exportação JSON do Telegram Desktop.",
+err_filter:"Esse filtro deixa menos de 3 mensagens. Amplie as datas ou limpe o foco na pessoa.",
+copied_share:"Texto de compartilhamento copiado. Contém apenas pontuações e contagens, nunca nenhuma mensagem do seu chat.",copy_fail:"A cópia falhou neste navegador. O texto de compartilhamento é: ",
+story_copied:"História copiada",story_copy_fail:"A cópia falhou, pressione e segure a história para copiar",
+no_data:"sem dados"
+};
+I18N.id={wdn:["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"],
+nav_analyzer:"Analyzer",nav_studio:"Studio Cerita",nav_faq:"Tanya Jawab",
+badge:"100 persen privat. Chat kamu tidak pernah meninggalkan ponselmu.",
+hero_h1:"Chat kamu punya <span class=\"g\">vibe.</span><br>Yuk kita ukur.",
+hero_sub:"ChatVibe mengubah ekspor WhatsApp atau Telegram menjadi laporan hubungan yang seru: siapa paling sering mengirim pesan, siapa membalas paling cepat, siapa memulai chat, Green Flag Score, Chat Chemistry, emoji teratas, awan kata, peta panas, streak, dan kartu cerita siap bagikan. Tanpa daftar. Tanpa unggah. Tanpa install aplikasi.",
+chip1b:"100 persen gratis",chip1s:"Semua fitur, tanpa dinding premium",chip2b:"Privat sejak desain",chip2s:"Berjalan di browser kamu, tanpa unggah",chip3b:"Grup bisa ikut",chip3s:"Hingga 8 orang dalam satu laporan",chip4b:"Dibuat untuk dibagikan",chip4s:"Kartu cerita dan acara Wrapped",
+drop_t:"Taruh ekspor WhatsApp atau Telegram kamu di sini",
+drop_s:"Ketuk untuk memilih ekspor .txt atau .zip, yang diekspor Tanpa Media.<br>Format WhatsApp Android dan iPhone sama sama bisa, dan ekspor JSON Telegram Desktop juga bisa. Chat grup juga bisa, hingga 8 orang.",
+demo_btn:"Coba chat demo dulu",
+how_sum:"Cara ekspor dari WhatsApp atau Telegram, 20 detik",
+how_text:"Buka chat, ketuk nama atau tiga titik, ketuk Lainnya atau Ekspor Chat, pilih Tanpa Media, simpan file, lalu taruh di sini. Di iPhone ekspor datang sebagai .zip dan langsung bisa. Untuk Telegram: gunakan Telegram Desktop, buka menu chat, pilih Ekspor Riwayat Chat, dan pilih format JSON, lalu taruh file result.json di sini.",
+paste_t:"Tidak ada file? Tempel teks chat",paste_ph:"Tempel beberapa baris dari ekspor WhatsApp di sini, lalu ketuk Analisis",paste_btn:"Analisis chat yang ditempel",
+green_label:"GREEN FLAG SCORE",
+fun_note:"Hanya untuk seru seruan, berdasarkan keseimbangan, kecepatan balasan, pertanyaan, terima kasih, maaf dan tawa di chat ini. Bukan saran hubungan.",
+pill_chem:"Chemistry",pill_bal:"Keseimbangan",pill_streak:"Streak terpanjang",
+card_btn:"Unduh kartu cerita",json_btn:"Unduh laporan lengkap",wrapped_btn:"Putar Chat Wrapped",copyshare_btn:"Salin teks bagikan",washare_btn:"Bagikan di WhatsApp",print_btn:"Cetak / Simpan PDF",
+share_note:"Teks bagikan hanya berisi skor dan jumlah. Tidak pernah berisi pesan apa pun dari chat kamu.",
+wrapped_h:"Chat Wrapped Kamu",slide_prev:"Sebelumnya",slide_play:"Putar",slide_next:"Berikutnya",
+focus_h:"Fokuskan laporan ini",focus_sub:"Saring berdasarkan tanggal, atau ketuk seseorang di bagian Siapa yang membawa percakapan untuk memfokuskan setiap angka padanya. Ketuk lagi untuk menghapus.",
+from_l:"Dari tanggal",to_l:"Sampai tanggal",filter_btn:"Terapkan saringan tanggal",clear_btn:"Hapus semua saringan",
+activity_h:"Aktivitas dari waktu ke waktu",by_weekday:"Menurut hari",by_month:"Menurut bulan",
+story_h:"Cerita chat kamu",copy_story:"Salin cerita ini",
+mile_h:"Pencapaian dan sesi",people_h:"Siapa yang membawa percakapan",awards_h:"Penghargaan seru",meters_h:"Meter cinta, maaf dan tawa",
+moments_h:"Momen paling lucu di chat ini",moments_sub:"Dipilih dari pesan kamu sendiri, hanya di perangkatmu: baris dengan tawa, emoji, drama dan energi larut malam terbanyak. Setiap momen mendapat reaksi lucu, dan kamu bisa menjadikannya kartu meme dengan satu ketukan.",
+emojis_h:"Emoji teratas",words_h:"Kata kata andalan kalian",heat_h:"Kapan kalian mengobrol, peta jam",
+versus_h:"Pertarungan Versus",versus_sub:"Satu lawan satu dalam enam ronde, ditentukan oleh angka chat kamu sendiri.",battle_btn:"Unduh kartu pertarungan",
+guess_h:"Tebak Siapa yang Mengatakan",guess_sub:"Permainan cepat dari chat kamu sendiri. Baris barisnya hanya muncul di perangkatmu, tidak ada yang diunggah atau dibagikan.",
+compare_h:"Bandingkan dua chat, pertandingan ulang",compare_sub:"Analisis satu chat di atas dulu. Lalu bawa ekspor kedua, misalnya chat yang sama diekspor sebulan kemudian, dan lihat persis apa yang berubah: pesan, Green Flag Score, chemistry, kecepatan balasan dan streak. Alat lain mengenakan biaya untuk ini. Di sini gratis, dan kedua chat tetap di perangkatmu.",
+cmp_drop_t:"Taruh ekspor chat kedua di sini",cmp_drop_s:"Ketuk untuk memilih ekspor .txt atau .zip.",cmp_demo_btn:"Pratinjau dengan chat kedua contoh",
+studio_h:"Studio Cerita Tangkapan Layar",studio_sub:"Punya tangkapan layar chat yang lucu? Unggah di sini, lihat, hias dengan keterangan dan emoji lucu besar, lalu unduh cerita siap posting. Tangkapan layar hanya dibuka di browser kamu, tidak pernah diunggah ke mana pun.",
+shot_drop_t:"Taruh tangkapan layar chat di sini",shot_drop_s:"Ketuk untuk memilih tangkapan layar PNG atau JPG dari ponselmu.",shot_prev_l:"Pratinjau tangkapan layarmu:",shot_cap_l:"Keterangan untuk ceritamu",shot_cap_ph:"Contoh: Dia benar benar mengatakan ini jam 2 pagi",shot_emoji_l:"Pilih emoji reaksi yang lucu",shot_theme_l:"Tema cerita",theme_violet:"Malam Violet",theme_pink:"Pink Panas",theme_gold:"Emas",theme_ocean:"Samudra",shot_make:"Buat ceritaku",shot_dl:"Unduh PNG cerita",
+flight_h:"Buktikan privasinya sendiri: uji mode pesawat",flight_t:"Muat halaman ini sekali saat kamu online. Lalu nyalakan mode pesawat di ponselmu dan analisis sebuah chat. Semuanya tetap bekerja, karena pembacaan dan perhitungannya terjadi di dalam browser di perangkatmu. Tidak ada apa pun tentang chat kamu yang dikirim ke mana pun, disimpan di mana pun, atau dibaca oleh AI mana pun. Menyegarkan halaman menghapusnya dari memori. Bagikan angka dari laporanmu jika mau, jangan pernah pesan pribadinya, dan analisis hanya chat yang kamu ikuti.",
+calc_h:"Cara setiap angka dihitung",calc_t:"Pesan: setiap baris ekspor yang dimulai dengan tanggal, waktu dan nama pengirim dihitung sebagai satu pesan. Baris tanpa pengirim, seperti pemberitahuan grup, tidak dihitung sebagai pesan. Kata: rangkaian huruf dalam teks pesan; baris placeholder media tidak menambah kata. Waktu balasan: saat pengirim berubah, jeda dari pesan sebelumnya dihitung sebagai balasannya, tetapi hanya bila jedanya di bawah 12 jam, agar jeda semalam tidak merusak gambarannya. Laporan menampilkan median, balasan tengah, yang lebih stabil daripada rata rata. Awal percakapan: pesan pertama di chat, dan pesan apa pun yang datang lebih dari 6 jam setelah pesan sebelumnya. Streak: rangkaian hari kalender berurutan terpanjang yang masing masing memiliki setidaknya satu pesan. Green Flag Score: campuran seru dari keseimbangan antar orang, kecepatan balasan median, dan sinyal hangat seperti pertanyaan, terima kasih, maaf dan tawa. Momen Terlucu: pesan mendapat poin untuk kata tawa, emoji, drama huruf besar, tanda seru, pesan yang sangat panjang dan dikirim antara tengah malam dan jam 5 pagi. Chat besar: ChatVibe tidak punya batas pesan; ekspor yang sangat besar mungkin hanya butuh waktu lebih lama di ponsel yang lambat.",
+faq_h:"Pertanyaan yang sering diajukan",
+faq1q:"Apakah analyzer chat WhatsApp itu privat?",faq1a:"ChatVibe membaca file ekspormu di dalam browser kamu sendiri dengan JavaScript. File tidak pernah dikirim ke server, tidak ada akun, dan menutup tab menghapus chat dari memori. Kamu bisa mengujinya dengan memuat halaman, menyalakan mode pesawat, lalu menganalisis sebuah file.",
+faq2q:"Bagaimana cara mengekspor chat WhatsApp untuk dianalisis?",faq2a:"Buka chat di WhatsApp, ketuk nama kontak atau grup atau menu tiga titik, pilih Lainnya lalu Ekspor Chat, dan pilih Tanpa Media. Kamu mendapat file .txt di Android atau .zip di iPhone. Taruh file itu ke ChatVibe.",
+faq3q:"Bisakah saya menganalisis chat grup WhatsApp?",faq3a:"Bisa. ChatVibe menampilkan hingga 8 peserta dengan jumlah pesan, balasan, awal, emoji dan penghargaan seru per orang. Kamu juga bisa mengetuk seseorang untuk memfokuskan seluruh laporan padanya.",
+faq4q:"Apa yang ditampilkan analyzer chat WhatsApp?",faq4a:"Jumlah pesan dan bagian per orang, kata per pesan, waktu balasan median, siapa yang memulai percakapan, emoji teratas, kata yang paling sering dipakai, aktivitas menurut jam, hari dan bulan, streak terpanjang, keheningan terpanjang, jumlah media, tautan dan pesan terhapus, plus skor seru seperti Green Flag Score dan Chat Chemistry.",
+faq5q:"Apakah ChatVibe gratis?",faq5a:"Ya. Setiap fitur gratis, tanpa pendaftaran, tanpa tingkat premium dan tanpa iklan di dalam alat ini.",
+faq6q:"Mengapa ekspor saya menunjukkan nol pesan?",faq6a:"Pastikan kamu mengekspor Tanpa Media sebagai file .txt atau .zip, bukan cadangan. Cadangan WhatsApp tidak bisa dibaca oleh analyzer mana pun. Periksa juga bahwa file itu ekspor chat asli dengan tanggal, waktu dan nama di awal setiap baris pesan.",
+why_h:"Mengapa ChatVibe mengalahkan dasbor statistik biasa",why_t:"Analyzer biasa berhenti pada jumlah dan grafik. ChatVibe menambahkan lapisan yang benar benar dibagikan orang: penghargaan seru untuk setiap orang, Green Flag Score, Chat Chemistry, keheningan dan streak terpanjang, jumlah pesan terhapus, rasio kebersamaan kita lawan aku, dan kartu cerita vertikal yang dibuat untuk Status WhatsApp dan Stories Instagram. Dan seperti alat terbaik, semuanya dihitung secara lokal di browser kamu, jadi kamu bahkan bisa mengujinya dalam mode pesawat.",
+days_w:"hari",
+gv1:"Energi green flag elit. Chat ini seimbang, hangat dan cepat.",gv2:"Chat green flag yang kuat. Hangat, cukup seimbang, hidup.",gv3:"Vibe campuran. Kehangatan aslinya ada, keseimbangan bisa lebih baik.",gv4:"Energi chat kacau. Menghibur, tapi bawa kesabaran.",
+ms_span:"Rentang chat: <b>{days} hari</b>, dari {from} sampai {to}.",
+ms_sit:"Total sesi: <b>{n}</b> percakapan terpisah (jeda lebih dari 30 menit memulai sesi baru). Sesi terpanjang: <b>{c} pesan</b>{start}.",
+ms_start:", mulai {when}",
+ms_next:"Pencapaian berikutnya: <b>{m} pesan</b>. Tinggal {left} lagi.",
+k_total:"Total pesan",k_active:"Hari aktif, {from} sampai {to}",k_median:"Waktu balasan median",k_media:"Media dibagikan, {links} tautan, {deleted} terhapus",
+pr_msgs:"{n} pesan, {share} persen",
+pr_line:"Rata rata {w} kata per pesan. Memulai chat {s} kali. Balasan biasanya {r}. Emoji {e}. Ketuk untuk fokus.",
+pr_sig:"Kata khas: {words}",pr_fav:"Emoji favorit: {e}",pr_none:"belum ada",none_w:"tidak ada",
+aw_talk:"Paling Banyak Bicara",aw_emoji:"Bintang Emoji",aw_start:"Pemulai Chat",aw_double:"Pengirim Ganda",aw_night:"Burung Malam",aw_sorry:"Raja Maaf",aw_comic:"Komedian",aw_curious:"Pikiran Penasaran",aw_dry:"Pengirim Kering",aw_none:"Belum cukup pesan untuk penghargaan.",
+m_love:"Cinta dan kasih sayang",m_sorry:"Maaf",m_thanks:"Terima kasih",m_laugh:"Tawa",
+we_t:"Rasio kebersamaan: kata kita {we} lawan kata aku {i}",we_team:". Kalian bicara seperti tim.",we_solo:". Lebih banyak energi solo daripada tim dalam kata kata.",
+no_emoji:"Tidak ada emoji ditemukan.",no_month:"Tidak ada data bulanan.",
+busy_t:"Hari tersibuk: {day} dengan {n} pesan. Hari tersibuk: {wd}.",
+peak_t:"Jam puncak: {h}:00 dengan {n} pesan. Pola tersibuk ditampilkan dari kiri ke kanan, tengah malam sampai 11 malam.",
+sil_t:"Keheningan Besar: jeda terpanjang antar pesan adalah {g}. Pesan terhapus terlihat: {d}.",
+meme_btn:"Buat kartu meme",moments_none:"Belum ada momen lucu besar yang terlihat. Chat dengan tawa, emoji dan drama larut malam mendapat skor momen di sini.",
+story_t:"Dalam {days} hari, {names} mengirim {total} pesan dan meraih Green Flag Score {green} dengan Chat Chemistry {chem}. {topbit}Balasan biasanya datang dalam {reply}, hari tersibuk adalah {bday}, dan sesi terpanjang menampung {sit} pesan sekaligus. Emoji teratas adalah {emoji}, streak terpanjang berjalan {streak} hari, dan chat ini hanya berjarak {left} pesan dari pencapaian {mile} pesan.",
+story_top:"{name} membawa chat dengan {share} persen dari pesan. ",
+story_bday:"{day} dengan {n} pesan",
+and_group:"{name} dan grup",
+sl1t:"Chat Wrapped Kamu",sl1s:"Green Flag Score dari 100. Chemistry {chem}/100, keseimbangan {bal}/100.",
+sl2t:"Cerita Sejauh Ini",sl2s:"pesan dalam {days} hari aktif, dari {from} sampai {to}.",
+sl3t:"Pengirim Teratas",sl3s:"{n} pesan, {p} persen dari seluruh chat.",
+sl4t:"Kecepatan Balasan",sl4s:"waktu balasan median saat pengirim berganti.",
+sl5t:"Emoji Khas",sl5s:"dipakai {n} kali. Kata teratasmu: {w}.",
+sl6t:"Kapan Kalian Mengobrol",sl6s:"adalah jam puncakmu. Hari tersibukmu adalah {wd}.",
+sl7t:"Streak dan Keheningan",sl7s:"streak harian terpanjang. Keheningan Besar antar pesan berlangsung {g}.",
+sl7b:"{n} hari",
+sl8t:"Hal Hal Hangat",sl8s:"sinyal cinta, {laugh} sinyal tawa, {thanks} terima kasih dan {sorry} maaf dalam tampilan chat ini.",
+share_t:"Laporan ChatVibe kami: Green Flag Score {green}/100, Chemistry {chem}/100, {total} pesan, streak terpanjang {streak} hari. Cek milikmu, berjalan sepenuhnya di browser kamu.",
+v_msgs:"Pesan terbanyak",v_words:"Kata terbanyak",v_emojis:"Emoji terbanyak",v_starts:"Paling sering memulai",v_fast:"Balasan tercepat",v_laugh:"Tawa terbanyak",
+v_takes:"{name} yang menang",v_tied:"Ronde seri",v_champ_t:"Juara: {name} ({a} lawan {b} ronde)",v_dead_t:"Seri total: {a} ronde masing masing",v_wins:"{name} menang",v_tiedshort:"Seri",v_dead:"Seri total",v_champ:"Juara: {name}",
+g_start:"Mulai permainan ({n} ronde)",g_start_plain:"Mulai permainan",g_notenough:"Chat ini belum punya cukup pesan panjang untuk permainan.",
+g_round:"Ronde {i} dari {n} / Skor {s}",g_correct:"Benar. ",g_wrong:"Kurang tepat. ",g_was:"Yang mengatakan adalah {name}. Skor {s}.",g_next:"Baris berikutnya",g_see:"Lihat skorku",
+g_final:"Skor akhir: {s} dari {n}",g_v1:"Kamu hafal chat ini di luar kepala.",g_v2:"Kuat. Kalian saling mengenal dengan baik.",g_v3:"Chat yang sulit. Orang dekat pun saling mengejutkan.",g_again:"Main lagi",
+cmp_what:"Apa yang berubah",cmp_first:"Chat pertama",cmp_second:"Chat kedua",cmp_change:"Perubahan",
+cmp_note:"Waktu balasan median: pertama {a}, kedua {b}. Baca kolom perubahan seperti papan skor: naik berarti lebih banyak, tidak selalu lebih baik. Kecepatan balasan dan keseimbangan menceritakan kualitasnya.",
+cmp_err:"Analisis satu chat di atas dulu, lalu bawa yang kedua. Laporan pertama adalah titik awal pertandingan ulang.",
+green_name:"Green Flag Score",bal_name:"Skor keseimbangan",act_name:"Hari aktif",streak_name:"Streak terpanjang, hari",sit_name:"Total sesi",q_name:"Pertanyaan diajukan",laugh_name:"Momen tawa",
+fs_focus:"Difokuskan pada {name}",fs_dates:"Tanggal {a} sampai {b}",fs_full:"Menampilkan chat lengkap. ",fs_view:"Tampilan ini memiliki {n} pesan.",
+err_file:"Saya tidak dapat menemukan cukup pesan dalam file itu. Pastikan itu ekspor WhatsApp (Tanpa Media, .txt atau .zip) atau ekspor JSON Telegram Desktop.",
+err_filter:"Saringan itu menyisakan kurang dari 3 pesan. Longgarkan tanggal atau hapus fokus orang.",
+copied_share:"Teks bagikan tersalin. Hanya berisi skor dan jumlah, tidak pernah pesan apa pun dari chat kamu.",copy_fail:"Penyalinan gagal di browser ini. Teks bagikannya adalah: ",
+story_copied:"Cerita tersalin",story_copy_fail:"Penyalinan gagal, tekan lama cerita untuk menyalin",
+no_data:"tidak ada data"
+};
+function t(k){const d=I18N[LANG]||I18N.en;return (k in d)?d[k]:(I18N.en[k]||k);}
+function F(k,o){let s=t(k);if(o)for(const x in o)s=s.split("{"+x+"}").join(o[x]);return s;}
+function applyI18n(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{el.innerHTML=t(el.getAttribute("data-i18n"));});
+  document.querySelectorAll("[data-i18nph]").forEach(el=>{el.setAttribute("placeholder",t(el.getAttribute("data-i18nph")));});
+  document.documentElement.lang=LANG;
+  WDN=(I18N[LANG]&&I18N[LANG].wdn)||I18N.en.wdn;
+}
+I18N.en.footer_t="The fun, private WhatsApp chat analyzer. Every number is calculated on your own device. Made for fun: share the numbers, never private messages.";
+I18N.bn.footer_t="মজার, প্রাইভেট WhatsApp chat analyzer। প্রতিটা সংখ্যা তোমার নিজের ডিভাইসেই হিসাব হয়। মজার জন্য তৈরি: সংখ্যা শেয়ার করো, প্রাইভেট মেসেজ কখনো নয়।";
+I18N.hi.footer_t="मजेदार, निजी WhatsApp chat analyzer। हर संख्या आपके अपने device पर गिनी जाती है। मजे के लिए बना: संख्याएं share करें, निजी मैसेज कभी नहीं।";
+I18N.es.footer_t="El analizador de chats de WhatsApp divertido y privado. Cada número se calcula en tu propio dispositivo. Hecho para divertirse: comparte los números, nunca los mensajes privados.";
+I18N.pt.footer_t="O analisador de chats do WhatsApp divertido e privado. Cada número é calculado no seu próprio aparelho. Feito para diversão: compartilhe os números, nunca as mensagens privadas.";
+I18N.id.footer_t="Analyzer chat WhatsApp yang seru dan privat. Setiap angka dihitung di perangkatmu sendiri. Dibuat untuk seru seruan: bagikan angkanya, jangan pernah pesan pribadinya.";
+function setLang(code,rerender){
+  if(!I18N[code])code="en";
+  LANG=code;
+  try{localStorage.setItem("cv_lang",code);}catch(e){}
+  const sel=$("langSel"); if(sel)sel.value=code;
+  applyI18n();
+  if(rerender&&window._allMsgs)applyView(false);
+}
+
+const STOP=new Set("the a an and or to of in is it i you me my we he she they them this that was are be have has had will would can could do does did for on at with as by from but not no yes yeah ok okay so if then than too very just like get got im dont cant its youre whats".split(" "));
+const EMOJI_RE=/\p{Extended_Pictographic}/gu;
+function parseDate(dstr,tstr,fmt){
+  let p=dstr.replace(/[\[\]]/g,"").split(/[\/.\-]/).map(x=>parseInt(x,10));
+  if(p.length!==3) return null;
+  let y,m,d;
+  if(p[0]>31){y=p[0];m=p[1];d=p[2];}
+  else if(fmt==="DMY"){d=p[0];m=p[1];y=p[2]<100?2000+p[2]:p[2];}
+  else if(fmt==="MDY"){m=p[0];d=p[1];y=p[2]<100?2000+p[2]:p[2];}
+  else if(p[2]<100){y=2000+p[2]; if(p[0]>12){d=p[0];m=p[1];}else{m=p[0];d=p[1];}}
+  else{y=p[2]; if(p[0]>12){d=p[0];m=p[1];}else{m=p[0];d=p[1];}}
+  let tp=tstr.trim().toUpperCase(),ampm=null;
+  if(tp.includes("PM"))ampm="PM"; if(tp.includes("AM"))ampm="AM";
+  tp=tp.replace(/(AM|PM)/g,"").trim();
+  let q=tp.split(":").map(x=>parseInt(x,10)); let hh=q[0]||0,mm=q[1]||0,ss=q[2]||0;
+  if(ampm==="PM"&&hh<12)hh+=12; if(ampm==="AM"&&hh===12)hh=0;
+  let dt=new Date(y,(m||1)-1,d||1,hh,mm,ss);
+  return isNaN(dt)?null:dt;
+}
+const LINE_RE=/^[\[]?(\d{1,4}[\/.\-]\d{1,2}[\/.\-]\d{2,4}),?\s+(\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)[\]]?\s*(?:[-–—]|\s)\s*([^:\n]{1,60}):\s([\s\S]*)$/;
+
+function parseTelegramJson(text){
+  let data=null;
+  try{data=JSON.parse(text);}catch(e){return[];}
+  const arr=(data&&data.messages)||(Array.isArray(data)?data:null);
+  if(!Array.isArray(arr))return[];
+  const out=[];
+  for(const m of arr){
+    if(!m||(m.type&&m.type!=="message"))continue;
+    const sender=(m.from||m.actor||"").toString().trim();
+    if(!sender)continue;
+    const dt=new Date(m.date);
+    if(isNaN(dt))continue;
+    let t="";
+    if(typeof m.text==="string")t=m.text;
+    else if(Array.isArray(m.text))t=m.text.map(part=>typeof part==="string"?part:((part&&part.text)||"")).join("");
+    out.push({dt,sender,text:t||"(media)"});
+  }
+  out.sort((a,b)=>a.dt-b.dt);
+  return out;
+}
+function anyParse(text){
+  const tr=(text||"").trim();
+  if(tr.startsWith("{")||tr.startsWith("[")){
+    const tg=parseTelegramJson(tr);
+    if(tg.length)return tg;
+  }
+  return parseChat(text);
+}
+function parseChat(text){
+  const msgs=[]; const lines=text.replace(/\r\n/g,"\n").split("\n");
+  let fmt=null;
+  for(const line of lines){const dm=line.match(/(\d{1,2})[\/.\-](\d{1,2})[\/.\-]\d{2,4}/); if(dm){if(+dm[1]>12)fmt="DMY"; else if(+dm[2]>12)fmt="MDY"; if(fmt)break;}}
+  for(const line of lines){
+    const mm=line.match(LINE_RE);
+    if(mm){
+      const dt=parseDate(mm[1],mm[2],fmt);
+      if(dt){msgs.push({dt,sender:mm[3].trim(),text:mm[4]});continue;}
+    }
+    if(msgs.length) msgs[msgs.length-1].text+="\n"+line;
+  }
+  return msgs.filter(x=>{
+    const s=x.sender.toLowerCase();
+    return !s.includes("end-to-end")&&x.text!==undefined;
+  });
+}
+function words(t){return (t.toLowerCase().match(/[a-z][a-z']+/g)||[]);}
+function countHit(t,list){let n=0;const low=" "+t.toLowerCase()+" ";for(const w of list){if(low.includes(w))n++;}return n;}
+function fmtMin(m){if(m==null||isNaN(m))return t("no_data");if(m<1)return Math.round(m*60)+" sec";if(m<60)return Math.round(m)+" min";return (m/60).toFixed(1)+" hrs";}
+function analyze(msgs){
+  const people={}; const hours=new Array(24).fill(0); const emojiCount={}; const wordCount={};
+  const weekdays=new Array(7).fill(0); const monthMap={}; const dayCount={};
+  let media=0,links=0,deleted=0,questions=0,love=0,sorry=0,thanks=0,laugh=0,weW=0,iW=0;
+  const days={}; let first=msgs[0].dt,last=msgs[0].dt;
+  for(const x of msgs){
+    const P=people[x.sender]||(people[x.sender]={name:x.sender,msgs:0,words:0,chars:0,emojis:0,start:0,double:0,night:0,reply:[],questions:0,love:0,sorry:0,thanks:0,laugh:0,media:0,wm:{},em2:{}});
+    P.msgs++; P.chars+=x.text.length; const w=words(x.text); P.words+=w.length;
+    hours[x.dt.getHours()]++; if(x.dt.getHours()<=4)P.night++;
+    const em=x.text.match(EMOJI_RE)||[]; P.emojis+=em.length; em.forEach(e=>{emojiCount[e]=(emojiCount[e]||0)+1; P.em2[e]=(P.em2[e]||0)+1;});
+    w.forEach(wd=>{if(wd.length>2&&!STOP.has(wd)){wordCount[wd]=(wordCount[wd]||0)+1; P.wm[wd]=(P.wm[wd]||0)+1;} if(wd==="we"||wd==="us"||wd==="our")weW++; if(wd==="i"||wd==="me"||wd==="my")iW++;});
+    if(/<media omitted>|media omitted|image omitted|video omitted|sticker omitted/i.test(x.text)){media++;P.media++;}
+    if(/https?:\/\//i.test(x.text))links++;
+    if(/this message was deleted|message deleted/i.test(x.text))deleted++;
+    if(x.text.includes("?")){questions++;P.questions++;}
+    P.love+=countHit(x.text,[" love "," loved "," miss you"," babe"," baby "," jaan"," valobashi"]); love+=P.love>0?0:0;
+    P.sorry+=countHit(x.text,[" sorry","sry"," maf"," দুঃখিত"]);
+    P.thanks+=countHit(x.text,[" thank"," thanks"," dhonnobad"," ধন্যবাদ"]);
+    P.laugh+=countHit(x.text,["haha","lol","lmao","😂","🤣"," হাহা"]);
+    const dk=x.dt.toDateString(); days[dk]=1; dayCount[dk]=(dayCount[dk]||0)+1;
+    weekdays[x.dt.getDay()]++;
+    const mk=x.dt.getFullYear()+"-"+String(x.dt.getMonth()+1).padStart(2,"0");
+    monthMap[mk]=(monthMap[mk]||0)+1;
+    if(x.dt<first)first=x.dt; if(x.dt>last)last=x.dt;
+  }
+  love=Object.values(people).reduce((a,p)=>a+p.love,0);
+  sorry=Object.values(people).reduce((a,p)=>a+p.sorry,0);
+  thanks=Object.values(people).reduce((a,p)=>a+p.thanks,0);
+  laugh=Object.values(people).reduce((a,p)=>a+p.laugh,0);
+  let longestGap=0;
+  for(let i=1;i<msgs.length;i++){
+    const gap=(msgs[i].dt-msgs[i-1].dt)/60000;
+    if(gap>longestGap)longestGap=gap;
+    if(gap>360){people[msgs[i].sender].start++;}
+    if(msgs[i].sender===msgs[i-1].sender){people[msgs[i].sender].double++;}
+    else if(gap>0&&gap<720){people[msgs[i].sender].reply.push(gap);}
+  }
+  if(msgs.length)people[msgs[0].sender].start++;
+  const dayList=Object.keys(days).map(d=>new Date(d)).sort((a,b)=>a-b);
+  let streak=1,cur=1;
+  for(let i=1;i<dayList.length;i++){const diff=(dayList[i]-dayList[i-1])/86400000; if(diff<=1.5){cur++;streak=Math.max(streak,cur);}else cur=1;}
+  const plist=Object.values(people).sort((a,b)=>b.msgs-a.msgs).slice(0,8);
+  plist.forEach(p=>{
+    p.sigWords=Object.entries(p.wm).sort((a,b)=>b[1]-a[1]).slice(0,3).map(e=>e[0]);
+    p.sigEmoji=(Object.entries(p.em2).sort((a,b)=>b[1]-a[1])[0]||[null])[0];
+  });
+  let sessCount=msgs.length?1:0, sessCur=1, sessStart=msgs.length?msgs[0].dt:null, longestSess={count:1,start:sessStart,mins:0};
+  for(let i=1;i<msgs.length;i++){
+    const gap=(msgs[i].dt-msgs[i-1].dt)/60000;
+    if(gap>30){sessCount++; sessCur=1; sessStart=msgs[i].dt;}
+    else{sessCur++; const mins=(msgs[i].dt-sessStart)/60000; if(sessCur>longestSess.count)longestSess={count:sessCur,start:sessStart,mins:Math.round(mins)};}
+  }
+  const daysSpan=dayList.length;
+  const step=msgs.length<1000?100:1000;
+  const nextMilestone=Math.ceil((msgs.length+1)/step)*step;
+  const total=msgs.length;
+  const shares=plist.map(p=>p.msgs/total);
+  const balance=plist.length<2?100:Math.max(0,100-Math.abs(shares[0]-0.5)*220);
+  const allReply=plist.flatMap(p=>p.reply).sort((a,b)=>a-b);
+  const medReply=allReply.length?allReply[Math.floor(allReply.length/2)]:null;
+  const replyScore=medReply==null?50:Math.max(20,100-Math.min(80,medReply/3));
+  const warm=Math.min(100,((love+thanks+laugh)/Math.max(1,total))*900+40);
+  const green=Math.round(Math.max(5,Math.min(98,(balance*0.35)+(replyScore*0.3)+(warm*0.2)+((questions/Math.max(1,total))*300*0.15))));
+  const chem=Math.round(Math.max(5,Math.min(99,green*0.7+Math.min(30,streak*2))));
+  const topEmoji=Object.entries(emojiCount).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const topWords=Object.entries(wordCount).sort((a,b)=>b[1]-a[1]).slice(0,26);
+  let peakHour=0; hours.forEach((v,i)=>{if(v>hours[peakHour])peakHour=i;});
+  const moments=msgs.map(x=>({sender:x.sender,dt:x.dt,text:x.text,score:momentScore(x),reaction:reactionFor(x.text)})).filter(m=>m.score>=3).sort((a,b)=>b.score-a.score).slice(0,5);
+  const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const months=Object.keys(monthMap).sort().map(k=>{const p=k.split("-");return{key:k,label:MN[+p[1]-1]+" "+p[0],count:monthMap[k]};});
+  let busiestDay=null; for(const k in dayCount){if(!busiestDay||dayCount[k]>busiestDay.count)busiestDay={label:k,count:dayCount[k]};}
+  return{plist,total,hours,weekdays,months,busiestDay,topEmoji,topWords,peakHour,first,last,activeDays:dayList.length,streak,longestGap,media,links,deleted,questions,love,sorry,thanks,laugh,weW,iW,balance:Math.round(balance),medReply,green,chem,moments,sessions:{count:sessCount,longest:longestSess},daysSpan,nextMilestone,toNext:nextMilestone-msgs.length};
+}
+function reactionFor(t){
+  const low=t.toLowerCase();
+  if(/😂|🤣|haha|lol|lmao/.test(low))return"🤣💀";
+  if(/❤️|😍|love|miss you|babe|baby/.test(low))return"😍🥰";
+  if(/sorry|sry/.test(low))return"🥺🙏";
+  if(/angry|hate|stupid|idiot|😡|😤/.test(low))return"😤🔥";
+  if(/😴|sleep|good night|tired/.test(low))return"🌙😴";
+  if(/food|eat|hungry|pizza|burger|🍕|🍔/.test(low))return"🤤🍔";
+  if(/money|rich|salary|price|💸|💰/.test(low))return"🤑💸";
+  return"😂🔥";
+}
+function momentScore(x){
+  const t=x.text; let s=0;
+  s+=countHit(t,["haha","lol","lmao","😂","🤣"," হাহা"])*3;
+  s+=(t.match(EMOJI_RE)||[]).length*2;
+  s+=(t.match(/!/g)||[]).length;
+  s+=(t.match(/\b[A-Z]{3,}\b/g)||[]).length*2;
+  if(t.length>90)s+=2;
+  const h=x.dt.getHours(); if(h>=0&&h<=4)s+=2;
+  if(/\?{2,}/.test(t))s+=2;
+  return s;
+}
+function filterMsgs(msgs,f){
+  if(!f)return msgs.slice();
+  let out=msgs;
+  if(f.from){const d=new Date(f.from+"T00:00:00"); if(!isNaN(d))out=out.filter(m=>m.dt>=d);}
+  if(f.to){const d=new Date(f.to+"T23:59:59"); if(!isNaN(d))out=out.filter(m=>m.dt<=d);}
+  if(f.focus)out=out.filter(m=>m.sender===f.focus);
+  return out;
+}
+
+function buildSlides(r){
+  const top=r.plist[0];
+  const wkBest=r.weekdays.indexOf(Math.max(...r.weekdays));
+  const slides=[
+    {title:t("sl1t"),big:r.green+"",sub:F("sl1s",{chem:r.chem,bal:r.balance})},
+    {title:t("sl2t"),big:r.total.toLocaleString(),sub:F("sl2s",{days:r.activeDays,from:r.first.toLocaleDateString(),to:r.last.toLocaleDateString()})},
+  ];
+  if(top)slides.push({title:t("sl3t"),big:top.name,sub:F("sl3s",{n:top.msgs.toLocaleString(),p:Math.round(top.msgs/r.total*100)})});
+  slides.push({title:t("sl4t"),big:fmtMin(r.medReply),sub:t("sl4s")});
+  if(r.topEmoji[0])slides.push({title:t("sl5t"),big:r.topEmoji[0][0],sub:F("sl5s",{n:r.topEmoji[0][1],w:(r.topWords[0]?r.topWords[0][0]:t("none_w"))})});
+  slides.push({title:t("sl6t"),big:r.peakHour+":00",sub:F("sl6s",{wd:WDN[wkBest]})});
+  slides.push({title:t("sl7t"),big:F("sl7b",{n:r.streak}),sub:F("sl7s",{g:fmtMin(r.longestGap)})});
+  slides.push({title:t("sl8t"),big:"❤️ "+r.love,sub:F("sl8s",{laugh:r.laugh,thanks:r.thanks,sorry:r.sorry})});
+  return slides;
+}
+function topBy(plist,key){return [...plist].sort((a,b)=>b[key]-a[key])[0];}
+function med(arr){if(!arr.length)return null;const s=[...arr].sort((a,b)=>a-b);return s[Math.floor(s.length/2)];}
+function buildStory(r){
+  const names=r.plist.length>2?F("and_group",{name:r.plist[0].name}):(r.plist.map(p=>p.name).join(" and ")||"This chat");
+  const top=r.plist[0];
+  const topShare=top?Math.round(top.msgs/r.total*100):0;
+  const te=r.topEmoji.length?r.topEmoji[0][0]:t("none_w");
+  const bday=r.busiestDay?F("story_bday",{day:r.busiestDay.label,n:r.busiestDay.count}):"unknown";
+  return F("story_t",{days:r.daysSpan,names:names,total:r.total.toLocaleString(),green:r.green,chem:r.chem,topbit:(top?F("story_top",{name:top.name,share:topShare}):""),reply:fmtMin(r.medReply),bday:bday,sit:r.sessions.longest.count,emoji:te,streak:r.streak,left:r.toNext,mile:r.nextMilestone.toLocaleString()});
+}
+function render(r){
+  $("results").classList.remove("hidden");
+  $("greenScore").textContent=r.green;
+  $("greenVerdict").textContent=r.green>=80?t("gv1"):r.green>=60?t("gv2"):r.green>=40?t("gv3"):t("gv4");
+  $("chemScore").textContent=r.chem+"/100"; $("balScore").textContent=r.balance+"/100"; $("streakVal").textContent=r.streak+" "+t("days_w");
+  $("storyText").textContent=buildStory(r);
+  $("milestones").innerHTML=
+    '<p class="small" style="margin-bottom:8px">'+F("ms_span",{days:r.daysSpan,from:r.first.toLocaleDateString(),to:r.last.toLocaleDateString()})+'</p>'
+    +'<p class="small" style="margin-bottom:8px">'+F("ms_sit",{n:r.sessions.count,c:r.sessions.longest.count,start:(r.sessions.longest.start?F("ms_start",{when:r.sessions.longest.start.toLocaleString()}):"")})+'</p>'
+    +'<p class="small">'+F("ms_next",{m:r.nextMilestone.toLocaleString(),left:r.toNext})+'</p>';
+  $("kpis").innerHTML=[
+    [r.total.toLocaleString(),t("k_total")],
+    [r.activeDays+" "+t("days_w"),F("k_active",{from:r.first.toLocaleDateString(),to:r.last.toLocaleDateString()})],
+    [fmtMin(r.medReply),t("k_median")],
+    [r.media+"",F("k_media",{links:r.links,deleted:r.deleted})]
+  ].map(x=>'<div class="card"><div class="kpi">'+x[0]+'</div><div class="klabel">'+x[1]+'</div></div>').join("");
+  renderVersus(r); resetGuess();
+  $("people").innerHTML=r.plist.map(p=>{
+    const share=Math.round(p.msgs/r.total*100);
+    const act=window._focus===p.name?" active":"";
+    return '<div class="personRow'+act+'" data-pname="'+encodeURIComponent(p.name)+'" tabindex="0" role="button" aria-label="Focus report on '+escapeHtml(p.name)+'" style="margin-bottom:14px"><div style="display:flex;justify-content:space-between"><b>'+escapeHtml(p.name)+'</b><span>'+F("pr_msgs",{n:p.msgs.toLocaleString(),share:share})+'</span></div><div class="bar"><i style="width:'+share+'%"></i></div><p class="small">'+F("pr_line",{w:(p.words/Math.max(1,p.msgs)).toFixed(1),s:p.start,r:fmtMin(med(p.reply)),e:p.emojis})+'</p><p class="small">'+F("pr_sig",{words:(p.sigWords&&p.sigWords.length?p.sigWords.map(escapeHtml).join(", "):t("pr_none"))})+(p.sigEmoji?(" "+F("pr_fav",{e:p.sigEmoji})):"")+'</p></div>';
+  }).join("");
+  document.querySelectorAll("[data-pname]").forEach(el=>{
+    const name=decodeURIComponent(el.dataset.pname);
+    const go=()=>toggleFocus(name);
+    el.onclick=go;
+    el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}};
+  });
+  const order=[1,2,3,4,5,6,0]; const wMax=Math.max(...r.weekdays,1);
+  $("weekdayChart").innerHTML=order.map(d=>'<div class="col"><div class="val">'+r.weekdays[d]+'</div><div class="fill" style="height:'+Math.max(4,Math.round(r.weekdays[d]/wMax*100))+'%"></div><div class="lab">'+WDN[d].slice(0,3)+'</div></div>').join("");
+  const mMax=Math.max(...r.months.map(m=>m.count),1);
+  $("monthChart").innerHTML=r.months.length?r.months.map(m=>'<div class="mrow"><span>'+m.label+'</span><div class="track"><div class="fill" style="width:'+Math.round(m.count/mMax*100)+'%"></div></div><span>'+m.count.toLocaleString()+'</span></div>').join(""):'<p class="small">'+t("no_month")+'</p>';
+  $("busyDayInfo").textContent=r.busiestDay?F("busy_t",{day:r.busiestDay.label,n:r.busiestDay.count.toLocaleString(),wd:WDN[r.weekdays.indexOf(Math.max(...r.weekdays))]}):"";
+  const awards=[];
+  const add=(t,p)=>{if(p)awards.push('<span class="pill pink">'+t+": "+escapeHtml(p.name)+'</span>');};
+  add(t("aw_talk"),topBy(r.plist,"msgs")); add(t("aw_emoji"),topBy(r.plist,"emojis")); add(t("aw_start"),topBy(r.plist,"start")); add(t("aw_double"),topBy(r.plist,"double")); add(t("aw_night"),topBy(r.plist,"night")); add(t("aw_sorry"),topBy(r.plist,"sorry")); add(t("aw_comic"),topBy(r.plist,"laugh")); add(t("aw_curious"),topBy(r.plist,"questions"));
+  const dry=[...r.plist].filter(p=>p.msgs>5).sort((a,b)=>(a.words/a.msgs)-(b.words/b.msgs))[0]; add(t("aw_dry"),dry);
+  $("awards").innerHTML=awards.join("")||'<p class="small">'+t("aw_none")+'</p>';
+  const meter=(label,val,max,color)=>'<p style="margin-top:10px"><b>'+label+'</b> '+val+'</p><div class="bar"><i style="width:'+Math.min(100,val/Math.max(1,max)*100)+'%;background:'+color+'"></i></div>';
+  const mx=Math.max(r.love,r.sorry,r.thanks,r.laugh,1);
+  $("meters").innerHTML=meter(t("m_love"),r.love,mx,"#ff5c8a")+meter(t("m_sorry"),r.sorry,mx,"#7c5cff")+meter(t("m_thanks"),r.thanks,mx,"#2ee6a8")+meter(t("m_laugh"),r.laugh,mx,"#ffb347");
+  $("weRatio").textContent=F("we_t",{we:r.weW,i:r.iW})+(r.weW>r.iW?t("we_team"):t("we_solo"));
+  $("emojis").innerHTML=r.topEmoji.length?r.topEmoji.map(x=>x[0]+" "+x[1]).join(" &nbsp; "):t("no_emoji");
+  $("cloud").innerHTML=r.topWords.map((x,i)=>'<span style="font-size:'+Math.max(13,30-i)+'px;color:'+(i%3===0?"#ff8fb3":i%3===1?"#ffd9a0":"#c9b8ff")+'">'+escapeHtml(x[0])+'</span>').join("");
+  const maxH=Math.max(...r.hours,1);
+  $("heat").innerHTML=r.hours.map(v=>'<div title="'+v+' messages" style="background:rgba(255,92,138,'+(0.08+0.92*v/maxH)+')"></div>').join("");
+  $("peakInfo").textContent=F("peak_t",{h:r.peakHour,n:r.hours[r.peakHour]});
+  $("silenceInfo").textContent=F("sil_t",{g:fmtMin(r.longestGap),d:r.deleted});
+  $("moments").innerHTML=r.moments.length?r.moments.map((m,i)=>{
+    const snip=m.text.length>220?m.text.slice(0,220)+"...":m.text;
+    return '<div class="card" style="margin-bottom:10px;background:#ffffff0a"><div style="font-size:30px">'+m.reaction+'</div><p style="margin:6px 0"><b>'+escapeHtml(m.sender)+'</b> <span class="small">'+m.dt.toLocaleString()+'</span></p><p style="line-height:1.5">“'+escapeHtml(snip)+'”</p><div class="mt"><button class="btn" data-moment="'+i+'">'+t("meme_btn")+'</button></div></div>';
+  }).join(""):'<p class="small">'+t("moments_none")+'</p>';
+  document.querySelectorAll("[data-moment]").forEach(b=>b.onclick=()=>makeMomentCard(r.moments[+b.dataset.moment]));
+  window._report=r;
+  window._shareText=F("share_t",{green:r.green,chem:r.chem,total:r.total.toLocaleString(),streak:r.streak});
+  let shareFull=window._shareText;
+  try{if(location.protocol==="http:"||location.protocol==="https:")shareFull+=" "+location.href.split("#")[0];}catch(e){}
+  window._shareFull=shareFull;
+  $("waShare").href="https://wa.me/?text="+encodeURIComponent(shareFull);
+  window._slides=buildSlides(r); window._slideIdx=0; stopSlides(); showSlide(0);
+  const fs=$("filterStatus");
+  if(fs){
+    let bits=[];
+    if(window._focus)bits.push(F("fs_focus",{name:window._focus}));
+    if(window._dateFrom||window._dateTo)bits.push(F("fs_dates",{a:(window._dateFrom||"start"),b:(window._dateTo||"end")}));
+    fs.textContent=(bits.length?bits.join(". ")+". ":t("fs_full"))+F("fs_view",{n:r.total.toLocaleString()})+(window._allTotal&&window._allTotal>=60000?" Large chat note: "+window._allTotal.toLocaleString()+" messages were read in total, with no cap. On a slow phone a very large chat can take a little longer, that is normal.":"");
+  }
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+const esc=escapeHtml;
+function showErr(t){$("err").textContent=t;$("err").classList.remove("hidden");}
+let slideTimer=null;
+function showSlide(i){
+  const s=window._slides; if(!s||!s.length)return;
+  window._slideIdx=((i%s.length)+s.length)%s.length;
+  const sl=s[window._slideIdx];
+  $("slideTitle").textContent=sl.title;
+  $("slideBig").textContent=sl.big;
+  $("slideSub").textContent=sl.sub;
+  $("slideCount").textContent="Slide "+(window._slideIdx+1)+" of "+s.length;
+}
+function stopSlides(){if(slideTimer){clearInterval(slideTimer);slideTimer=null;const b=$("slidePlay");if(b)b.textContent=t("slide_play");}}
+function toggleFocus(name){
+  window._focus=(window._focus===name)?null:name;
+  applyView(false);
+}
+function currentFiltered(){
+  return filterMsgs(window._allMsgs||[],{from:window._dateFrom||null,to:window._dateTo||null,focus:window._focus||null});
+}
+function applyView(scroll){
+  const msgs=currentFiltered();
+  if(msgs.length<3){showErr(t("err_filter"));return;}
+  $("err").classList.add("hidden");
+  window._viewMsgs=msgs;
+  render(analyze(msgs));
+  if(scroll)$("results").scrollIntoView({behavior:"smooth"});
+}
+function run(text){
+  $("err").classList.add("hidden");
+  const msgs=anyParse(text);
+  if(msgs.length<3){showErr(t("err_file"));return;}
+  window._allMsgs=msgs; window._allTotal=msgs.length; window._viewMsgs=msgs;
+  window._focus=null; window._dateFrom=null; window._dateTo=null;
+  const df=$("dateFrom"),dtp=$("dateTo");
+  if(df&&dtp&&msgs.length){
+    const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    df.min=iso(msgs[0].dt); df.max=iso(msgs[msgs.length-1].dt);
+    dtp.min=df.min; dtp.max=df.max; df.value=""; dtp.value="";
+  }
+  render(analyze(msgs));
+  $("results").scrollIntoView({behavior:"smooth"});
+}
+const DEMO=[
+"12/05/2026, 9:02 pm - Ayaan: Hey, did you see the game? 😂😂",
+"12/05/2026, 9:03 pm - Mira: Yes! I loved it, thank you for sending it ❤️",
+"12/05/2026, 9:04 pm - Mira: That last goal was crazy right?",
+"12/05/2026, 9:05 pm - Ayaan: So crazy haha, sorry I replied late",
+"12/05/2026, 9:06 pm - Mira: It is okay babe, we make a good team 😍",
+"12/05/2026, 11:48 pm - Ayaan: Good night, love you, talk tomorrow?",
+"13/05/2026, 7:10 am - Mira: Good morning! I started the chat today haha 😂",
+"13/05/2026, 7:12 am - Ayaan: Morning! Thanks for waking me, sorry sorry",
+"13/05/2026, 7:13 am - Mira: <Media omitted>",
+"13/05/2026, 7:15 am - Ayaan: That photo is perfect, we laughed so much 🤣",
+"14/05/2026, 8:00 pm - Mira: Did we decide the plan? I miss you",
+"14/05/2026, 8:02 pm - Ayaan: Yes we did, love this plan, thank you ❤️❤️"
+].join("\n");
+$("demoBtn").onclick=()=>run(DEMO);
+$("pasteBtn").onclick=()=>run($("paste").value);
+$("slideNext").onclick=()=>{stopSlides();showSlide((window._slideIdx||0)+1);};
+$("slidePrev").onclick=()=>{stopSlides();showSlide((window._slideIdx||0)-1);};
+$("slidePlay").onclick=()=>{
+  if(slideTimer){stopSlides();return;}
+  showSlide(window._slideIdx||0);
+  slideTimer=setInterval(()=>showSlide((window._slideIdx||0)+1),3500);
+  $("slidePlay").textContent="❚❚";
+};
+$("wrappedBtn").onclick=()=>{$("wrappedCard").scrollIntoView({behavior:"smooth"});$("slidePlay").click();};
+$("filterBtn").onclick=()=>{window._dateFrom=$("dateFrom").value||null;window._dateTo=$("dateTo").value||null;applyView(false);};
+$("clearFilterBtn").onclick=()=>{window._focus=null;window._dateFrom=null;window._dateTo=null;$("dateFrom").value="";$("dateTo").value="";applyView(false);};
+$("printBtn").onclick=()=>window.print();
+$("copyShareBtn").onclick=async()=>{
+  const t=window._shareFull||window._shareText||"";
+  if(!t)return;
+  let ok=false;
+  try{await navigator.clipboard.writeText(t);ok=true;}catch(e){
+    const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{ok=document.execCommand("copy");}catch(e2){}ta.remove();
+  }
+  $("shareNote").textContent=ok?t("copied_share"):t("copy_fail")+t;
+};
+$("copyStoryBtn").onclick=async()=>{
+  const t=$("storyText").textContent||"";
+  if(!t)return;
+  let ok=false;
+  try{await navigator.clipboard.writeText(t);ok=true;}catch(e){
+    const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{ok=document.execCommand("copy");}catch(e2){}ta.remove();
+  }
+  $("copyStoryBtn").textContent=ok?t("story_copied"):t("story_copy_fail");
+};
+function compareReports(a,b){
+  const rows=[
+    [t("k_total"),a.total,b.total],
+    [t("green_name"),a.green,b.green],
+    [t("pill_chem"),a.chem,b.chem],
+    [t("bal_name"),a.balance,b.balance],
+    [t("act_name"),a.activeDays,b.activeDays],
+    [t("streak_name"),a.streak,b.streak],
+    [t("sit_name"),a.sessions.count,b.sessions.count],
+    [t("q_name"),a.questions,b.questions],
+    [t("laugh_name"),a.laugh,b.laugh]
+  ];
+  return rows.map(rw=>{
+    const d=rw[2]-rw[1];
+    return{label:rw[0],first:rw[1],second:rw[2],delta:d,deltaText:(d>0?"+":"")+d};
+  });
+}
+function renderCompare(b){
+  const a=window._report;
+  const out=$("compareResult");
+  if(!a){out.innerHTML='<div class="err">'+t("cmp_err")+'</div>';return;}
+  const rows=compareReports(a,b);
+  out.innerHTML='<table><tr><th>'+t("cmp_what")+'</th><th>'+t("cmp_first")+'</th><th>'+t("cmp_second")+'</th><th>'+t("cmp_change")+'</th></tr>'
+    +rows.map(rw=>'<tr><td>'+rw.label+'</td><td>'+rw.first+'</td><td>'+rw.second+'</td><td><b>'+rw.deltaText+'</b></td></tr>').join("")
+    +'</table><p class="small mt">'+F("cmp_note",{a:fmtMin(a.medReply),b:fmtMin(b.medReply)})+'</p>';
+}
+const DEMO2=[
+"20/06/2026, 10:00 pm - Ayaan: Hey, long time, how are you?",
+"20/06/2026, 10:25 pm - Mira: Hey! I am good, sorry for the slow reply",
+"20/06/2026, 10:26 pm - Mira: What have you been doing?",
+"21/06/2026, 9:00 am - Ayaan: Not much haha, work mostly",
+"21/06/2026, 9:40 am - Mira: Same here, thank you for checking in ❤️"
+].join("\n");
+$("compareDemoBtn").onclick=()=>{
+  const msgs=anyParse(DEMO2);
+  if(msgs.length<3){$("compareResult").innerHTML='<div class="err">The sample second chat could not be read.</div>';return;}
+  renderCompare(analyze(msgs));
+};
+$("compareDrop").onclick=()=>$("compareFile").click();
+$("compareFile").onchange=e=>handleCompareFile(e.target.files[0]);
+const cdrop=$("compareDrop");
+["dragover","dragleave","drop"].forEach(ev=>cdrop.addEventListener(ev,e=>{e.preventDefault();if(ev==="drop"&&e.dataTransfer.files[0])handleCompareFile(e.dataTransfer.files[0]);}));
+async function handleCompareFile(f){
+  if(!f)return;
+  try{
+    let text="";
+    if(f.name.toLowerCase().endsWith(".zip")){
+      if(!window.JSZip){$("compareResult").innerHTML='<div class="err">ZIP support library did not load. Please use the .txt export.</div>';return;}
+      const zip=await JSZip.loadAsync(f);
+      const txtName=Object.keys(zip.files).find(n=>n.toLowerCase().endsWith(".txt"));
+      if(!txtName){$("compareResult").innerHTML='<div class="err">No .txt chat file found inside that ZIP.</div>';return;}
+      text=await zip.files[txtName].async("string");
+    }else text=await f.text();
+    const msgs=anyParse(text);
+    if(msgs.length<3){$("compareResult").innerHTML='<div class="err">That file does not look like a WhatsApp export with at least 3 messages.</div>';return;}
+    renderCompare(analyze(msgs));
+  }catch(e){$("compareResult").innerHTML='<div class="err">That file could not be read. Please try the .txt export.</div>';}
+}
+$("drop").onclick=()=>$("file").click();
+$("file").onchange=e=>handleFile(e.target.files[0]);
+const drop=$("drop");
+["dragover","dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();if(ev==="drop"&&e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);}));
+async function handleFile(f){
+  if(!f)return;
+  try{
+    if(f.name.toLowerCase().endsWith(".zip")){
+      if(!window.JSZip){showErr("ZIP support library did not load. Please export as .txt instead, or check your connection.");return;}
+      const zip=await JSZip.loadAsync(f);
+      const txtName=Object.keys(zip.files).find(n=>n.toLowerCase().endsWith(".txt"));
+      if(!txtName){showErr("No .txt chat file found inside that ZIP.");return;}
+      run(await zip.files[txtName].async("string"));
+    }else{
+      run(await f.text());
+    }
+  }catch(e){showErr("That file could not be read. Please try the .txt export.");}
+}
+
+function battleRounds(A,B){
+  const cats=[
+    {label:t("v_msgs"),a:A.msgs,b:B.msgs,low:false},
+    {label:t("v_words"),a:A.words,b:B.words,low:false},
+    {label:t("v_emojis"),a:A.emojis,b:B.emojis,low:false},
+    {label:t("v_starts"),a:A.start,b:B.start,low:false},
+    {label:t("v_fast"),a:(med(A.reply)==null?99999:med(A.reply)),b:(med(B.reply)==null?99999:med(B.reply)),low:true,fmt:true},
+    {label:t("v_laugh"),a:A.laugh,b:B.laugh,low:false}
+  ];
+  let wa=0,wb=0;
+  const rounds=cats.map(c=>{
+    let w="tie";
+    if(c.a!==c.b){ w=(c.low? c.a<c.b : c.a>c.b)? "A":"B"; }
+    if(w==="A")wa++; if(w==="B")wb++;
+    return{label:c.label,a:c.a,b:c.b,winner:w,fmt:!!c.fmt};
+  });
+  const champ=wa===wb?null:(wa>wb?A.name:B.name);
+  return{rounds,champ,wa,wb};
+}
+function fmtRoundVal(v,fmt){ return fmt? (v>=99999? t("no_data") : (v>=90? Math.round(v/60)+" h" : Math.round(v)+" min")) : v.toLocaleString(); }
+function renderVersus(r){
+  const card=$("versusCard");
+  if(!card)return;
+  if(r.plist.length!==2){card.classList.add("hidden");window._battle=null;return;}
+  const A=r.plist[0],B=r.plist[1];
+  const bt=battleRounds(A,B);
+  window._battle={A,B,bt};
+  card.classList.remove("hidden");
+  $("versusBody").innerHTML=
+    '<p style="font-weight:800;font-size:17px;margin:4px 0 10px">'+esc(A.name)+' <span style="color:var(--bad)">VS</span> '+esc(B.name)+'</p>'
+    +bt.rounds.map(rd=>{
+      const wn=rd.winner==="tie"?t("v_tied"):F("v_takes",{name:(rd.winner==="A"?A.name:B.name)});
+      return '<div style="display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line)"><span>'+esc(rd.label)+'</span><span style="text-align:right"><b>'+esc(fmtRoundVal(rd.a,rd.fmt))+'</b> vs <b>'+esc(fmtRoundVal(rd.b,rd.fmt))+'</b><br><span class="small">'+esc(wn)+'</span></span></div>';
+    }).join("")
+    +'<p style="font-weight:800;margin-top:10px">'+esc(bt.champ?F("v_champ_t",{name:bt.champ,a:bt.wa,b:bt.wb}):F("v_dead_t",{a:bt.wa}))+'</p>';
+}
+function downloadBattle(){
+  const bt=window._battle; if(!bt)return;
+  const A=bt.A,B=bt.B,info=bt.bt;
+  const c=document.createElement("canvas"); c.width=1080; c.height=1920;
+  const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,0,1920); g.addColorStop(0,"#141428"); g.addColorStop(1,"#1d1030");
+  x.fillStyle=g; x.fillRect(0,0,1080,1920);
+  x.fillStyle="#2ee6a8"; x.beginPath(); x.arc(90,110,34,0,7); x.fill();
+  x.fillStyle="#fff"; x.font="800 30px Arial"; x.fillText("CV",72,121);
+  x.font="700 34px Arial"; x.fillText("ChatVibe Versus Battle",150,122);
+  x.textAlign="center";
+  x.font="900 64px Arial"; x.fillStyle="#ff5c8a"; x.fillText(A.name.slice(0,16),540,300);
+  x.fillStyle="#fff"; x.font="900 50px Arial"; x.fillText("VS",540,380);
+  x.fillStyle="#7c5cff"; x.font="900 64px Arial"; x.fillText(B.name.slice(0,16),540,470);
+  x.textAlign="left"; let y=600;
+  info.rounds.forEach(rd=>{
+    x.fillStyle="#ffffff"; x.font="700 36px Arial"; x.fillText(rd.label,80,y);
+    const val=fmtRoundVal(rd.a,rd.fmt)+"  vs  "+fmtRoundVal(rd.b,rd.fmt);
+    x.font="600 34px Arial"; x.fillStyle="#cfcfe8"; x.fillText(val,80,y+48);
+    const wn=rd.winner==="tie"?t("v_tiedshort"):F("v_wins",{name:(rd.winner==="A"?A.name:B.name)});
+    x.fillStyle=rd.winner==="tie"?"#ffb347":"#2ee6a8"; x.font="800 34px Arial"; x.fillText(wn,700,y+48);
+    y+=130;
+  });
+  x.textAlign="center";
+  x.fillStyle="#2ee6a8"; x.font="900 58px Arial";
+  x.fillText(info.champ?F("v_champ",{name:info.champ}):t("v_dead"),540,1500);
+  x.fillStyle="#9a9ac0"; x.font="600 30px Arial";
+  x.fillText("Rounds "+info.wa+" to "+info.wb+" / Made with ChatVibe Analyzer",540,1580);
+  x.fillText("Scores and counts only, no message text",540,1640);
+  const a=document.createElement("a"); a.download="chatvibe-versus.png"; a.href=c.toDataURL("image/png"); a.click();
+}
+function guessPool(msgs){
+  return (msgs||[]).filter(m=>m.text&&m.text.trim().length>=12&&m.text!=="(media)"&&m.text!=="(message deleted)"&&!/omitted|is end-to-end encrypted/i.test(m.text));
+}
+function resetGuess(){
+  const b=$("guessBody"); if(!b)return;
+  window._g=null;
+  const n=guessPool(window._viewMsgs||[]).length;
+  b.innerHTML= n>=3
+    ? '<button class="btn" id="guessStartBtn" type="button">'+F("g_start",{n:Math.min(10,n)})+'</button>'
+    : '<p class="small">'+t("g_notenough")+'</p>';
+  const s=$("guessStartBtn"); if(s)s.addEventListener("click",guessStart);
+}
+function guessStart(){
+  const pool=guessPool(window._viewMsgs||[]).slice();
+  if(pool.length<3)return;
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=pool[i];pool[i]=pool[j];pool[j]=t;}
+  window._g={pool:pool.slice(0,10),idx:0,score:0,done:false};
+  guessShow();
+}
+function guessShow(){
+  const g=window._g; if(!g)return;
+  const m=g.pool[g.idx];
+  const people=[...new Set((window._viewMsgs||[]).map(x=>x.sender))];
+  $("guessBody").innerHTML=
+    '<p class="small mb">'+F("g_round",{i:g.idx+1,n:g.pool.length,s:g.score})+'</p>'
+    +'<p style="font-size:18px;font-weight:700;line-height:1.5;border-left:4px solid var(--acc);padding-left:12px;margin-bottom:12px">'+esc(m.text.slice(0,220))+'</p>'
+    +'<div style="display:flex;flex-wrap:wrap;gap:8px">'+people.map(nm=>'<button class="btn alt" type="button" data-guess="'+esc(nm)+'">'+esc(nm)+'</button>').join("")+'</div>'
+    +'<p class="small mt" id="guessFb"></p>';
+  $("guessBody").querySelectorAll("[data-guess]").forEach(btn=>btn.addEventListener("click",()=>guessAnswer(btn.getAttribute("data-guess"))));
+}
+function guessAnswer(name){
+  const g=window._g; if(!g||g.done)return;
+  const m=g.pool[g.idx];
+  const right=name===m.sender;
+  if(right)g.score++;
+  const fb=$("guessFb");
+  if(fb)fb.textContent=(right?t("g_correct"):t("g_wrong"))+F("g_was",{name:m.sender,s:g.score});
+  const nb=document.createElement("button"); nb.className="btn mt"; nb.type="button";
+  nb.textContent= g.idx+1>=g.pool.length? t("g_see") : t("g_next");
+  nb.addEventListener("click",()=>{
+    g.idx++;
+    if(g.idx>=g.pool.length){ g.done=true;
+      $("guessBody").innerHTML='<p style="font-size:20px;font-weight:800;margin-bottom:8px">'+F("g_final",{s:g.score,n:g.pool.length})+'</p><p class="small mb">'+(g.score>=8?t("g_v1"):g.score>=5?t("g_v2"):t("g_v3"))+'</p><button class="btn" id="guessStartBtn" type="button">'+t("g_again")+'</button>';
+      $("guessStartBtn").addEventListener("click",guessStart);
+    } else guessShow();
+  });
+  if(fb)fb.after(nb);
+  $("guessBody").querySelectorAll("[data-guess]").forEach(b=>b.disabled=true);
+}
+$("battleBtn").addEventListener("click",downloadBattle);
+$("guessStartBtn").addEventListener("click",guessStart);
+
+$("jsonBtn").onclick=()=>{
+  if(!window._report)return;
+  const blob=new Blob([JSON.stringify(window._report,null,2)],{type:"application/json"});
+  dl(URL.createObjectURL(blob),"chatvibe-report.json");
+};
+$("cardBtn").onclick=()=>{
+  const r=window._report; if(!r)return;
+  const c=$("shareCanvas"),x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,1080,1920); g.addColorStop(0,"#241047"); g.addColorStop(.55,"#571c46"); g.addColorStop(1,"#0b0714");
+  x.fillStyle=g; x.fillRect(0,0,1080,1920);
+  x.fillStyle="#ffffff"; x.textAlign="center";
+  x.font="bold 64px system-ui"; x.fillText("ChatVibe Report",540,180);
+  x.font="28px system-ui"; x.fillStyle="#d9cfff"; x.fillText("Our chat, measured for fun",540,235);
+  x.font="900 260px system-ui"; x.fillStyle="#2ee6a8"; x.fillText(r.green,540,560);
+  x.font="bold 44px system-ui"; x.fillStyle="#ffffff"; x.fillText("GREEN FLAG SCORE",540,640);
+  const rows=[["Chemistry",r.chem+"/100"],["Total messages",r.total.toLocaleString()],["Longest streak",r.streak+" days"],["Median reply",fmtMin(r.medReply)],["Top emoji",r.topEmoji[0]?r.topEmoji[0][0]:"none"],["Peak hour",r.peakHour+":00"]];
+  x.textAlign="left"; let y=820;
+  for(const row of rows){x.font="36px system-ui";x.fillStyle="#b9aed6";x.fillText(row[0],140,y);x.font="bold 40px system-ui";x.fillStyle="#fff";x.fillText(row[1],620,y);y+=105;}
+  x.textAlign="center"; x.font="bold 38px system-ui"; x.fillStyle="#ffb3c6";
+  const names=r.plist.slice(0,2).map(p=>p.name).join("  x  "); wrap(x,names,540,1580,860,48);
+  x.font="26px system-ui"; x.fillStyle="#b9aed6"; x.fillText("ChatVibe Analyzer. 100 percent private, runs in your browser.",540,1780);
+  dl(c.toDataURL("image/png"),"chatvibe-story-card.png");
+};
+function wrap(x,text,cx,y,maxW,lh){const words=text.split(" ");let line="",yy=y;for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW){x.fillText(line,cx,yy);line=w;yy+=lh;}else line=t;}x.fillText(line,cx,yy);}
+function themeGrad(x,theme,w,h){
+  const g=x.createLinearGradient(0,0,w,h);
+  if(theme==="pink"){g.addColorStop(0,"#5c1030");g.addColorStop(1,"#170714");}
+  else if(theme==="gold"){g.addColorStop(0,"#6b4a00");g.addColorStop(1,"#171006");}
+  else if(theme==="ocean"){g.addColorStop(0,"#063a5c");g.addColorStop(1,"#061018");}
+  else{g.addColorStop(0,"#241047");g.addColorStop(.55,"#571c46");g.addColorStop(1,"#0b0714");}
+  x.fillStyle=g;x.fillRect(0,0,w,h);
+}
+function makeMomentCard(m){
+  if(!m)return;
+  const c=$("shareCanvas"),x=c.getContext("2d");
+  themeGrad(x,"violet",1080,1920);
+  x.textAlign="center";x.fillStyle="#fff";
+  x.font="bold 58px system-ui";x.fillText("Funniest Moment",540,170);
+  x.font="150px system-ui";x.fillText(m.reaction,540,380);
+  x.font="bold 40px system-ui";x.fillStyle="#ffb3c6";x.fillText(m.sender,540,540);
+  x.font="30px system-ui";x.fillStyle="#b9aed6";x.fillText(m.dt.toLocaleString(),540,595);
+  x.fillStyle="#ffffff";x.font="46px system-ui";
+  const txt="“"+(m.text.length>340?m.text.slice(0,340)+"...":m.text)+"”";
+  wrapLines(x,txt,540,760,880,64);
+  x.font="26px system-ui";x.fillStyle="#b9aed6";x.fillText("ChatVibe Analyzer. Private, in your browser.",540,1780);
+  dl(c.toDataURL("image/png"),"chatvibe-funny-moment.png");
+}
+function wrapLines(x,text,cx,y,maxW,lh){
+  const words=text.split(/\s+/);let line="",yy=y;
+  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW&&line){x.fillText(line,cx,yy);line=w;yy+=lh;if(yy>1650)break;}else line=t;}
+  if(line&&yy<=1650)x.fillText(line,cx,yy);
+}
+let shotImg=null,shotEmoji="🤣💀";
+const EMOJIS=["🤣💀","😂🔥","😍🥰","🥺🙏","😤🔥","🌙😴","🤑💸","🤯","🐱","👀"];
+$("emojiPick").innerHTML=EMOJIS.map(e=>'<button class="btn alt" style="font-size:24px;padding:9px 13px;margin:3px" data-emoji="'+e+'">'+e+'</button>').join("");
+document.querySelectorAll("[data-emoji]").forEach(b=>b.onclick=()=>{shotEmoji=b.dataset.emoji;});
+$("shotDrop").onclick=()=>$("shotFile").click();
+$("shotFile").onchange=e=>loadShot(e.target.files[0]);
+const sd=$("shotDrop");
+["dragover","dragleave","drop"].forEach(ev=>sd.addEventListener(ev,e=>{e.preventDefault();if(ev==="drop"&&e.dataTransfer.files[0])loadShot(e.dataTransfer.files[0]);}));
+function loadShot(f){
+  if(!f)return;
+  const url=URL.createObjectURL(f);
+  $("shotPreview").src=url;
+  const img=new Image();
+  img.onload=()=>{shotImg=img;$("shotControls").classList.remove("hidden");drawShot();};
+  img.src=url;
+}
+function drawShot(){
+  if(!shotImg)return;
+  const c=$("storyCanvas");c.classList.remove("hidden");
+  const x=c.getContext("2d");
+  themeGrad(x,$("shotTheme").value,1080,1920);
+  x.textAlign="center";x.fillStyle="#fff";x.font="bold 56px system-ui";
+  x.fillText("Chat Story",540,150);
+  const bx=70,by=220,bw=940,bh=1180;
+  x.save();
+  if(x.roundRect){x.beginPath();x.roundRect(bx,by,bw,bh,36);x.clip();}
+  else x.beginPath(),x.rect(bx,by,bw,bh),x.clip();
+  const sc=Math.max(bw/shotImg.width,bh/shotImg.height);
+  const dw=shotImg.width*sc,dh=shotImg.height*sc;
+  x.drawImage(shotImg,bx+(bw-dw)/2,by+(bh-dh)/2,dw,dh);
+  x.restore();
+  x.strokeStyle="#ffffff55";x.lineWidth=4;if(x.roundRect){x.beginPath();x.roundRect(bx,by,bw,bh,36);x.stroke();}
+  x.font="170px system-ui";x.textAlign="right";x.fillText(shotEmoji,1010,1620);
+  x.textAlign="center";x.fillStyle="#fff";x.font="bold 46px system-ui";
+  wrapLines(x,$("shotCaption").value||"He really said this",540,1560,860,58);
+  x.font="26px system-ui";x.fillStyle="#d9cfff";x.fillText("Made with ChatVibe Screenshot Story Studio",540,1825);
+  $("shotDl").disabled=false;
+}
+$("shotTheme").onchange=drawShot;
+$("shotCaption").oninput=drawShot;
+$("shotMake").onclick=drawShot;
+$("shotDl").onclick=()=>{if(shotImg)dl($("storyCanvas").toDataURL("image/png"),"chatvibe-screenshot-story.png");};
+function dl(href,name){const a=document.createElement("a");a.href=href;a.download=name;a.click();}
+try{const saved=localStorage.getItem("cv_lang");if(saved&&I18N[saved])LANG=saved;else{const bl=(navigator.language||"en").slice(0,2);if(I18N[bl])LANG=bl;}}catch(e){}
+$("langSel").addEventListener("change",e=>setLang(e.target.value,true));
+setLang(LANG,false);
+</script>
+</body>
+</html>
