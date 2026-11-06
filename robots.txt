@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mrmxblack.github.io/chatvibe/sitemap.xml

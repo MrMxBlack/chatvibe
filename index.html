@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChatVibe Analyzer: WhatsApp and Telegram Chat Relationship Report, Green Flag Score and Chat Wrapped</title>
-<meta name="description" content="Free private WhatsApp chat analyzer. Who texts more, who replies faster, Green Flag Score, chat chemistry, top emojis, word cloud, heatmap, streaks and a story ready share card. Everything runs in your browser, nothing is uploaded.">
+<meta name="description" content="Free private WhatsApp and Telegram chat analyzer. Who texts more, who texts first, who replies faster, Green Flag Score, chat chemistry, top emojis, streaks and a story ready share card. Everything runs in your browser, nothing is uploaded.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0b0714">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -28,11 +28,14 @@
 {"@type":"Question","name":"Can I analyze a WhatsApp group chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. ChatVibe shows up to 8 participants with per person message counts, replies, starts, emojis and fun awards. You can also tap a person to focus the whole report on them."}},
 {"@type":"Question","name":"What does a WhatsApp chat analyzer show?","acceptedAnswer":{"@type":"Answer","text":"Message counts and share per person, words per message, median reply time, who starts conversations, top emojis, most used words, activity by hour, weekday and month, longest streak, longest silence, media, link and deleted message counts, plus fun scores like the Green Flag Score and Chat Chemistry."}},
 {"@type":"Question","name":"Is ChatVibe free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every feature is free, with no signup, no premium tier and no ads inside the tool."}},
-{"@type":"Question","name":"Why does my export show zero messages?","acceptedAnswer":{"@type":"Answer","text":"Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line."}}
+{"@type":"Question","name":"Why does my export show zero messages?","acceptedAnswer":{"@type":"Answer","text":"Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line."}},{"@type":"Question","name":"Can I analyze a Telegram chat?","acceptedAnswer":{"@type":"Answer","text":"Yes. In Telegram Desktop, open the chat menu and choose Export Chat History, pick the JSON format, then drop the result.json file into ChatVibe. The same report, scores, awards and Wrapped show are generated, still entirely on your device."}},{"@type":"Question","name":"How can I see who texts first and who replies faster?","acceptedAnswer":{"@type":"Answer","text":"ChatVibe counts a conversation start whenever a message arrives more than 6 hours after the previous one, and credits it to that sender. Reply speed is the median time each person takes to answer when the sender changes, ignoring gaps over 12 hours. Both appear in the report for every participant."}},{"@type":"Question","name":"Does ChatVibe work with iPhone WhatsApp exports?","acceptedAnswer":{"@type":"Answer","text":"Yes. iPhone exports arrive as a .zip file, and ChatVibe opens the zip in your browser and reads the chat inside it. Android .txt exports work directly too, in both cases with media excluded."}}
 ]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"ChatVibe Analyzer","applicationCategory":"UtilitiesApplication","operatingSystem":"Any, in a web browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free private WhatsApp chat analyzer that runs entirely in the browser."}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to analyze a WhatsApp or Telegram chat with ChatVibe","step":[{"@type":"HowToStep","name":"Open the chat","text":"Open the WhatsApp or Telegram chat you want to analyze."},{"@type":"HowToStep","name":"Export without media","text":"In WhatsApp, tap the contact or group name or the three dot menu, choose More and then Export Chat, and pick Without Media. In Telegram Desktop, choose Export Chat History in JSON format."},{"@type":"HowToStep","name":"Drop the file into ChatVibe","text":"Save the .txt, .zip or result.json file and drop it into the ChatVibe Analyzer on this page."},{"@type":"HowToStep","name":"Read your report","text":"ChatVibe calculates your report in your browser: Green Flag Score, Chat Chemistry, who texts more, who texts first, who replies faster, top emojis, streaks and a shareable story card."}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -147,6 +150,8 @@ h1{color:#111}h1 .g{color:#111;-webkit-text-fill-color:#111}
 <a href="#pasteCard" data-i18n="nav_analyzer">Analyzer</a>
 <a href="#studio" data-i18n="nav_studio">Story Studio</a>
 <a href="#faqBox" data-i18n="nav_faq">FAQ</a>
+<a href="privacy.html">Privacy Policy</a>
+<a href="https://github.com/MrMxBlack/chatvibe" target="_blank" rel="noopener">GitHub</a>
 </nav>
 <select id="langSel" aria-label="Language" style="background:#17122b;color:#fff;border:1px solid #ffffff2b;border-radius:10px;padding:8px 10px;font-weight:700"><option value="en">English</option><option value="bn">বাংলা</option><option value="hi">हिन्दी</option><option value="es">Español</option><option value="pt">Português</option><option value="id">Bahasa Indonesia</option></select>
 </header>
@@ -375,6 +380,9 @@ h1{color:#111}h1 .g{color:#111;-webkit-text-fill-color:#111}
 <details class="mt"><summary data-i18n="faq4q">What does a WhatsApp chat analyzer show?</summary><p class="small" style="margin-top:8px" data-i18n="faq4a">Message counts and share per person, words per message, median reply time, who starts conversations, top emojis, most used words, activity by hour, weekday and month, longest streak, longest silence, media, link and deleted message counts, plus fun scores like the Green Flag Score and Chat Chemistry.</p></details>
 <details class="mt"><summary data-i18n="faq5q">Is ChatVibe free?</summary><p class="small" style="margin-top:8px" data-i18n="faq5a">Yes. Every feature is free, with no signup, no premium tier and no ads inside the tool.</p></details>
 <details class="mt"><summary data-i18n="faq6q">Why does my export show zero messages?</summary><p class="small" style="margin-top:8px" data-i18n="faq6a">Make sure you exported Without Media as a .txt or .zip file, not a backup. WhatsApp backups cannot be read by any analyzer. Also check that the file is a real chat export with dates, times and names at the start of each message line.</p></details>
+<details class="mt"><summary data-i18n="faq7q">Can I analyze a Telegram chat?</summary><p class="small" style="margin-top:8px" data-i18n="faq7a">Yes. In Telegram Desktop, open the chat menu and choose Export Chat History, pick the JSON format, then drop the result.json file into ChatVibe. The same report, scores, awards and Wrapped show are generated, still entirely on your device.</p></details>
+<details class="mt"><summary data-i18n="faq8q">How can I see who texts first and who replies faster?</summary><p class="small" style="margin-top:8px" data-i18n="faq8a">ChatVibe counts a conversation start whenever a message arrives more than 6 hours after the previous one, and credits it to that sender. Reply speed is the median time each person takes to answer when the sender changes, ignoring gaps over 12 hours. Both appear in the report for every participant.</p></details>
+<details class="mt"><summary data-i18n="faq9q">Does ChatVibe work with iPhone WhatsApp exports?</summary><p class="small" style="margin-top:8px" data-i18n="faq9a">Yes. iPhone exports arrive as a .zip file, and ChatVibe opens the zip in your browser and reads the chat inside it. Android .txt exports work directly too, in both cases with media excluded.</p></details>
 </div>
 
 <div class="card mt">
@@ -953,7 +961,44 @@ I18N.hi.theme_sunset="सूर्यास्त";I18N.hi.theme_mint="पुद
 I18N.es.theme_sunset="Atardecer";I18N.es.theme_mint="Menta";
 I18N.pt.theme_sunset="Pôr do sol";I18N.pt.theme_mint="Menta";
 I18N.id.theme_sunset="Senja";I18N.id.theme_mint="Mint";
+I18N.en.faq7q="Can I analyze a Telegram chat?";
+I18N.en.faq7a="Yes. In Telegram Desktop, open the chat menu and choose Export Chat History, pick the JSON format, then drop the result.json file into ChatVibe. The same report, scores, awards and Wrapped show are generated, still entirely on your device.";
+I18N.en.faq8q="How can I see who texts first and who replies faster?";
+I18N.en.faq8a="ChatVibe counts a conversation start whenever a message arrives more than 6 hours after the previous one, and credits it to that sender. Reply speed is the median time each person takes to answer when the sender changes, ignoring gaps over 12 hours. Both appear in the report for every participant.";
+I18N.en.faq9q="Does ChatVibe work with iPhone WhatsApp exports?";
+I18N.en.faq9a="Yes. iPhone exports arrive as a .zip file, and ChatVibe opens the zip in your browser and reads the chat inside it. Android .txt exports work directly too, in both cases with media excluded.";
+I18N.bn.faq7q="Telegram চ্যাট কি বিশ্লেষণ করা যায়?";
+I18N.bn.faq7a="হ্যাঁ। Telegram Desktop এ চ্যাট মেনু খুলে Export Chat History বেছে নাও, JSON ফরম্যাট নাও, তারপর result.json ফাইলটা ChatVibe এ দাও। একই রিপোর্ট, স্কোর, পুরস্কার আর Wrapped show তৈরি হবে, সবই তোমার ডিভাইসে।";
+I18N.bn.faq8q="কে আগে মেসেজ করে আর কে দ্রুত উত্তর দেয় সেটা কিভাবে দেখবো?";
+I18N.bn.faq8a="আগের মেসেজের 6 ঘণ্টার বেশি পরে কোনো মেসেজ এলে ChatVibe সেটাকে নতুন কথোপকথনের শুরু ধরে, পাঠানো মানুষটার নামে। উত্তর দেওয়ার গতি হলো প্রত্যেকে উত্তর দিতে যে মাঝামাঝি সময় নেয়, 12 ঘণ্টার বেশি ফাঁক বাদ দিয়ে। দুটোই রিপোর্টে সবার জন্য দেখা যায়।";
+I18N.bn.faq9q="ChatVibe কি iPhone এর WhatsApp export এ কাজ করে?";
+I18N.bn.faq9a="হ্যাঁ। iPhone export আসে .zip ফাইল হিসাবে, আর ChatVibe তোমার ব্রাউজারেই zip টা খুলে ভিতরের চ্যাট পড়ে। Android এর .txt export ও সরাসরি কাজ করে, দুই ক্ষেত্রেই মিডিয়া ছাড়া।";
+I18N.hi.faq7q="क्या मैं Telegram चैट का विश्लेषण कर सकता हूं?";
+I18N.hi.faq7a="हां। Telegram Desktop में चैट मेनू खोलकर Export Chat History चुनें, JSON format लें, फिर result.json file को ChatVibe में डालें। वही report, score, पुरस्कार और Wrapped show बनेगा, सब कुछ आपके device पर।";
+I18N.hi.faq8q="कौन पहले मैसेज करता है और कौन तेज जवाब देता है, यह कैसे देखें?";
+I18N.hi.faq8a="जब कोई मैसेज पिछले मैसेज के 6 घंटे से अधिक बाद आता है, तो ChatVibe उसे नई बातचीत की शुरुआत मानकर भेजने वाले के नाम गिनता है। जवाब की रफ्तार हर व्यक्ति के जवाब देने का मध्य समय है, 12 घंटे से बड़े अंतर को छोड़कर। दोनों ही report में हर भागीदार के लिए दिखते हैं।";
+I18N.hi.faq9q="क्या ChatVibe iPhone के WhatsApp export पर काम करता है?";
+I18N.hi.faq9a="हां। iPhone export .zip file के रूप में आता है, और ChatVibe आपके browser में ही zip खोलकर अंदर की चैट पढ़ता है। Android के .txt export भी सीधे काम करते हैं, दोनों ही मामलों में media के बिना।";
+I18N.es.faq7q="¿Puedo analizar un chat de Telegram?";
+I18N.es.faq7a="Sí. En Telegram Desktop abre el menú del chat y elige Exportar historial del chat, escoge el formato JSON y luego suelta el archivo result.json en ChatVibe. Se genera el mismo informe, puntuaciones, premios y el show Wrapped, todo en tu dispositivo.";
+I18N.es.faq8q="¿Cómo veo quién escribe primero y quién responde más rápido?";
+I18N.es.faq8a="ChatVibe cuenta un inicio de conversación cuando un mensaje llega más de 6 horas después del anterior, y se lo atribuye a ese remitente. La velocidad de respuesta es el tiempo mediano que cada persona tarda en contestar cuando cambia el remitente, ignorando pausas de más de 12 horas. Ambos datos aparecen en el informe para cada participante.";
+I18N.es.faq9q="¿ChatVibe funciona con exportaciones de WhatsApp de iPhone?";
+I18N.es.faq9a="Sí. Las exportaciones de iPhone llegan como un archivo .zip, y ChatVibe abre el zip en tu navegador y lee el chat de dentro. Las exportaciones .txt de Android también funcionan directamente, en ambos casos sin medios.";
+I18N.pt.faq7q="Posso analisar um chat do Telegram?";
+I18N.pt.faq7a="Sim. No Telegram Desktop, abra o menu do chat e escolha Exportar histórico do chat, pegue o formato JSON e depois solte o arquivo result.json no ChatVibe. O mesmo relatório, pontuações, prêmios e o show Wrapped são gerados, tudo no seu dispositivo.";
+I18N.pt.faq8q="Como vejo quem manda mensagem primeiro e quem responde mais rápido?";
+I18N.pt.faq8a="O ChatVibe conta um início de conversa quando uma mensagem chega mais de 6 horas depois da anterior, e credita a esse remetente. A velocidade de resposta é o tempo mediano que cada pessoa leva para responder quando o remetente muda, ignorando pausas acima de 12 horas. Os dois aparecem no relatório para cada participante.";
+I18N.pt.faq9q="O ChatVibe funciona com exportações do WhatsApp do iPhone?";
+I18N.pt.faq9a="Sim. As exportações do iPhone chegam como um arquivo .zip, e o ChatVibe abre o zip no seu navegador e lê o chat dentro dele. As exportações .txt do Android também funcionam direto, nos dois casos sem mídia.";
+I18N.id.faq7q="Bisakah saya menganalisis chat Telegram?";
+I18N.id.faq7a="Bisa. Di Telegram Desktop, buka menu chat dan pilih Export Chat History, ambil format JSON, lalu jatuhkan file result.json ke ChatVibe. Laporan, skor, penghargaan, dan pertunjukan Wrapped yang sama akan dibuat, semuanya di perangkatmu.";
+I18N.id.faq8q="Bagaimana cara melihat siapa yang mengirim pesan duluan dan siapa yang membalas lebih cepat?";
+I18N.id.faq8a="ChatVibe menghitung awal percakapan setiap kali pesan datang lebih dari 6 jam setelah pesan sebelumnya, dan mencatatnya untuk pengirim itu. Kecepatan balasan adalah waktu tengah yang dibutuhkan setiap orang untuk menjawab saat pengirim berganti, mengabaikan jeda di atas 12 jam. Keduanya muncul di laporan untuk setiap peserta.";
+I18N.id.faq9q="Apakah ChatVibe bekerja dengan ekspor WhatsApp iPhone?";
+I18N.id.faq9a="Ya. Ekspor iPhone datang sebagai file .zip, dan ChatVibe membuka zip itu di browsermu dan membaca chat di dalamnya. Ekspor .txt Android juga bekerja langsung, dalam kedua kasus tanpa media.";
 function setLang(code,rerender){
+  document.documentElement.lang=code;
   if(!I18N[code])code="en";
   LANG=code;
   try{localStorage.setItem("cv_lang",code);}catch(e){}
