@@ -346,6 +346,8 @@ h1{color:#111}h1 .g{color:#111;-webkit-text-fill-color:#111}
 <option value="pink" data-i18n="theme_pink">Hot Pink</option>
 <option value="gold" data-i18n="theme_gold">Gold</option>
 <option value="ocean" data-i18n="theme_ocean">Ocean</option>
+<option value="sunset" data-i18n="theme_sunset">Sunset</option>
+<option value="mint" data-i18n="theme_mint">Mint</option>
 </select>
 <div class="mt">
 <button class="btn grn" id="shotMake" data-i18n="shot_make">Make my story</button>
@@ -945,6 +947,12 @@ I18N.hi.footer_t="मजेदार, निजी WhatsApp chat analyzer। ह
 I18N.es.footer_t="El analizador de chats de WhatsApp divertido y privado. Cada número se calcula en tu propio dispositivo. Hecho para divertirse: comparte los números, nunca los mensajes privados.";
 I18N.pt.footer_t="O analisador de chats do WhatsApp divertido e privado. Cada número é calculado no seu próprio aparelho. Feito para diversão: compartilhe os números, nunca as mensagens privadas.";
 I18N.id.footer_t="Analyzer chat WhatsApp yang seru dan privat. Setiap angka dihitung di perangkatmu sendiri. Dibuat untuk seru seruan: bagikan angkanya, jangan pernah pesan pribadinya.";
+I18N.en.theme_sunset="Sunset";I18N.en.theme_mint="Mint";
+I18N.bn.theme_sunset="সূর্যাস্ত";I18N.bn.theme_mint="পুদিনা সবুজ";
+I18N.hi.theme_sunset="सूर्यास्त";I18N.hi.theme_mint="पुदीना हरा";
+I18N.es.theme_sunset="Atardecer";I18N.es.theme_mint="Menta";
+I18N.pt.theme_sunset="Pôr do sol";I18N.pt.theme_mint="Menta";
+I18N.id.theme_sunset="Senja";I18N.id.theme_mint="Mint";
 function setLang(code,rerender){
   if(!I18N[code])code="en";
   LANG=code;
@@ -1451,6 +1459,7 @@ function downloadBattle(){
   x.fillText(info.champ?F("v_champ",{name:info.champ}):t("v_dead"),540,1500);
   x.fillStyle="#9a9ac0"; x.font="600 30px Arial";
   x.fillText("Rounds "+info.wa+" to "+info.wb+" / Made with ChatVibe Analyzer",540,1580);
+  x.font="700 30px Arial"; x.fillStyle="#ffffff"; x.fillText("mrmxblack.github.io/chatvibe",540,1740);
   x.fillText("Scores and counts only, no message text",540,1640);
   const a=document.createElement("a"); a.download="chatvibe-versus.png"; a.href=c.toDataURL("image/png"); a.click();
 }
@@ -1526,7 +1535,8 @@ $("cardBtn").onclick=()=>{
   for(const row of rows){x.font="36px system-ui";x.fillStyle="#b9aed6";x.fillText(row[0],140,y);x.font="bold 40px system-ui";x.fillStyle="#fff";x.fillText(row[1],620,y);y+=105;}
   x.textAlign="center"; x.font="bold 38px system-ui"; x.fillStyle="#ffb3c6";
   const names=r.plist.slice(0,2).map(p=>p.name).join("  x  "); wrap(x,names,540,1580,860,48);
-  x.font="26px system-ui"; x.fillStyle="#b9aed6"; x.fillText("ChatVibe Analyzer. 100 percent private, runs in your browser.",540,1780);
+  x.font="26px system-ui"; x.fillStyle="#b9aed6"; x.fillText("ChatVibe Analyzer. 100 percent private, runs in your browser.",540,1760);
+  x.font="bold 30px system-ui"; x.fillStyle="#ffffff"; x.fillText("mrmxblack.github.io/chatvibe",540,1830);
   dl(c.toDataURL("image/png"),"chatvibe-story-card.png");
 };
 function wrap(x,text,cx,y,maxW,lh){const words=text.split(" ");let line="",yy=y;for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW){x.fillText(line,cx,yy);line=w;yy+=lh;}else line=t;}x.fillText(line,cx,yy);}
@@ -1535,6 +1545,8 @@ function themeGrad(x,theme,w,h){
   if(theme==="pink"){g.addColorStop(0,"#5c1030");g.addColorStop(1,"#170714");}
   else if(theme==="gold"){g.addColorStop(0,"#6b4a00");g.addColorStop(1,"#171006");}
   else if(theme==="ocean"){g.addColorStop(0,"#063a5c");g.addColorStop(1,"#061018");}
+  else if(theme==="sunset"){g.addColorStop(0,"#7a2b0e");g.addColorStop(.55,"#a4133c");g.addColorStop(1,"#160a1a");}
+  else if(theme==="mint"){g.addColorStop(0,"#0b5345");g.addColorStop(1,"#04150f");}
   else{g.addColorStop(0,"#241047");g.addColorStop(.55,"#571c46");g.addColorStop(1,"#0b0714");}
   x.fillStyle=g;x.fillRect(0,0,w,h);
 }
@@ -1550,13 +1562,14 @@ function makeMomentCard(m){
   x.fillStyle="#ffffff";x.font="46px system-ui";
   const txt="“"+(m.text.length>340?m.text.slice(0,340)+"...":m.text)+"”";
   wrapLines(x,txt,540,760,880,64);
-  x.font="26px system-ui";x.fillStyle="#b9aed6";x.fillText("ChatVibe Analyzer. Private, in your browser.",540,1780);
+  x.font="26px system-ui";x.fillStyle="#b9aed6";x.fillText("ChatVibe Analyzer. Private, in your browser.",540,1760);
+  x.font="bold 30px system-ui"; x.fillStyle="#ffffff"; x.fillText("mrmxblack.github.io/chatvibe",540,1830);
   dl(c.toDataURL("image/png"),"chatvibe-funny-moment.png");
 }
-function wrapLines(x,text,cx,y,maxW,lh){
+function wrapLines(x,text,cx,y,maxW,lh,maxY){
   const words=text.split(/\s+/);let line="",yy=y;
-  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW&&line){x.fillText(line,cx,yy);line=w;yy+=lh;if(yy>1650)break;}else line=t;}
-  if(line&&yy<=1650)x.fillText(line,cx,yy);
+  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>maxW&&line){x.fillText(line,cx,yy);line=w;yy+=lh;if(yy>(maxY||1650))break;}else line=t;}
+  if(line&&yy<=(maxY||1650))x.fillText(line,cx,yy);
 }
 let shotImg=null,shotEmoji="🤣💀";
 const EMOJIS=["🤣💀","😂🔥","😍🥰","🥺🙏","😤🔥","🌙😴","🤑💸","🤯","🐱","👀"];
@@ -1579,21 +1592,42 @@ function drawShot(){
   const c=$("storyCanvas");c.classList.remove("hidden");
   const x=c.getContext("2d");
   themeGrad(x,$("shotTheme").value,1080,1920);
-  x.textAlign="center";x.fillStyle="#fff";x.font="bold 56px system-ui";
-  x.fillText("Chat Story",540,150);
-  const bx=70,by=220,bw=940,bh=1180;
+  x.textAlign="center";x.fillStyle="#fff";x.font="bold 58px system-ui";
+  x.fillText("Chat Story",540,140);
+  const bx=60,by=200,bw=960,bh=1160;
   x.save();
   if(x.roundRect){x.beginPath();x.roundRect(bx,by,bw,bh,36);x.clip();}
-  else x.beginPath(),x.rect(bx,by,bw,bh),x.clip();
-  const sc=Math.max(bw/shotImg.width,bh/shotImg.height);
+  else{x.beginPath();x.rect(bx,by,bw,bh);x.clip();}
+  x.fillStyle="#0d0a18";x.fillRect(bx,by,bw,bh);
+  try{
+    x.filter="blur(24px) brightness(0.55)";
+    const scb=Math.max((bw+80)/shotImg.width,(bh+80)/shotImg.height);
+    x.drawImage(shotImg,bx+(bw-shotImg.width*scb)/2,by+(bh-shotImg.height*scb)/2,shotImg.width*scb,shotImg.height*scb);
+    x.filter="none";
+  }catch(e){try{x.filter="none";}catch(e2){}}
+  const sc=Math.min(bw/shotImg.width,bh/shotImg.height);
   const dw=shotImg.width*sc,dh=shotImg.height*sc;
+  x.shadowColor="rgba(0,0,0,0.45)";x.shadowBlur=28;x.shadowOffsetY=8;
   x.drawImage(shotImg,bx+(bw-dw)/2,by+(bh-dh)/2,dw,dh);
+  x.shadowColor="transparent";x.shadowBlur=0;x.shadowOffsetY=0;
   x.restore();
-  x.strokeStyle="#ffffff55";x.lineWidth=4;if(x.roundRect){x.beginPath();x.roundRect(bx,by,bw,bh,36);x.stroke();}
-  x.font="170px system-ui";x.textAlign="right";x.fillText(shotEmoji,1010,1620);
-  x.textAlign="center";x.fillStyle="#fff";x.font="bold 46px system-ui";
-  wrapLines(x,$("shotCaption").value||"He really said this",540,1560,860,58);
-  x.font="26px system-ui";x.fillStyle="#d9cfff";x.fillText("Made with ChatVibe Screenshot Story Studio",540,1825);
+  x.strokeStyle="rgba(255,255,255,0.4)";x.lineWidth=4;
+  if(x.roundRect){x.beginPath();x.roundRect(bx,by,bw,bh,36);x.stroke();}
+  const glyphs=[...shotEmoji].length;
+  const esz=glyphs<=1?104:(glyphs===2?70:54);
+  x.save();
+  x.shadowColor="rgba(0,0,0,0.4)";x.shadowBlur=18;x.shadowOffsetY=6;
+  x.fillStyle="#ffffff";x.beginPath();x.arc(975,1330,92,0,7);x.fill();
+  x.restore();
+  x.font=esz+"px system-ui";x.textAlign="center";x.textBaseline="middle";
+  x.fillText(shotEmoji,975,1338);
+  x.textBaseline="alphabetic";
+  x.fillStyle="#fff";x.font="bold 50px system-ui";
+  x.shadowColor="rgba(0,0,0,0.5)";x.shadowBlur=10;x.shadowOffsetY=3;
+  wrapLines(x,($("shotCaption").value||"He really said this").slice(0,120),540,1500,880,62,1690);
+  x.shadowColor="transparent";x.shadowBlur=0;x.shadowOffsetY=0;
+  x.font="26px system-ui";x.fillStyle="#d9cfff";x.fillText("Made with ChatVibe Screenshot Story Studio",540,1795);
+  x.font="bold 30px system-ui";x.fillStyle="#ffffff";x.fillText("mrmxblack.github.io/chatvibe",540,1845);
   $("shotDl").disabled=false;
 }
 $("shotTheme").onchange=drawShot;
